@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
 import java.security.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.photonvision.PhotonCamera;
 
@@ -10,26 +12,45 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class VisionSubsystem extends SubsystemBase {
-    BulldogCamera[] cam = {
-        new BulldogCamera(new PhotonCamera("1"), new Transform3d()),
-        new BulldogCamera(new PhotonCamera("2"), new Transform3d())
+
+    private BulldogCamera[] cams = {
+        new BulldogCamera("1", new Transform3d()),
+        new BulldogCamera("2", new Transform3d())
     };
 
-    Pose2d camPose1 = new Pose2d (
-        cam[0].getEstimatedGlobalPose().get().estimatedPose.getX(),
-        cam[0].getEstimatedGlobalPose().get().estimatedPose.getY(),
-        new Rotation2d(cam[0].getEstimatedGlobalPose().get().estimatedPose.getRotation().getAngle())
-    );
+    private List<Pose2d> camPoses = new ArrayList<Pose2d>();
+    private List<Double> camTimestamps = new ArrayList<Double>();
 
-    Pose2d camPose2 = new Pose2d (
-        cam[1].getEstimatedGlobalPose().get().estimatedPose.getX(),
-        cam[1].getEstimatedGlobalPose().get().estimatedPose.getY(),
-        new Rotation2d(cam[1].getEstimatedGlobalPose().get().estimatedPose.getRotation().getAngle())
-    );
+    public VisionSubsystem() {}
 
-    public Pose2d[] poseArray =  {camPose1, camPose2};
-    public double[] timeArray =  {
-        cam[0].getEstimatedGlobalPose().get().timestampSeconds,
-        cam[1].getEstimatedGlobalPose().get().timestampSeconds
-        };
+    @Override
+    public void periodic() {
+
+        camPoses.clear();
+        camTimestamps.clear();
+
+        for (int i = 0; i < cams.length; i++) {
+
+            cams[i].updateVision();
+            processCamera(i);
+
+        }
+
+    }
+
+    public void processCamera(int camNum) {
+
+        camPoses.add(cams[camNum].camPose);
+        camTimestamps.add(cams[camNum].camTimestamp);
+
+    }
+
+    public List<Pose2d> getCameraPoses() {
+        return camPoses;
+    }
+
+    public List<Double> getCameraTimestamps() {
+        return camTimestamps;
+    }
+
 }

@@ -49,7 +49,7 @@ public class DriveSubsystem extends SubsystemBase {
   private final AHRS m_gyro = new AHRS(NavXComType.kMXP_SPI);
 
   // Odometry class for tracking robot pose
-  SwerveDrivePoseEstimator m_odometry = new SwerveDrivePoseEstimator(
+  SwerveDrivePoseEstimator m_estimator = new SwerveDrivePoseEstimator(
       DriveConstants.kDriveKinematics,
       Rotation2d.fromDegrees(-m_gyro.getYaw()),
       new SwerveModulePosition[] {
@@ -75,7 +75,7 @@ public class DriveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
-    m_odometry.update(
+    m_estimator.update(
         Rotation2d.fromDegrees(-m_gyro.getYaw()),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
@@ -84,10 +84,10 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearRight.getPosition()
         });
     
-    for (int i=0; i>vision.poseArray.length; i++) {
-      m_odometry.addVisionMeasurement (
-        vision.poseArray[i],
-        vision.timeArray[i]
+    for (int i = 0; i < vision.getCameraPoses().size(); i++) {
+      m_estimator.addVisionMeasurement(
+        vision.getCameraPoses().get(i),
+        vision.getCameraTimestamps().get(i)
       );
     }
   }
@@ -98,7 +98,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return The pose.
    */
   public Pose2d getPose() {
-    return m_odometry.getEstimatedPosition();
+    return m_estimator.getEstimatedPosition();
   }
 
   /**
@@ -107,7 +107,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @param pose The pose to which to set the odometry.
    */
   public void resetOdometry(Pose2d pose) {
-    m_odometry.resetPosition(
+    m_estimator.resetPosition(
         Rotation2d.fromDegrees(-m_gyro.getYaw()),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),

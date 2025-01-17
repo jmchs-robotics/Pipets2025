@@ -18,24 +18,50 @@ public class BulldogCamera {
     
     AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
     
-    PhotonCamera cam;
-    Transform3d robotToCam;
+    private final String name;
+    private final PhotonCamera cam;
+    private final Transform3d robotToCam;
+    private final PhotonPoseEstimator photonPoseEstimator;
 
-    PhotonPoseEstimator photonPoseEstimator;
+    public Pose2d camPose;
+    public double camTimestamp;
 
-    public BulldogCamera(PhotonCamera cam, Transform3d robotToCam) {
-        this.cam = cam;
+    public BulldogCamera(String name, Transform3d robotToCam) {
+
+        this.name = name;
+        cam = new PhotonCamera(name);
         this.robotToCam = robotToCam;
 
-        photonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, robotToCam);
+        photonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotToCam);
+        photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
+
     }
 
-    public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
+    public void updateVision() {
 
         var results = cam.getAllUnreadResults();
         var result = results.get(results.size() - 1);
+        Optional<EstimatedRobotPose> currentPose = photonPoseEstimator.update(result);
 
-        return photonPoseEstimator.update(result);
+        if (currentPose.isPresent()) {
 
+            camPose = new Pose2d(
+                currentPose.get().estimatedPose.getX(),
+                currentPose.get().estimatedPose.getY(),
+                currentPose.get().estimatedPose.getRotation().toRotation2d()
+            );
+
+            camTimestamp = currentPose.get().timestampSeconds;
+
+        }
+
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setReferencePose(Pose2d pose) {
+        photonPoseEstimator.setReferencePose(pose);
     }
 }

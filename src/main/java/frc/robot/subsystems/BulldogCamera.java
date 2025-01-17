@@ -30,12 +30,11 @@ public class BulldogCamera {
         photonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, robotToCam);
     }
 
-    public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
+    public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
 
         var results = cam.getAllUnreadResults();
         var result = results.get(results.size() - 1);
 
-        photonPoseEstimator.setReferencePose(prevEstimatedRobotPose);
         return photonPoseEstimator.update(result);
 
     }

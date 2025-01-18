@@ -40,18 +40,22 @@ public class BulldogCamera {
     public void updateVision() {
 
         var results = cam.getAllUnreadResults();
-        var result = results.get(results.size() - 1);
-        Optional<EstimatedRobotPose> currentPose = photonPoseEstimator.update(result);
+        if (!results.isEmpty()) {
 
-        if (currentPose.isPresent()) {
-
-            camPose = new Pose2d(
-                currentPose.get().estimatedPose.getX(),
-                currentPose.get().estimatedPose.getY(),
-                currentPose.get().estimatedPose.getRotation().toRotation2d()
-            );
-
-            camTimestamp = currentPose.get().timestampSeconds;
+            var result = results.get(results.size() - 1);
+            Optional<EstimatedRobotPose> currentPose = photonPoseEstimator.update(result);
+    
+            if (currentPose.isPresent()) {
+    
+                camPose = new Pose2d(
+                    currentPose.get().estimatedPose.getX(),
+                    currentPose.get().estimatedPose.getY(),
+                    currentPose.get().estimatedPose.getRotation().toRotation2d()
+                );
+    
+                camTimestamp = currentPose.get().timestampSeconds;
+    
+            }
 
         }
 

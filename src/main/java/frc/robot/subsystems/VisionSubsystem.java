@@ -10,12 +10,12 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.RobotToCamTransforms;
 
 public class VisionSubsystem extends SubsystemBase {
 
     private BulldogCamera[] cams = {
-        new BulldogCamera("1", new Transform3d()),
-        new BulldogCamera("2", new Transform3d())
+        new BulldogCamera("BulldogCam1", RobotToCamTransforms.kCam1Transform)
     };
 
     private List<Pose2d> camPoses = new ArrayList<Pose2d>();

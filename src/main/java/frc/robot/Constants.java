@@ -4,7 +4,10 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
@@ -98,5 +101,12 @@ public final class Constants {
 
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 6704;
+  }
+
+  public static final class RobotToCamTransforms {
+    public static final Transform3d kCam1Transform = new Transform3d(
+      new Translation3d(0, Units.inchesToMeters(15), Units.inchesToMeters(7)), 
+      new Rotation3d(0, 0, Units.degreesToRadians(90))
+    );
   }
 }

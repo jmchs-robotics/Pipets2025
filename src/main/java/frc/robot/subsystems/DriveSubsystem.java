@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
+import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.Logged.Importance;
 import edu.wpi.first.hal.HAL;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -90,6 +92,8 @@ public class DriveSubsystem extends SubsystemBase {
         vision.getCameraTimestamps().get(i)
       );
     }
+
+    vision.setReferencePose(getPose());
   }
 
   /**
@@ -97,6 +101,7 @@ public class DriveSubsystem extends SubsystemBase {
    *
    * @return The pose.
    */
+  @Logged(name = "Swerve Estimated Pose", importance = Importance.DEBUG)
   public Pose2d getPose() {
     return m_estimator.getEstimatedPosition();
   }

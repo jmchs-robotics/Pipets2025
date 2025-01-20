@@ -20,15 +20,22 @@ public class LEDs {
     // Write the data to the LED strip
 
     m_led.setData(m_ledBuffer);
-    if () {// TODO alliance is red idk how to write it
+    if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {// TODO alliance is red idk how to write it
         m_led.setData(m_ledBuffer);
         m_led.start();
 
         LEDPattern gradient = LEDPattern.gradient(LEDPattern.GradientType.kContinuous,
         Color.kRed, Color.kPink, Color.kCrimson, Color.kSienna, Color.kTomato, Color.kDarkOrange, 
-        Color.kDarkMagenta, Color.kFirebrick);
+        Color.kDarkMagenta, Color.kFirebrick);}
         
-    // TODO blue alliance color scheme
+    // blue alliance color scheme
+    else () {
+        m_led.setData(m_ledBuffer);
+        m_led.start();
+
+        LEDParrern gradient = LEDPattern.gradient(LEDPattern.GradientType.kContinuous, 
+        Color.kBlue, Color.kBlue, Color.kAliceBlue, Color.kAqua, Color.kAquamarine, Color.kAzure, 
+        Color.kBlueViolet, Color.kCadetBlue, Color.kDarkBlue, Color.kDarkBlue, Color.kDarkCyan, Color.kMediumPurple)
 
     }
 

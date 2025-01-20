@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -34,6 +35,7 @@ import java.util.List;
  * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
  * (including subsystems, commands, and button mappings) should be declared here.
  */
+@Logged
 public class RobotContainer {
   // The robot's subsystems
   private final VisionSubsystem m_vision = new VisionSubsystem();

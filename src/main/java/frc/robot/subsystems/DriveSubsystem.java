@@ -19,12 +19,18 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
 import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+@Logged
 public class DriveSubsystem extends SubsystemBase {
   // Create MAXSwerveModules
   private final MAXSwerveModule m_frontLeft = new MAXSwerveModule(
@@ -67,6 +73,9 @@ public class DriveSubsystem extends SubsystemBase {
 
   private final VisionSubsystem vision;
 
+  @Logged(name = "Estimated Pose", importance = Importance.INFO)
+  private Pose2d estimatedPose;
+
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem(VisionSubsystem vision) {
     // Usage reporting for MAXSwerve template
@@ -94,6 +103,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     vision.setReferencePose(getPose());
+    estimatedPose = getPose();
   }
 
   /**
@@ -101,7 +111,6 @@ public class DriveSubsystem extends SubsystemBase {
    *
    * @return The pose.
    */
-  @Logged(name = "Swerve Estimated Pose", importance = Importance.DEBUG)
   public Pose2d getPose() {
     return m_estimator.getEstimatedPosition();
   }

@@ -18,8 +18,8 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.DefaultDriveCommand;
-import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.commands.*;
+import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -36,10 +36,13 @@ import java.util.List;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private final ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
 
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
 
+  JoystickButton driveX = new JoystickButton(m_driverController, Button.kX.value);
+  JoystickButton driveY = new JoystickButton(m_driverController, Button.kY.value);
   JoystickButton driveStart = new JoystickButton(m_driverController, Button.kStart.value);
 
   /**
@@ -66,6 +69,14 @@ public class RobotContainer {
 
     driveStart.onTrue(
       new InstantCommand(() -> {m_robotDrive.zeroHeading();})
+    );
+
+    driveX.whileTrue(
+      new LowerElevator(m_elevatorSubsystem)
+    );
+
+    driveY.whileTrue(
+      new RaiseElevator(m_elevatorSubsystem)
     );
 
   }

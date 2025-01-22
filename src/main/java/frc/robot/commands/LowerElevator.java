@@ -20,7 +20,7 @@ public class LowerElevator extends Command {
     @Override
     public void execute() {
 
-        m_elevator.setMotors(-0.5);
+        m_elevator.setMotors(0.1);
 
     }
 

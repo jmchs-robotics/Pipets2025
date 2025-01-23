@@ -20,9 +20,10 @@ public class LEDs {
 
         // Write the data to the LED strip
 
-        m_led.setData(m_ledBuffer);
+        
 
     }
+}
 
     
     if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {// TODO alliance is red idk how to write it
@@ -35,6 +36,7 @@ public class LEDs {
 
         // Apply the LED pattern to the data buffer
         gradient.applyTo(m_ledBuffer);
+        m_led.setData(m_ledBuffer);
     }
         
     // blue alliance color scheme
@@ -48,6 +50,5 @@ public class LEDs {
 
         // Apply the LED pattern to the data buffer
         gradient.applyTo(m_ledBuffer);
+        m_led.setData(m_ledBuffer);
     }
-
-}

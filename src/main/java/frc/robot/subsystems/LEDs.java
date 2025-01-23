@@ -29,11 +29,11 @@ public class LEDs {
         Color.kDarkMagenta, Color.kFirebrick);}
         
     // blue alliance color scheme
-    else () {
+    else {
         m_led.setData(m_ledBuffer);
         m_led.start();
 
-        LEDParrern gradient = LEDPattern.gradient(LEDPattern.GradientType.kContinuous, 
+        LEDPattern gradientB = LEDPattern.gradient(LEDPattern.GradientType.kContinuous, 
         Color.kBlue, Color.kBlue, Color.kAliceBlue, Color.kAqua, Color.kAquamarine, Color.kAzure, 
         Color.kBlueViolet, Color.kCadetBlue, Color.kDarkBlue, Color.kDarkBlue, Color.kDarkCyan, Color.kMediumPurple)
 

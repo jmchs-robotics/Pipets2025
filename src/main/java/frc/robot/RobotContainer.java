@@ -71,14 +71,6 @@ public class RobotContainer {
       new InstantCommand(() -> {m_robotDrive.zeroHeading();})
     );
 
-    driveX.whileTrue(
-      new LowerElevator(m_elevatorSubsystem)
-    );
-
-    driveY.whileTrue(
-      new RaiseElevator(m_elevatorSubsystem)
-    );
-
   }
 
   /**

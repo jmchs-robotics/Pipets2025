@@ -10,6 +10,7 @@ import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.Logged.Importance;
 import edu.wpi.first.hal.HAL;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -27,6 +28,8 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
+
+import choreo.trajectory.SwerveSample;
 import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -71,6 +74,10 @@ public class DriveSubsystem extends SubsystemBase {
       VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30))
   );
 
+  private final PIDController xController = new PIDController(10.0, 0.0, 0.0);
+  private final PIDController yController = new PIDController(10.0, 0.0, 0.0);
+  private final PIDController headingController = new PIDController(7.5, 0.0, 0.0);
+
   private final VisionSubsystem vision;
 
   @Logged(name = "Estimated Pose", importance = Importance.INFO)
@@ -81,6 +88,8 @@ public class DriveSubsystem extends SubsystemBase {
     // Usage reporting for MAXSwerve template
     HAL.report(tResourceType.kResourceType_RobotDrive, tInstances.kRobotDriveSwerve_MaxSwerve);
     this.vision = vision;
+
+    headingController.enableContinuousInput(-Math.PI, Math.PI);
   }
 
   @Override
@@ -160,6 +169,17 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearRight.setDesiredState(swerveModuleStates[3]);
   }
 
+  private void driveFieldRelative(ChassisSpeeds speeds) {
+
+    var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
+    SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
+    m_frontLeft.setDesiredState(swerveModuleStates[0]);
+    m_frontRight.setDesiredState(swerveModuleStates[1]);
+    m_rearLeft.setDesiredState(swerveModuleStates[2]);
+    m_rearRight.setDesiredState(swerveModuleStates[3]);
+
+  }
+
   /**
    * Sets the wheels into an X formation to prevent movement.
    */
@@ -213,5 +233,20 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public double getTurnRate() {
     return -m_gyro.getYaw() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+  }
+
+  public void followTrajectory(SwerveSample sample) {
+    // Get the current pose of the robot
+      Pose2d pose = getPose();
+
+      // Generate the next speeds for the robot
+      ChassisSpeeds speeds = new ChassisSpeeds(
+          sample.vx + xController.calculate(pose.getX(), sample.x),
+          sample.vy + yController.calculate(pose.getY(), sample.y),
+          sample.omega + headingController.calculate(pose.getRotation().getRadians(), sample.heading)
+      );
+
+      // Apply the generated speeds
+      driveFieldRelative(speeds);
   }
 }

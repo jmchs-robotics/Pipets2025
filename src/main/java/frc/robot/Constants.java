@@ -99,4 +99,38 @@ public final class Constants {
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 6704;
   }
+
+  public static final class ElevatorConstants {
+
+    // From bottom of elevator structure to bottom of second stage
+    // If testing doesn't work with these numbers, subtract 4.75 from all position measurements
+    public static final double minPos = 4.75;
+    public static final double maxPos = 48.25;
+
+    public static final double max_output = 0.7; // Must be between 0 and 1 inclusive
+    public static final double countsPerInch = 2000; // Krakens estimated to be about 2048 clicks per rotation, but we need to convert it to inches
+    public static final double posTolerance = 0.5; // Half an inch of tolerance
+
+    public static final double maxVelocity = 1.5; // Meters per second??? Also we need to actually figure this out
+    public static final double maxAcceleration = 3.0; // Meters per second squared??? Also figure this one out too
+
+    // TODO: Change these numbers when we can measure the elevator on the actual robot
+    public static final double L1 = 12;
+    public static final double L2 = 24;
+    public static final double L3 = 36;
+    public static final double L4 = 48;
+
+    public static final int primaryElevatorID = 1;
+    public static final int followerElevatorID = 2;
+
+    // I think we need to use SysID tuning to figure out kS and kV and kG?????
+    // TODO: Tune PID :(
+    public static final double kS = 0;
+    public static final double kV = 0;
+    public static final double kG = 0;
+    public static final double kP = 0.05;
+    public static final double kI = 0;
+    public static final double kD = 0;
+
+  }
 }

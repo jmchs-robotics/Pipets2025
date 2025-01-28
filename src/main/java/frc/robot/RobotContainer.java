@@ -54,6 +54,7 @@ public class RobotContainer {
 
     // Configure default commands
     m_robotDrive.setDefaultCommand(new DefaultDriveCommand(m_robotDrive, m_driverController));
+    m_elevatorSubsystem.setDefaultCommand(new DefaultElevatorCommand(m_elevatorSubsystem));
   }
 
   /**
@@ -69,6 +70,10 @@ public class RobotContainer {
 
     driveStart.onTrue(
       new InstantCommand(() -> {m_robotDrive.zeroHeading();})
+    );
+
+    driveX.whileTrue(
+      new MoveElevatorToSetpoint(m_elevatorSubsystem)
     );
 
   }

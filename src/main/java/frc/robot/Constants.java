@@ -120,8 +120,8 @@ public final class Constants {
     public static final double L3 = 36;
     public static final double L4 = 48;
 
-    public static final int primaryElevatorID = 1;
-    public static final int followerElevatorID = 2;
+    public static final int primaryElevatorID = 2;
+    public static final int followerElevatorID = 1;
 
     // I think we need to use SysID tuning to figure out kS and kV and kG?????
     // TODO: Tune PID :(

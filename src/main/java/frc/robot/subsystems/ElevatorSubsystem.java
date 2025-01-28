@@ -6,7 +6,11 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorConstants;
@@ -22,9 +26,15 @@ public class ElevatorSubsystem extends SubsystemBase {
     private final TrapezoidProfile profile;
 
     private ElevatorPosition currentTarget = ElevatorPosition.DOWN;
-    private boolean isHomed = false;
+    private boolean isHomed = true;
     private double setpoint = 0.0;
     double currentPos;
+
+    private final GenericEntry[] elevatorLevels = new GenericEntry[4];
+    public static final boolean[] levelBooleans = new boolean[4];
+
+    private final GenericEntry[] reefSides = new GenericEntry[2];
+    public static final boolean[] reefSidesBooleans = new boolean[2];
 
     public enum ElevatorPosition {
         DOWN(ElevatorConstants.minPos),
@@ -65,6 +75,8 @@ public class ElevatorSubsystem extends SubsystemBase {
         currentState = new TrapezoidProfile.State(0, 0);
         goalState = new TrapezoidProfile.State(0, 0);
         profile = new TrapezoidProfile(constraints);
+
+        setUpDriverTab();
     }
 
     @Override
@@ -83,22 +95,23 @@ public class ElevatorSubsystem extends SubsystemBase {
             stopMotors();
         }
 
-        // Only run control if homed
-        if (isHomed) {
-            double pidOutput = pidController.calculate(getHeightInches(), currentState.position);
-            double ff = calculateFeedForward(currentState);
+        // // Only run control if homed
+        // if (isHomed) {
+        //     double pidOutput = pidController.calculate(getHeightInches(), currentState.position);
+        //     double ff = calculateFeedForward(currentState);
             
-            double outputPower = MathUtil.clamp(
-                pidOutput + ff,
-                -ElevatorConstants.max_output,
-                ElevatorConstants.max_output
-            );
+        //     double outputPower = MathUtil.clamp(
+        //         pidOutput + ff,
+        //         -ElevatorConstants.max_output,
+        //         ElevatorConstants.max_output
+        //     );
             
-            primaryMotor.set(outputPower);
-        }
+        //     primaryMotor.set(outputPower);
+        // }
 
         // Update SmartDashboard
         updateTelemetry();
+        updateDriverTab();
     }
 
     private void handleBottomLimit() {
@@ -158,7 +171,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     public double getHeightInches() {
         return primaryMotor.getPosition().getValueAsDouble() / ElevatorConstants.countsPerInch;
     }
-
+// hi! i am so happy im here today :) hg
     public void homeElevator() {
         primaryMotor.set(-0.1); // Slow downward movement until bottom limit is hit
         // if (bottomLimit.get()) {
@@ -199,4 +212,68 @@ public class ElevatorSubsystem extends SubsystemBase {
         
         primaryMotor.set(MathUtil.clamp(power, -ElevatorConstants.max_output, ElevatorConstants.max_output));
     }
-}
+
+    private void setUpDriverTab() {
+
+        ShuffleboardTab driverTab = Shuffleboard.getTab("Driver Tab");
+
+        elevatorLevels[0] = driverTab.add("L4", false)
+            .withWidget(BuiltInWidgets.kToggleButton)
+            .withSize(3, 1)
+            .withPosition(0, 0)
+            .getEntry();
+
+        elevatorLevels[1] = driverTab.add("L3", false)
+            .withWidget(BuiltInWidgets.kToggleButton)
+            .withSize(3, 1)
+            .withPosition(0, 1)
+            .getEntry();
+
+        elevatorLevels[2] = driverTab.add("L2", false)
+            .withWidget(BuiltInWidgets.kToggleButton)
+            .withSize(3, 1)
+            .withPosition(0, 2)
+            .getEntry();
+
+        elevatorLevels[3] = driverTab.add("L1", false)
+            .withWidget(BuiltInWidgets.kToggleButton)
+            .withSize(3, 1)
+            .withPosition(0, 3)
+            .getEntry();
+
+    }
+
+    private void updateDriverTab() {
+
+        for (int i = 0; i < 4; i++) {
+
+            if (elevatorLevels[i].getBoolean(false) != levelBooleans[i] && elevatorLevels[i].getBoolean(false)) {
+                elevatorLevels[0].setBoolean(false);
+                levelBooleans[0] = false;
+                elevatorLevels[1].setBoolean(false);
+                levelBooleans[1] = false;
+                elevatorLevels[2].setBoolean(false);
+                levelBooleans[2] = false;
+                elevatorLevels[3].setBoolean(false);
+                levelBooleans[3] = false;
+
+                elevatorLevels[i].setBoolean(true);
+                levelBooleans[i] = true;
+            } else if (elevatorLevels[i].getBoolean(false) != levelBooleans[i]) {
+                levelBooleans[i] = false;
+            }
+
+        }
+
+        if (levelBooleans[0]) {
+            currentTarget = ElevatorPosition.POSITION_4;
+        } else if (levelBooleans[1]) {
+            currentTarget = ElevatorPosition.POSITION_3;
+        } else if (levelBooleans[2]) {
+            currentTarget = ElevatorPosition.POSITION_2;
+        } else if (levelBooleans[3]) {
+            currentTarget = ElevatorPosition.POSITION_1;
+        }
+
+    }
+}   

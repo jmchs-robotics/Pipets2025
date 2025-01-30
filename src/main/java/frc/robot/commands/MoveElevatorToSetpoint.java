@@ -39,6 +39,8 @@ public class MoveElevatorToSetpoint extends Command {
                 break;
         }
 
+        m_elevator.moveToSetpoint();
+
     }
 
     @Override
@@ -47,10 +49,6 @@ public class MoveElevatorToSetpoint extends Command {
     }
 
     @Override
-    public void end(boolean interrupted) {
-
-        m_elevator.setPositionInches(ElevatorPosition.DOWN.positionInches);
-
-    }
+    public void end(boolean interrupted) {}
     
 }

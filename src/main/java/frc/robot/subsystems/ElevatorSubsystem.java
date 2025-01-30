@@ -25,16 +25,13 @@ public class ElevatorSubsystem extends SubsystemBase {
     private TrapezoidProfile.State currentState;
     private final TrapezoidProfile profile;
 
-    private ElevatorPosition currentTarget = ElevatorPosition.DOWN;
+    private ElevatorPosition currentTarget = ElevatorPosition.POSITION_2;
     private boolean isHomed = true;
     private double setpoint = 0.0;
     double currentPos;
 
     private final GenericEntry[] elevatorLevels = new GenericEntry[4];
     public static final boolean[] levelBooleans = new boolean[4];
-
-    private final GenericEntry[] reefSides = new GenericEntry[2];
-    public static final boolean[] reefSidesBooleans = new boolean[2];
 
     public enum ElevatorPosition {
         DOWN(ElevatorConstants.minPos),
@@ -75,6 +72,9 @@ public class ElevatorSubsystem extends SubsystemBase {
         currentState = new TrapezoidProfile.State(0, 0);
         goalState = new TrapezoidProfile.State(0, 0);
         profile = new TrapezoidProfile(constraints);
+
+        primaryMotor.setPosition(0);
+        followerMotor.setPosition(0);
 
         setUpDriverTab();
     }
@@ -166,10 +166,11 @@ public class ElevatorSubsystem extends SubsystemBase {
         SmartDashboard.putString("Elevator State", currentTarget.toString());
         SmartDashboard.putNumber("Elevator Current", primaryMotor.getMotorVoltage().getValueAsDouble());
         SmartDashboard.putNumber("Elevator Velocity", currentState.velocity);
+        SmartDashboard.putNumber("Elevator Position", primaryMotor.getPosition().getValueAsDouble());
     }
 
     public double getHeightInches() {
-        return primaryMotor.getPosition().getValueAsDouble() / ElevatorConstants.countsPerInch;
+        return primaryMotor.getPosition().getValueAsDouble() * ElevatorConstants.countsPerInch;
     }
 // hi! i am so happy im here today :) hg
     public void homeElevator() {
@@ -190,6 +191,21 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public ElevatorPosition getCurrentTarget() {
         return currentTarget;
+    }
+
+    public void moveToSetpoint() {
+
+        double pidOutput = pidController.calculate(getHeightInches(), currentState.position);
+        // double ff = calculateFeedForward(currentState);
+        
+        double outputPower = MathUtil.clamp(
+            pidOutput,
+            -ElevatorConstants.max_output,
+            ElevatorConstants.max_output
+        );
+        
+        primaryMotor.set(outputPower);
+        
     }
 
     public void setManualPower(double power) {
@@ -275,5 +291,9 @@ public class ElevatorSubsystem extends SubsystemBase {
             currentTarget = ElevatorPosition.POSITION_1;
         }
 
+    }
+
+    public TalonFX getPrimaryMotor() {
+        return primaryMotor;
     }
 }   

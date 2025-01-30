@@ -20,7 +20,7 @@ public class DefaultElevatorCommand extends Command {
     @Override
     public void execute() {
 
-        m_elevator.homeElevator();
+        // m_elevator.homeElevator();
 
     }
 

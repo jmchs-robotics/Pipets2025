@@ -133,4 +133,15 @@ public final class Constants {
     public static final double kD = 0;
 
   }
+
+  public static final class AlgaeConstants {
+
+    public static final int flipMotorID = 3;
+    public static final int rightMotorID = 4;
+    public static final int leftMotorID = 5;
+
+    public static final double kP = 0;
+    public static final double kI = 0;
+    public static final double kD = 0;
+  }
 }

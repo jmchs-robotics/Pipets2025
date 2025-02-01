@@ -76,7 +76,7 @@ public class RobotContainer {
       new MoveElevatorToSetpoint(m_elevatorSubsystem)
     );
 
-    driveY.onTrue(
+    driveY.whileTrue(
       new RotateOnce(m_elevatorSubsystem)
     );
 

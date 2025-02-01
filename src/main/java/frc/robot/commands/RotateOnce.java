@@ -17,17 +17,18 @@ public class RotateOnce extends Command {
 
     @Override
     public void initialize() {
-        initialClicks = m_elevator.getPrimaryMotor().getPosition().getValueAsDouble();
+        // initialClicks = m_elevator.getPrimaryMotor().getPosition().getValueAsDouble();
     }
 
     @Override
     public void execute() {
-        m_elevator.getPrimaryMotor().set(0.1);
+        m_elevator.getPrimaryMotor().set(-0.1);
     }
 
     @Override
     public boolean isFinished() {
-        return Math.abs(m_elevator.getPrimaryMotor().getPosition().getValueAsDouble()) >= (initialClicks + 1);
+        // return Math.abs(m_elevator.getPrimaryMotor().getPosition().getValueAsDouble()) >= (initialClicks + 1);
+        return false;
     }
 
     @Override

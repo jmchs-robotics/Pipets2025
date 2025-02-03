@@ -4,6 +4,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -44,4 +45,25 @@ public class AlgaeSubsystem extends SubsystemBase {
         flipMotor.setPosition(0);
 
     }
+
+    @Override
+    public void periodic() {}
+
+    @Override
+    public void simulationPeriodic() {}
+
+    public void flipFlipper() {}
+        
+
+    public void stopIntakeMotors() {
+        rightMotor.set(0);
+        leftMotor.set(0);
+        pidController.reset();
+    }
+
+    public void stopFlipMotor() {
+        flipMotor.set(0);
+        pidController.reset();
+    }
+
 }

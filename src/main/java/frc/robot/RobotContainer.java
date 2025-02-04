@@ -37,6 +37,7 @@ public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
+  private final AlgaeSubsystem m_algaeSubsystem = new AlgaeSubsystem();
 
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
@@ -55,6 +56,7 @@ public class RobotContainer {
     // Configure default commands
     m_robotDrive.setDefaultCommand(new DefaultDriveCommand(m_robotDrive, m_driverController));
     m_elevatorSubsystem.setDefaultCommand(new DefaultElevatorCommand(m_elevatorSubsystem));
+    m_algaeSubsystem.setDefaultCommand(new DefaultAlgaeCommand(m_algaeSubsystem));
   }
 
   /**
@@ -76,8 +78,8 @@ public class RobotContainer {
       new MoveElevatorToSetpoint(m_elevatorSubsystem)
     );
 
-    driveY.onTrue(
-      new RotateOnce(m_elevatorSubsystem)
+    driveY.toggleOnTrue(
+      new FlipFlipperUp(m_algaeSubsystem)
     );
 
   }

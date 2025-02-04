@@ -82,7 +82,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
 
-        currentPos = primaryMotor.getPosition().getValueAsDouble() / ElevatorConstants.countsPerInch;
+        currentPos = primaryMotor.getPosition().getValueAsDouble() / ElevatorConstants.rotationsPerInch;
         
         // Calculate the next state and update current state
         currentState = profile.calculate(0.020, currentState, goalState); // 20ms control loop
@@ -116,7 +116,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     private void handleBottomLimit() {
         stopMotors();
-        primaryMotor.setPosition(ElevatorConstants.minPos * ElevatorConstants.countsPerInch);
+        primaryMotor.setPosition(ElevatorConstants.minPos * ElevatorConstants.rotationsPerInch);
         isHomed = true;
         setpoint = ElevatorConstants.minPos;
         currentState = new TrapezoidProfile.State(ElevatorConstants.minPos, 0);
@@ -170,7 +170,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public double getHeightInches() {
-        return primaryMotor.getPosition().getValueAsDouble() * ElevatorConstants.countsPerInch;
+        return primaryMotor.getPosition().getValueAsDouble() / ElevatorConstants.rotationsPerInch;
     }
 // hi! i am so happy im here today :) hg
     public void homeElevator() {

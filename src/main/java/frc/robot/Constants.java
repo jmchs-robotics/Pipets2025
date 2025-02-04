@@ -108,7 +108,7 @@ public final class Constants {
     public static final double maxPos = 48.25;
 
     public static final double max_output = 0.7; // Must be between 0 and 1 inclusive
-    public static final double countsPerInch = 0.0006714; // This is clicks per inch, but we need to factor in the gearbox of the elevator
+    public static final double rotationsPerInch = 6.701; // Number needs testing. Factors in gearbox
     public static final double posTolerance = 0.5; // Half an inch of tolerance
 
     public static final double maxVelocity = 1.5; // Meters per second??? Also we need to actually figure this out

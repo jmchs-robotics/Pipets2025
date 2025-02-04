@@ -44,6 +44,8 @@ public class RobotContainer {
 
   JoystickButton driveX = new JoystickButton(m_driverController, Button.kX.value);
   JoystickButton driveY = new JoystickButton(m_driverController, Button.kY.value);
+  JoystickButton driveA = new JoystickButton(m_driverController, Button.kA.value);
+  JoystickButton driveB = new JoystickButton(m_driverController, Button.kB.value);
   JoystickButton driveStart = new JoystickButton(m_driverController, Button.kStart.value);
 
   /**
@@ -80,6 +82,14 @@ public class RobotContainer {
 
     driveY.toggleOnTrue(
       new FlipFlipperUp(m_algaeSubsystem)
+    );
+
+    driveA.whileTrue(
+      new AlgaeIntake(m_algaeSubsystem)
+    );
+
+    driveB.whileTrue(
+      new AlgaeExtake(m_algaeSubsystem)
     );
 
   }

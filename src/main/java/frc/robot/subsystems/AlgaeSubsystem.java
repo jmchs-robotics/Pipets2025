@@ -46,24 +46,29 @@ public class AlgaeSubsystem extends SubsystemBase {
 
     }
 
-    @Override
-    public void periodic() {}
-
-    @Override
-    public void simulationPeriodic() {}
-
-    public void flipFlipper() {}
-        
-
-    public void stopIntakeMotors() {
-        rightMotor.set(0);
-        leftMotor.set(0);
-        pidController.reset();
+    public void stopWheelMotors() {
+        rightMotor.stopMotor();
+        leftMotor.stopMotor();
     }
 
-    public void stopFlipMotor() {
-        flipMotor.set(0);
-        pidController.reset();
+    public void stopFlipperMotor() {
+        flipMotor.stopMotor();
     }
 
+    public void setWheelMotors(double speed) {
+        rightMotor.set(speed);
+        leftMotor.set(-speed);
+    }
+
+    public void flipFlipperUp() {
+        double rawOutput = pidController.calculate(flipMotor.getPosition().getValueAsDouble(), 1);
+        double output = MathUtil.clamp(rawOutput, -1, 1);
+        flipMotor.set(output);
+    }
+
+    public void flipFlipperDown() {
+        double rawOutput = pidController.calculate(flipMotor.getPosition().getValueAsDouble(), 0);
+        double output = MathUtil.clamp(rawOutput, -1, 1);
+        flipMotor.set(output);
+    }
 }

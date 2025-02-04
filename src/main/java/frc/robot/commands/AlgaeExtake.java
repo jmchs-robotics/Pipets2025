@@ -1,13 +1,10 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.AlgaeSubsystem;
 
-
-import frc.robot.subsystems.AlgaeSubsystem;
-
 public class AlgaeExtake extends Command {
+
     private final AlgaeSubsystem m_algae;
 
     public AlgaeExtake(AlgaeSubsystem algae) {

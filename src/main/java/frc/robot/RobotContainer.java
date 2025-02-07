@@ -72,12 +72,12 @@ public class RobotContainer {
       new InstantCommand(() -> {m_robotDrive.zeroHeading();})
     );
 
-    driveX.whileTrue(
+    driveX.toggleOnTrue(
       new MoveElevatorToSetpoint(m_elevatorSubsystem)
     );
 
     driveY.whileTrue(
-      new RotateOnce(m_elevatorSubsystem)
+      new RaiseElevatorManual(m_elevatorSubsystem)
     );
 
   }

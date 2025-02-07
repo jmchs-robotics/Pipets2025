@@ -18,7 +18,7 @@ import frc.robot.Constants.ElevatorConstants;
 public class ElevatorSubsystem extends SubsystemBase {
     private final TalonFX primaryMotor;
     private final TalonFX followerMotor;
-    // private final DigitalInput bottomLimit;
+    private final DigitalInput bottomLimit;
     private final PIDController pidController;
     private final TrapezoidProfile.Constraints constraints;
     private TrapezoidProfile.State goalState;
@@ -26,7 +26,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     private final TrapezoidProfile profile;
 
     private ElevatorPosition currentTarget = ElevatorPosition.POSITION_2;
-    private boolean isHomed = true;
+    private boolean isHomed = false;
     private double setpoint = 0.0;
     double currentPos;
 
@@ -53,7 +53,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         
         followerMotor.setControl(new Follower(ElevatorConstants.primaryElevatorID, true));
 
-        // bottomLimit = new DigitalInput(ElevatorConstants.limitSwitchPort);
+        bottomLimit = new DigitalInput(ElevatorConstants.limitSwitchPort);
 
         constraints = new TrapezoidProfile.Constraints(
             ElevatorConstants.maxVelocity,
@@ -87,7 +87,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         // Calculate the next state and update current state
         currentState = profile.calculate(0.020, currentState, goalState); // 20ms control loop
 
-        // if (bottomLimit.get()) {
+        // if (!bottomLimit.get()) {
         //     handleBottomLimit();
         // }
 
@@ -175,9 +175,9 @@ public class ElevatorSubsystem extends SubsystemBase {
 // hi! i am so happy im here today :) hg
     public void homeElevator() {
         primaryMotor.set(-0.1); // Slow downward movement until bottom limit is hit
-        // if (bottomLimit.get()) {
-        //     handleBottomLimit();
-        // }
+        if (!bottomLimit.get()) {
+            handleBottomLimit();
+        }
     }
 
     public boolean isAtPosition(ElevatorPosition position) {
@@ -195,16 +195,18 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public void moveToSetpoint() {
 
-        double pidOutput = pidController.calculate(getHeightInches(), currentState.position);
-        // double ff = calculateFeedForward(currentState);
-        
-        double outputPower = MathUtil.clamp(
-            pidOutput,
-            -ElevatorConstants.max_output,
-            ElevatorConstants.max_output
-        );
-        
-        primaryMotor.set(outputPower);
+        if (isHomed) {
+            double pidOutput = pidController.calculate(getHeightInches(), currentState.position);
+            // double ff = calculateFeedForward(currentState);
+            
+            double outputPower = MathUtil.clamp(
+                pidOutput,
+                -ElevatorConstants.max_output,
+                ElevatorConstants.max_output
+            );
+            
+            primaryMotor.set(outputPower);
+        }
         
     }
 
@@ -222,9 +224,9 @@ public class ElevatorSubsystem extends SubsystemBase {
             power = 0;
         }
         
-        // if (bottomLimit.get() && power < 0) {
-        //     power = 0;
-        // }
+        if (!bottomLimit.get() && power < 0) {
+            power = 0;
+        }
         
         primaryMotor.set(MathUtil.clamp(power, -ElevatorConstants.max_output, ElevatorConstants.max_output));
     }

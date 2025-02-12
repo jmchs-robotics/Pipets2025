@@ -111,8 +111,8 @@ public final class Constants {
     public static final double rotationsPerInch = 1.125; // Number needs testing. Factors in gearbox
     public static final double posTolerance = 0.5; // Half an inch of tolerance
 
-    public static final double maxVelocity = 12; // Inches per second
-    public static final double maxAcceleration = 24; // Inches per second squared
+    public static final double maxVelocity = 30; // Inches per second
+    public static final double maxAcceleration = 60; // Inches per second squared
 
     // TODO: Change these numbers when we can measure the elevator on the actual robot
     public static final double L1 = 12;
@@ -129,7 +129,7 @@ public final class Constants {
     public static final double kS = 0;
     public static final double kV = 0;
     public static final double kG = 0;
-    public static final double kP = 0.3;
+    public static final double kP = 0.5;
     public static final double kI = 0.1;
     public static final double kD = 0;
 

@@ -20,13 +20,13 @@ public class DefaultElevatorCommand extends Command {
     @Override
     public void execute() {
 
-        // m_elevator.homeElevator();
+        m_elevator.homeElevator();
 
     }
 
     @Override
     public boolean isFinished() {
-        return false;
+        return m_elevator.isHomed();
     }
 
     @Override

@@ -76,7 +76,7 @@ public class RobotContainer {
       new InstantCommand(() -> {m_robotDrive.zeroHeading();})
     );
 
-    driveX.whileTrue(
+    driveX.toggleOnTrue(
       new MoveElevatorToSetpoint(m_elevatorSubsystem)
     );
 
@@ -90,6 +90,8 @@ public class RobotContainer {
 
     driveB.whileTrue(
       new AlgaeExtake(m_algaeSubsystem)
+    driveY.whileTrue(
+      new RaiseElevatorManual(m_elevatorSubsystem)
     );
 
   }

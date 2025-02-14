@@ -90,9 +90,11 @@ public class RobotContainer {
 
     driveB.whileTrue(
       new AlgaeExtake(m_algaeSubsystem)
-    driveY.whileTrue(
-      new RaiseElevatorManual(m_elevatorSubsystem)
     );
+
+    // driveY.whileTrue(
+    //   new RaiseElevatorManual(m_elevatorSubsystem)
+    // );
 
   }
 

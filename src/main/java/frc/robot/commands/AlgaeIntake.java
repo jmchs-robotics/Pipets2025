@@ -10,7 +10,7 @@ public class AlgaeIntake extends Command {
     public AlgaeIntake(AlgaeSubsystem algae) {
 
         m_algae = algae;
-        addRequirements(m_algae);
+        // addRequirements(m_algae);
 
     }
 

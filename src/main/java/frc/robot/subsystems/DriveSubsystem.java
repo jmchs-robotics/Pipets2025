@@ -20,12 +20,15 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.controllers.PathFollowingController;
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
 
@@ -55,6 +58,13 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.kRearRightDrivingCanId,
       DriveConstants.kRearRightTurningCanId,
       DriveConstants.kBackRightChassisAngularOffset);
+
+  private final MAXSwerveModule[] mSwerveModules = {
+    m_frontLeft,
+    m_frontRight,
+    m_rearLeft,
+    m_rearRight
+  };
 
   // The gyro sensor
   private final AHRS m_gyro = new AHRS(NavXComType.kMXP_SPI);
@@ -90,6 +100,7 @@ public class DriveSubsystem extends SubsystemBase {
     this.vision = vision;
 
     headingController.enableContinuousInput(-Math.PI, Math.PI);
+    configPathPlanner();
   }
 
   @Override
@@ -180,6 +191,13 @@ public class DriveSubsystem extends SubsystemBase {
 
   }
 
+  public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
+    ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
+
+    SwerveModuleState[] targetStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(targetSpeeds);
+    setStates(targetStates);
+  }
+
   /**
    * Sets the wheels into an X formation to prevent movement.
    */
@@ -202,6 +220,22 @@ public class DriveSubsystem extends SubsystemBase {
     m_frontRight.setDesiredState(desiredStates[1]);
     m_rearLeft.setDesiredState(desiredStates[2]);
     m_rearRight.setDesiredState(desiredStates[3]);
+  }
+
+  public SwerveModuleState[] getModuleStates() {
+    SwerveModuleState[] currentStates = new SwerveModuleState[mSwerveModules.length];
+    for (int i = 0; i < mSwerveModules.length; i++){
+      currentStates[i] = mSwerveModules[i].getState();
+    }
+    return currentStates;      
+  }
+
+  public void setStates(SwerveModuleState[] targetStates) {
+    SwerveDriveKinematics.desaturateWheelSpeeds(targetStates, DriveConstants.kMaxSpeedMetersPerSecond);
+
+    for (int i = 0; i < mSwerveModules.length; i++) {
+      mSwerveModules[i].setDesiredState(targetStates[i]);
+    }
   }
 
   /** Resets the drive encoders to currently read a position of 0. */
@@ -249,4 +283,25 @@ public class DriveSubsystem extends SubsystemBase {
       // Apply the generated speeds
       driveFieldRelative(speeds);
   }
+
+  public void configPathPlanner() {
+
+    AutoBuilder.configure(
+      this::getPose, 
+      this::resetOdometry, 
+      () -> DriveConstants.kDriveKinematics.toChassisSpeeds(getModuleStates()), 
+      this::driveRobotRelative,
+      DriveConstants.ppDriveController,
+      DriveConstants.robotConfig, 
+      () -> {
+        var alliance = DriverStation.getAlliance();
+        if (alliance.isPresent()) {
+          return alliance.get() == DriverStation.Alliance.Red;
+        }
+        return false;
+      }, 
+      this
+    );
+  }
+
 }

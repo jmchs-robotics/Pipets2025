@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.trajectory.PathPlannerTrajectory;
+import com.pathplanner.lib.trajectory.PathPlannerTrajectoryState;
+
 import choreo.Choreo;
 import choreo.auto.AutoFactory;
 import choreo.auto.AutoRoutine;
@@ -33,7 +38,7 @@ import frc.robot.RobotContainer;
 
 public class AutoSubsystem extends SubsystemBase {
 
-    private ArrayList<AutoTrajectory> trajectories = new ArrayList<AutoTrajectory>();
+    private ArrayList<PathPlannerTrajectory> trajectories = new ArrayList<PathPlannerTrajectory>();
     private Command autoCommand = Commands.runOnce(() -> {});
     private String feedback = "Enter Auto Path Sequence";
 
@@ -42,10 +47,6 @@ public class AutoSubsystem extends SubsystemBase {
     private DriveSubsystem m_driveSubsystem;
 
     private char[] REEF_SPOTS = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'};
-    private char[] CORAL_SPOTS = {'V', 'W'};
-
-    private final AutoFactory autoFactory;
-    private final AutoRoutine autoRoutine;
 
     public AutoSubsystem(DriveSubsystem drive) {
 
@@ -53,16 +54,6 @@ public class AutoSubsystem extends SubsystemBase {
         autoEntry = table.getTopic("Auto Path Sequence").getGenericEntry();
         
         m_driveSubsystem = drive;
-
-        autoFactory = new AutoFactory(
-            m_driveSubsystem::getPose, 
-            m_driveSubsystem::resetOdometry, 
-            m_driveSubsystem::followTrajectory, 
-            true, 
-            m_driveSubsystem
-        );
-
-        autoRoutine = autoFactory.newRoutine("auto");
 
         setUpAutoTab();
     }
@@ -106,11 +97,11 @@ public class AutoSubsystem extends SubsystemBase {
     // public void drawPaths() {
     //     clearField();
     //     for (int i = 0; i < trajectories.size(); i++) {
-    //         AutoTrajectory pathTraj = trajectories.get(i);
+    //         PathPlannerTrajectory pathTraj = trajectories.get(i);
     //         List<State> states = convertStatesToStates(pathTraj.getStates());
     //         Trajectory displayTrajectory = new Trajectory(states);
 
-    //         RobotContainer.field.getObject("traj" + i).setTrajectory(pathTraj.getRawTrajectory());
+    //         RobotContainer.field.getObject("traj" + i).setTrajectory(displayTrajectory);
     //     }
     // }
 
@@ -126,15 +117,15 @@ public class AutoSubsystem extends SubsystemBase {
         clearField();
     }
 
-    // public List<State> convertStatesToStates(List<PathPlannerTrajectory.State> ppStates) {
+    // public List<State> convertStatesToStates(List<PathPlannerTrajectoryState> ppStates) {
     //     ArrayList<State> wpiStates = new ArrayList<State>();
         
     //     for (int i = 0; i < ppStates.size(); i++) {
-    //         PathPlannerTrajectory.State currentState = ppStates.get(i);
+    //         PathPlannerTrajectoryState currentState = ppStates.get(i);
     //         if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
     //             wpiStates.add(new State(
     //                 currentState.timeSeconds,
-    //                 currentState.velocityMps,
+    //                 currentState.linearVelocity,
     //                 currentState.accelerationMpsSq,
     //                 new Pose2d(16.54175-currentState.positionMeters.getX(), currentState.positionMeters.getY(), currentState.heading),
     //                 currentState.curvatureRadPerMeter
@@ -142,7 +133,7 @@ public class AutoSubsystem extends SubsystemBase {
     //         } else {
     //             wpiStates.add(new State(
     //                 currentState.timeSeconds,
-    //                 currentState.velocityMps,
+    //                 currentState.linearVelocity,
     //                 currentState.accelerationMpsSq,
     //                 new Pose2d(currentState.positionMeters.getX(), currentState.positionMeters.getY(), currentState.heading),
     //                 currentState.curvatureRadPerMeter
@@ -167,37 +158,40 @@ public class AutoSubsystem extends SubsystemBase {
         trajectories.clear();
 
         if (autoString.length() <= 1) {
-            // autoCommand = new ShootForwardTurbo(m_shooterSubsystem, m_intakeSubsystem).withTimeout(1.5);
             setFeedback("Default Path (Shoot and Sit)"); //this sounds like martina not pipets
             return;
         }
 
-        // TODO: Update these for the 2025 starting poses
-        // if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
-        //     if (autoString.charAt(0) == '1') {
-        //         m_driveSubsystem.resetOdometry(new Pose2d(16.54175-0.97, 6.92, Rotation2d.fromDegrees(-60)));
-        //     } else if (autoString.charAt(0) == '2') {
-        //         m_driveSubsystem.resetOdometry(new Pose2d(16.54175-1.36, 5.54, Rotation2d.fromDegrees(0)));
-        //     } else if (autoString.charAt(0) == '3') {
-        //         m_driveSubsystem.resetOdometry(new Pose2d(16.54175-0.97, 4.13, Rotation2d.fromDegrees(60)));
-        //     }
-        // } else {
-        //     if (autoString.charAt(0) == '1') {
-        //         m_driveSubsystem.resetOdometry(new Pose2d(8.043037414550781, 7.610836029052734, Rotation2d.fromDegrees(180)));
-        //     } else if (autoString.charAt(0) == '2') {
-        //         m_driveSubsystem.resetOdometry(new Pose2d(1.36, 5.54, Rotation2d.fromDegrees(180)));
-        //     } else if (autoString.charAt(0) == '3') {
-        //         m_driveSubsystem.resetOdometry(new Pose2d(0.97, 4.13, Rotation2d.fromDegrees(120)));
-        //     }
-        // }
-
-        if (autoString.charAt(0) == '1') {
-            m_driveSubsystem.resetOdometry(autoRoutine.trajectory("1-H").getInitialPose().get());
-        } else if (autoString.charAt(0) == '2') {
-            m_driveSubsystem.resetOdometry(autoRoutine.trajectory("2-H").getInitialPose().get());
-        } else if (autoString.charAt(0) == '3') {
-            m_driveSubsystem.resetOdometry(autoRoutine.trajectory("3-H").getInitialPose().get());
+        if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
+            if (autoString.charAt(0) == '1') {
+                m_driveSubsystem.resetOdometry(new Pose2d(9.519278526306152, 0.45708832144737244, Rotation2d.fromDegrees(0)));
+            } else if (autoString.charAt(0) == '2') {
+                m_driveSubsystem.resetOdometry(new Pose2d(9.548373222351074, 1.8935472965240479, Rotation2d.fromDegrees(0)));
+            } else if (autoString.charAt(0) == '3') {
+                m_driveSubsystem.resetOdometry(new Pose2d(9.519433975219727, 3.2536780834198, Rotation2d.fromDegrees(0)));
+            }
+        } else {
+            if (autoString.charAt(0) == '1') {
+                m_driveSubsystem.resetOdometry(new Pose2d(8.043037414550781, 7.610836029052734, Rotation2d.fromDegrees(180)));
+            } else if (autoString.charAt(0) == '2') {
+                m_driveSubsystem.resetOdometry(new Pose2d(8.043037414550781, 6.162851810455322, Rotation2d.fromDegrees(180)));
+            } else if (autoString.charAt(0) == '3') {
+                m_driveSubsystem.resetOdometry(new Pose2d(8.05, 4.75, Rotation2d.fromDegrees(180)));
+            }
         }
+
+        // try {
+        //     if (autoString.charAt(0) == '1') {
+        //         m_driveSubsystem.resetOdometry(PathPlannerPath.fromChoreoTrajectory("1-H").getStartingHolonomicPose().get());
+        //     } else if (autoString.charAt(0) == '2') {
+        //         m_driveSubsystem.resetOdometry(PathPlannerPath.fromChoreoTrajectory("2-H").getStartingHolonomicPose().get());
+        //     } else if (autoString.charAt(0) == '3') {
+        //         m_driveSubsystem.resetOdometry(PathPlannerPath.fromChoreoTrajectory("3-H").getStartingHolonomicPose().get());
+        //     }
+        // } catch (Exception e) {
+        //     setFeedback("Not a valid starting point!");
+        //     return;
+        // }
 
         ParallelRaceGroup segment = new ParallelRaceGroup();
         for (int i = 0; i < autoString.length() - 1; i++) {
@@ -207,9 +201,9 @@ public class AutoSubsystem extends SubsystemBase {
 
             try {
                 if (nextPoint != currentPoint) {
-                    AutoTrajectory path = autoRoutine.trajectory("" + currentPoint + "-" + nextPoint);
-                    trajectories.add(path);
-                    Command cmd = Commands.sequence(path.cmd(), new WaitCommand(0.25));
+                    PathPlannerPath path = PathPlannerPath.fromChoreoTrajectory("" + currentPoint + "-" + nextPoint);  
+                    // trajectories.add(path);
+                    Command cmd = Commands.sequence(AutoBuilder.followPath(path), new WaitCommand(0.25));
                     segment = new ParallelRaceGroup(cmd);
                 }
             } catch (Exception e) {
@@ -226,10 +220,9 @@ public class AutoSubsystem extends SubsystemBase {
             finalPath.addCommands(segment);
 
             // TODO: Put back in once PID tuning is done
-            if (indexOfAutoChar(CORAL_SPOTS, nextPoint) != -1) {
+            // if (indexOfAutoChar(CORAL_SPOTS, nextPoint) != -1) {
                 // Intake coral AFTER we've followed the path
             }
-        }
 
         autoCommand = finalPath;
         setFeedback("Created Path Sequence");

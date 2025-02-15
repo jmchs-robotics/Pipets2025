@@ -4,13 +4,21 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.config.ModuleConfig;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.controllers.PathFollowingController;
+
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -60,6 +68,35 @@ public final class Constants {
     public static final int kRearRightTurningCanId = 42;
 
     public static final boolean kGyroReversed = false;
+
+    public static final ModuleConfig moduleConfig = new ModuleConfig(
+      ModuleConstants.kWheelDiameterMeters / 2, 
+      kMaxSpeedMetersPerSecond, 
+      1, 
+      new DCMotor(
+        12, 
+        3.6, 
+        211, 
+        3.6, 
+        6784, 
+        1
+      ), 
+      ModuleConstants.kDrivingMotorReduction, 
+      50, 
+      1
+    );
+
+    public static final RobotConfig robotConfig = new RobotConfig(
+      20.411, 
+      75.195, //massKG / 0.521^2. 0.521 is the radius from the center of the robot to a module in meters
+      moduleConfig, 
+      kTrackWidth
+    );
+
+    public static final PPHolonomicDriveController ppDriveController = new PPHolonomicDriveController(
+      new PIDConstants(1, 0, 0), 
+      new PIDConstants(1, 0, 0)
+    );
   }
 
   public static final class ModuleConstants {

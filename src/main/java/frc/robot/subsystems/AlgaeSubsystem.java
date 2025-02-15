@@ -35,7 +35,7 @@ public class AlgaeSubsystem extends SubsystemBase {
             AlgaeConstants.kD
         );
         
-        pidController.setTolerance(0.5); // 0.5 inches position tolerance
+        pidController.setTolerance(0.1); // 0.5 inches position tolerance
         
         // Initialize states and profile
         // currentState = new TrapezoidProfile.State(0, 0);
@@ -61,7 +61,7 @@ public class AlgaeSubsystem extends SubsystemBase {
     }
 
     public void flipFlipperUp() {
-        double rawOutput = pidController.calculate(flipMotor.getPosition().getValueAsDouble(), 1);
+        double rawOutput = pidController.calculate(flipMotor.getPosition().getValueAsDouble(), -3);
         double output = MathUtil.clamp(rawOutput, -1, 1);
         flipMotor.set(output);
     }

@@ -63,6 +63,8 @@ public class AutoSubsystem extends SubsystemBase {
         );
 
         autoRoutine = autoFactory.newRoutine("auto");
+
+        setUpAutoTab();
     }
 
     @Override
@@ -108,7 +110,7 @@ public class AutoSubsystem extends SubsystemBase {
     //         List<State> states = convertStatesToStates(pathTraj.getStates());
     //         Trajectory displayTrajectory = new Trajectory(states);
 
-    //         RobotContainer.field.getObject("traj" + i).setTrajectory(displayTrajectory);
+    //         RobotContainer.field.getObject("traj" + i).setTrajectory(pathTraj.getRawTrajectory());
     //     }
     // }
 
@@ -166,28 +168,36 @@ public class AutoSubsystem extends SubsystemBase {
 
         if (autoString.length() <= 1) {
             // autoCommand = new ShootForwardTurbo(m_shooterSubsystem, m_intakeSubsystem).withTimeout(1.5);
-            setFeedback("Default Path (Shoot and Sit)");
+            setFeedback("Default Path (Shoot and Sit)"); //this sounds like martina not pipets
             return;
         }
 
         // TODO: Update these for the 2025 starting poses
-        if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
-            if (autoString.charAt(0) == '1') {
-                m_driveSubsystem.resetOdometry(new Pose2d(16.54175-0.97, 6.92, Rotation2d.fromDegrees(-60)));
-            } else if (autoString.charAt(0) == '2') {
-                m_driveSubsystem.resetOdometry(new Pose2d(16.54175-1.36, 5.54, Rotation2d.fromDegrees(0)));
-            } else if (autoString.charAt(0) == '3') {
-                m_driveSubsystem.resetOdometry(new Pose2d(16.54175-0.97, 4.13, Rotation2d.fromDegrees(60)));
-            }
-        } else {
-            if (autoString.charAt(0) == '1') {
-                m_driveSubsystem.resetOdometry(new Pose2d(8.043037414550781, 7.610836029052734, Rotation2d.fromDegrees(180)));
-            } else if (autoString.charAt(0) == '2') {
-                m_driveSubsystem.resetOdometry(new Pose2d(1.36, 5.54, Rotation2d.fromDegrees(180)));
-            } else if (autoString.charAt(0) == '3') {
-                m_driveSubsystem.resetOdometry(new Pose2d(0.97, 4.13, Rotation2d.fromDegrees(120)));
-            }
-        }        
+        // if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
+        //     if (autoString.charAt(0) == '1') {
+        //         m_driveSubsystem.resetOdometry(new Pose2d(16.54175-0.97, 6.92, Rotation2d.fromDegrees(-60)));
+        //     } else if (autoString.charAt(0) == '2') {
+        //         m_driveSubsystem.resetOdometry(new Pose2d(16.54175-1.36, 5.54, Rotation2d.fromDegrees(0)));
+        //     } else if (autoString.charAt(0) == '3') {
+        //         m_driveSubsystem.resetOdometry(new Pose2d(16.54175-0.97, 4.13, Rotation2d.fromDegrees(60)));
+        //     }
+        // } else {
+        //     if (autoString.charAt(0) == '1') {
+        //         m_driveSubsystem.resetOdometry(new Pose2d(8.043037414550781, 7.610836029052734, Rotation2d.fromDegrees(180)));
+        //     } else if (autoString.charAt(0) == '2') {
+        //         m_driveSubsystem.resetOdometry(new Pose2d(1.36, 5.54, Rotation2d.fromDegrees(180)));
+        //     } else if (autoString.charAt(0) == '3') {
+        //         m_driveSubsystem.resetOdometry(new Pose2d(0.97, 4.13, Rotation2d.fromDegrees(120)));
+        //     }
+        // }
+
+        if (autoString.charAt(0) == '1') {
+            m_driveSubsystem.resetOdometry(autoRoutine.trajectory("1-H").getInitialPose().get());
+        } else if (autoString.charAt(0) == '2') {
+            m_driveSubsystem.resetOdometry(autoRoutine.trajectory("2-H").getInitialPose().get());
+        } else if (autoString.charAt(0) == '3') {
+            m_driveSubsystem.resetOdometry(autoRoutine.trajectory("3-H").getInitialPose().get());
+        }
 
         ParallelRaceGroup segment = new ParallelRaceGroup();
         for (int i = 0; i < autoString.length() - 1; i++) {

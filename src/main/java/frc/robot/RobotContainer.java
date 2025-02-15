@@ -21,6 +21,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.subsystems.AutoSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -43,6 +44,7 @@ public class RobotContainer {
   // The robot's subsystems
   private final VisionSubsystem m_vision = new VisionSubsystem();
   private final DriveSubsystem m_robotDrive = new DriveSubsystem(m_vision);
+  private final AutoSubsystem m_auto = new AutoSubsystem(m_robotDrive);
 
   public static final Field2d field = new Field2d();
 
@@ -85,6 +87,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return null;
+    return m_auto.getAutoCommand();
   }
 }

@@ -35,6 +35,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
+import frc.robot.Constants.DriveConstants;
 
 public class AutoSubsystem extends SubsystemBase {
 
@@ -179,19 +180,6 @@ public class AutoSubsystem extends SubsystemBase {
                 m_driveSubsystem.resetOdometry(new Pose2d(8.05, 4.75, Rotation2d.fromDegrees(180)));
             }
         }
-
-        // try {
-        //     if (autoString.charAt(0) == '1') {
-        //         m_driveSubsystem.resetOdometry(PathPlannerPath.fromChoreoTrajectory("1-H").getStartingHolonomicPose().get());
-        //     } else if (autoString.charAt(0) == '2') {
-        //         m_driveSubsystem.resetOdometry(PathPlannerPath.fromChoreoTrajectory("2-H").getStartingHolonomicPose().get());
-        //     } else if (autoString.charAt(0) == '3') {
-        //         m_driveSubsystem.resetOdometry(PathPlannerPath.fromChoreoTrajectory("3-H").getStartingHolonomicPose().get());
-        //     }
-        // } catch (Exception e) {
-        //     setFeedback("Not a valid starting point!");
-        //     return;
-        // }
 
         ParallelRaceGroup segment = new ParallelRaceGroup();
         for (int i = 0; i < autoString.length() - 1; i++) {

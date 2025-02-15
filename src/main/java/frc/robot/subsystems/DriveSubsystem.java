@@ -29,11 +29,14 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.controllers.PathFollowingController;
+import com.pathplanner.lib.path.PathPlannerPath;
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
 
 import choreo.trajectory.SwerveSample;
 import frc.robot.Constants.DriveConstants;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 @Logged
@@ -269,21 +272,6 @@ public class DriveSubsystem extends SubsystemBase {
     return -m_gyro.getYaw() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
 
-  public void followTrajectory(SwerveSample sample) {
-    // Get the current pose of the robot
-      Pose2d pose = getPose();
-
-      // Generate the next speeds for the robot
-      ChassisSpeeds speeds = new ChassisSpeeds(
-          sample.vx + xController.calculate(pose.getX(), sample.x),
-          sample.vy + yController.calculate(pose.getY(), sample.y),
-          sample.omega + headingController.calculate(pose.getRotation().getRadians(), sample.heading)
-      );
-
-      // Apply the generated speeds
-      driveFieldRelative(speeds);
-  }
-
   public void configPathPlanner() {
 
     AutoBuilder.configure(
@@ -302,6 +290,31 @@ public class DriveSubsystem extends SubsystemBase {
       }, 
       this
     );
+  }
+
+  // public void pathFindToReef() {}
+
+  public Command pathFindToProcessor() {
+
+    try {
+      return AutoBuilder.pathfindThenFollowPath(
+        PathPlannerPath.fromChoreoTrajectory("ProcessorAlign"), 
+        DriveConstants.constraints
+      );
+    } catch (Exception e) {
+      return Commands.none();
+    }    
+
+  }
+
+  public Command pathFindToCoralStation() {
+
+      return AutoBuilder.pathfindToPoseFlipped(
+          new Pose2d(1.1357054710388184, 0.9016523361206055, Rotation2d.fromDegrees(-127.5)), 
+          DriveConstants.constraints, 
+          0
+      );
+
   }
 
 }

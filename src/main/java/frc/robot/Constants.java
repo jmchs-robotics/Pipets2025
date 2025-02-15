@@ -9,6 +9,7 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.controllers.PathFollowingController;
+import com.pathplanner.lib.path.PathConstraints;
 
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -94,8 +95,15 @@ public final class Constants {
     );
 
     public static final PPHolonomicDriveController ppDriveController = new PPHolonomicDriveController(
-      new PIDConstants(1, 0, 0), 
-      new PIDConstants(1, 0, 0)
+      new PIDConstants(1.7, 0.05, 0.2), 
+      new PIDConstants(2.1, 0.05, 0.2)
+    );
+
+    public static final PathConstraints constraints = new PathConstraints(
+      AutoConstants.kMaxSpeedMetersPerSecond, 
+      AutoConstants.kMaxAccelerationMetersPerSecondSquared, 
+      AutoConstants.kMaxAngularSpeedRadiansPerSecond, 
+      AutoConstants.kMaxAngularSpeedRadiansPerSecondSquared
     );
   }
 

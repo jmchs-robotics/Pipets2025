@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.AutoAlignToCoralStation;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.subsystems.AutoSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -29,6 +30,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
+
 import java.util.List;
 
 import choreo.auto.AutoFactory;
@@ -52,6 +55,9 @@ public class RobotContainer {
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
 
   JoystickButton driveStart = new JoystickButton(m_driverController, Button.kStart.value);
+  POVButton driveUpDPad = new POVButton(m_driverController, 0);
+  POVButton driveRightDPad = new POVButton(m_driverController, 90);
+  
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -77,6 +83,14 @@ public class RobotContainer {
 
     driveStart.onTrue(
       new InstantCommand(() -> {m_robotDrive.zeroHeading();})
+    );
+
+    driveUpDPad.whileTrue(
+      m_robotDrive.pathFindToProcessor()
+    );
+
+    driveRightDPad.whileTrue(
+      m_robotDrive.pathFindToCoralStation()
     );
 
   }

@@ -41,9 +41,9 @@ public final class Constants {
     public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
 
     // Chassis configuration
-    public static final double kTrackWidth = Units.inchesToMeters(29.5);
+    public static final double kTrackWidth = Units.inchesToMeters(29);
     // Distance between centers of right and left wheels on robot
-    public static final double kWheelBase = Units.inchesToMeters(29.5);
+    public static final double kWheelBase = Units.inchesToMeters(29);
     // Distance between front and back wheels on robot
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
         new Translation2d(kWheelBase / 2, kTrackWidth / 2),
@@ -89,14 +89,14 @@ public final class Constants {
 
     public static final RobotConfig robotConfig = new RobotConfig(
       20.411, 
-      75.195, //massKG / 0.521^2. 0.521 is the radius from the center of the robot to a module in meters
+      5.54, //massKG * 0.521^2. 0.521 is the radius from the center of the robot to a module in meters
       moduleConfig, 
       kTrackWidth
     );
 
     public static final PPHolonomicDriveController ppDriveController = new PPHolonomicDriveController(
-      new PIDConstants(1.7, 0.05, 0.2), 
-      new PIDConstants(2.1, 0.05, 0.2)
+      new PIDConstants(10.0, 0, 0), 
+      new PIDConstants(10.0, 0, 0)
     );
 
     public static final PathConstraints constraints = new PathConstraints(

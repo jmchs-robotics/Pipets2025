@@ -298,12 +298,12 @@ public class DriveSubsystem extends SubsystemBase {
 
     try {
       return AutoBuilder.pathfindThenFollowPath(
-        PathPlannerPath.fromChoreoTrajectory("ProcessorAlign"), 
+        PathPlannerPath.fromPathFile("ProcessorAlign"), 
         DriveConstants.constraints
       );
     } catch (Exception e) {
       return Commands.none();
-    }    
+    }
 
   }
 

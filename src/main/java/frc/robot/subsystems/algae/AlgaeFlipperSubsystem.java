@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.algae;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.spark.SparkMax;
@@ -6,22 +6,16 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.AlgaeConstants;
-import frc.robot.Constants.ElevatorConstants;
 
-public class AlgaeSubsystem extends SubsystemBase {
+public class AlgaeFlipperSubsystem extends SubsystemBase {
 
-    private final SparkMax rightMotor;
-    private final SparkMax leftMotor;
-    private final TalonFX flipMotor;
+   private final TalonFX flipMotor;
     private final PIDController pidController;
 
-    public AlgaeSubsystem() {
+    public AlgaeFlipperSubsystem() {
 
-        rightMotor = new SparkMax(AlgaeConstants.rightMotorID, MotorType.kBrushless);
-        leftMotor = new SparkMax(AlgaeConstants.leftMotorID, MotorType.kBrushless);
         flipMotor = new TalonFX(AlgaeConstants.flipMotorID);
         
         // constraints = new TrapezoidProfile.Constraints(
@@ -46,18 +40,8 @@ public class AlgaeSubsystem extends SubsystemBase {
 
     }
 
-    public void stopWheelMotors() {
-        rightMotor.stopMotor();
-        leftMotor.stopMotor();
-    }
-
     public void stopFlipperMotor() {
         flipMotor.stopMotor();
-    }
-
-    public void setWheelMotors(double speed) {
-        rightMotor.set(speed);
-        leftMotor.set(-speed);
     }
 
     public void flipFlipperUp() {

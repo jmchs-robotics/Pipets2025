@@ -3,23 +3,23 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.algae.AlgaeWheelsSubsystem;
 
-public class AlgaeExtake extends Command {
-
+public class DefaultAlgaeWheelsCommand extends Command {
+    
     private final AlgaeWheelsSubsystem m_algaeWheels;
 
-    public AlgaeExtake(AlgaeWheelsSubsystem algaeWheels) {
+    public DefaultAlgaeWheelsCommand(AlgaeWheelsSubsystem algaeWheels) {
 
         m_algaeWheels = algaeWheels;
         addRequirements(m_algaeWheels);
 
     }
-
+    
     @Override
     public void initialize() {}
 
     @Override
     public void execute() {
-        m_algaeWheels.setWheelMotors(-0.5);
+        m_algaeWheels.stopWheelMotors();
     }
 
     @Override
@@ -28,7 +28,5 @@ public class AlgaeExtake extends Command {
     }
 
     @Override
-    public void end(boolean interrupted) {
-        m_algaeWheels.stopWheelMotors();
-    }
+    public void end(boolean interrupted) {}
 }

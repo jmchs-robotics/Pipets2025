@@ -22,20 +22,14 @@ public class MoveElevatorToSetpoint extends Command {
     public void execute() {
 
         switch (m_elevator.getCurrentTarget()) {
-            case DOWN:
-                m_elevator.setPositionInches(ElevatorPosition.DOWN.positionInches);
+            case HOMED:
+                m_elevator.setPositionInches(ElevatorPosition.HOMED.positionInches);
                 break;
-            case POSITION_1:
-                m_elevator.setPositionInches(ElevatorPosition.POSITION_1.positionInches);
+            case L2_ALGAE:
+                m_elevator.setPositionInches(ElevatorPosition.L2_ALGAE.positionInches);
                 break;
-            case POSITION_2:
-                m_elevator.setPositionInches(ElevatorPosition.POSITION_2.positionInches);
-                break;
-            case POSITION_3:
-                m_elevator.setPositionInches(ElevatorPosition.POSITION_3.positionInches);
-                break;
-            case POSITION_4:
-                m_elevator.setPositionInches(ElevatorPosition.POSITION_4.positionInches);
+            case L3_ALGAE:
+                m_elevator.setPositionInches(ElevatorPosition.L3_ALGAE.positionInches);
                 break;
         }
 

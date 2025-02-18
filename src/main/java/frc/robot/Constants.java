@@ -115,10 +115,12 @@ public final class Constants {
     public static final double maxAcceleration = 60; // Inches per second squared
 
     // TODO: Change these numbers when we can measure the elevator on the actual robot
-    public static final double L1 = 12;
-    public static final double L2 = 24;
-    public static final double L3 = 36;
-    public static final double L4 = 48;
+    public static final double L2_ALGAE = 21;
+    public static final double L3_ALGAE = 36;
+    // L1 is min pos, and we're assuming L2 is also min pos; temp vals
+    public static final double L3_CORAL = 0;
+    public static final double L4_CORAL = 0;
+    public static final double CORAL_STATION = 0;
 
     public static final int primaryElevatorID = 2;
     public static final int followerElevatorID = 1;

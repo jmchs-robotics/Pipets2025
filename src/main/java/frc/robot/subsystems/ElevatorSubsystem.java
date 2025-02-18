@@ -25,7 +25,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     private TrapezoidProfile.State currentState;
     private final TrapezoidProfile profile;
 
-    private ElevatorPosition currentTarget = ElevatorPosition.POSITION_2;
+    private ElevatorPosition currentTarget = ElevatorPosition.HOMED;
     private boolean isHomed = false;
     private double setpoint = 0.0;
     double currentPos;
@@ -34,11 +34,9 @@ public class ElevatorSubsystem extends SubsystemBase {
     public static final boolean[] levelBooleans = new boolean[4];
 
     public enum ElevatorPosition {
-        DOWN(ElevatorConstants.minPos),
-        POSITION_1(ElevatorConstants.L1),
-        POSITION_2(ElevatorConstants.L2),
-        POSITION_3(ElevatorConstants.L3),
-        POSITION_4(ElevatorConstants.L4);
+        HOMED(ElevatorConstants.minPos),
+        L2_ALGAE(ElevatorConstants.L2_ALGAE),
+        L3_ALGAE(ElevatorConstants.L3_ALGAE);
 
         public final double positionInches;
         
@@ -111,7 +109,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         // Update SmartDashboard
         updateTelemetry();
-        updateDriverTab();
+        // updateDriverTab();
     }
 
     private void handleBottomLimit() {
@@ -261,39 +259,39 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     }
 
-    private void updateDriverTab() {
+    // private void updateDriverTab() {
 
-        for (int i = 0; i < 4; i++) {
+    //     for (int i = 0; i < 4; i++) {
 
-            if (elevatorLevels[i].getBoolean(false) != levelBooleans[i] && elevatorLevels[i].getBoolean(false)) {
-                elevatorLevels[0].setBoolean(false);
-                levelBooleans[0] = false;
-                elevatorLevels[1].setBoolean(false);
-                levelBooleans[1] = false;
-                elevatorLevels[2].setBoolean(false);
-                levelBooleans[2] = false;
-                elevatorLevels[3].setBoolean(false);
-                levelBooleans[3] = false;
+    //         if (elevatorLevels[i].getBoolean(false) != levelBooleans[i] && elevatorLevels[i].getBoolean(false)) {
+    //             elevatorLevels[0].setBoolean(false);
+    //             levelBooleans[0] = false;
+    //             elevatorLevels[1].setBoolean(false);
+    //             levelBooleans[1] = false;
+    //             elevatorLevels[2].setBoolean(false);
+    //             levelBooleans[2] = false;
+    //             elevatorLevels[3].setBoolean(false);
+    //             levelBooleans[3] = false;
 
-                elevatorLevels[i].setBoolean(true);
-                levelBooleans[i] = true;
-            } else if (elevatorLevels[i].getBoolean(false) != levelBooleans[i]) {
-                levelBooleans[i] = false;
-            }
+    //             elevatorLevels[i].setBoolean(true);
+    //             levelBooleans[i] = true;
+    //         } else if (elevatorLevels[i].getBoolean(false) != levelBooleans[i]) {
+    //             levelBooleans[i] = false;
+    //         }
 
-        }
+    //     }
 
-        if (levelBooleans[0]) {
-            currentTarget = ElevatorPosition.POSITION_4;
-        } else if (levelBooleans[1]) {
-            currentTarget = ElevatorPosition.POSITION_3;
-        } else if (levelBooleans[2]) {
-            currentTarget = ElevatorPosition.POSITION_2;
-        } else if (levelBooleans[3]) {
-            currentTarget = ElevatorPosition.POSITION_1;
-        }
+    //     if (levelBooleans[0]) {
+    //         currentTarget = ElevatorPosition.POSITION_4;
+    //     } else if (levelBooleans[1]) {
+    //         currentTarget = ElevatorPosition.POSITION_3;
+    //     } else if (levelBooleans[2]) {
+    //         currentTarget = ElevatorPosition.POSITION_2;
+    //     } else if (levelBooleans[3]) {
+    //         currentTarget = ElevatorPosition.POSITION_1;
+    //     }
 
-    }
+    // }
 
     public TalonFX getPrimaryMotor() {
         return primaryMotor;

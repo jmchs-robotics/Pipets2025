@@ -18,7 +18,14 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.CoralExtake;
+import frc.robot.commands.CoralIntake;
+import frc.robot.commands.DefaultCoralFlipperCommand;
+import frc.robot.commands.DefaultCoralWheelsCommand;
 import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.FlipCoralFlipperDown;
+import frc.robot.subsystems.coral.CoralFlipperSubsystem;
+import frc.robot.subsystems.coral.CoralWheelsSubsystem;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -36,11 +43,16 @@ import java.util.List;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private final CoralWheelsSubsystem m_coralWheelsSubsystem = new CoralWheelsSubsystem();
+  private final CoralFlipperSubsystem m_coralFlipperSubsystem = new CoralFlipperSubsystem();
 
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
 
   JoystickButton driveStart = new JoystickButton(m_driverController, Button.kStart.value);
+  JoystickButton driveX = new JoystickButton(m_driverController, Button.kX.value);
+  JoystickButton driveY = new JoystickButton(m_driverController, Button.kY.value);
+  JoystickButton driveA = new JoystickButton(m_driverController, Button.kA.value);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -51,6 +63,8 @@ public class RobotContainer {
 
     // Configure default commands
     m_robotDrive.setDefaultCommand(new DefaultDriveCommand(m_robotDrive, m_driverController));
+    m_coralWheelsSubsystem.setDefaultCommand(new DefaultCoralWheelsCommand(m_coralWheelsSubsystem));
+    m_coralFlipperSubsystem.setDefaultCommand(new DefaultCoralFlipperCommand(m_coralFlipperSubsystem));
   }
 
   /**
@@ -66,6 +80,18 @@ public class RobotContainer {
 
     driveStart.onTrue(
       new InstantCommand(() -> {m_robotDrive.zeroHeading();})
+    );
+
+    driveX.whileTrue(
+      new CoralIntake(m_coralWheelsSubsystem)
+    );
+
+    driveY.whileTrue(
+      new CoralExtake(m_coralWheelsSubsystem)
+    );
+
+    driveA.toggleOnTrue(
+      new FlipCoralFlipperDown(m_coralFlipperSubsystem)
     );
 
   }

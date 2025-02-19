@@ -43,13 +43,13 @@ public class CoralFlipperSubsystem extends SubsystemBase {
         flipMotor.stopMotor();
     }
 
-    public void flipFlipperUp() {
+    public void flipCoralFlipperUp() {
         double rawOutput = pidController.calculate(flipMotor.getPosition().getValueAsDouble(), -3);
         double output = MathUtil.clamp(rawOutput, -1, 1);
         flipMotor.set(output);
     }
 
-    public void flipFlipperDown() {
+    public void flipCoralFlipperDown() {
         double rawOutput = pidController.calculate(flipMotor.getPosition().getValueAsDouble(), 0);
         double output = MathUtil.clamp(rawOutput, -1, 1);
         flipMotor.set(output);

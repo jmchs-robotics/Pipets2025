@@ -27,9 +27,13 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 
+import java.util.List;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.controllers.PathFollowingController;
+import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.path.Waypoint;
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
 
@@ -296,14 +300,19 @@ public class DriveSubsystem extends SubsystemBase {
 
   public Command pathFindToProcessor() {
 
-    try {
-      return AutoBuilder.pathfindThenFollowPath(
-        PathPlannerPath.fromPathFile("ProcessorAlign"), 
-        DriveConstants.constraints
-      );
-    } catch (Exception e) {
-      return Commands.none();
-    }
+    List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
+      new Pose2d(6.402, 1.490, Rotation2d.fromDegrees(-90)),
+      new Pose2d(6.041, 0.519, Rotation2d.fromDegrees(-90))
+    );
+
+    PathPlannerPath path = new PathPlannerPath(
+      waypoints, 
+      DriveConstants.constraints, 
+      null, 
+      new GoalEndState(0.0, Rotation2d.fromDegrees(-90))
+    );
+
+    return AutoBuilder.followPath(path);
 
   }
 

@@ -95,8 +95,8 @@ public final class Constants {
     );
 
     public static final PPHolonomicDriveController ppDriveController = new PPHolonomicDriveController(
-      new PIDConstants(10.0, 0, 0), 
-      new PIDConstants(10.0, 0, 0)
+      new PIDConstants(10.0, 2, 1), 
+      new PIDConstants(7.5, 0.0, 1)
     );
 
     public static final PathConstraints constraints = new PathConstraints(

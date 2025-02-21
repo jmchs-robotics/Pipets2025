@@ -18,8 +18,11 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.ClimbUpCommand;
+import frc.robot.commands.DefaultClimberCommand;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Climbers.ClimbersSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -33,15 +36,20 @@ import java.util.List;
  * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
  * (including subsystems, commands, and button mappings) should be declared here.
  */
+
+
 public class RobotContainer {
+
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private final ClimbersSubsystem m_roboClimbersSubsystem = new ClimbersSubsystem();
 
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
 
   JoystickButton driveStart = new JoystickButton(m_driverController, Button.kStart.value);
-
+  JoystickButton driveRB = new JoystickButton(m_driverController, Button.kRightBumper.value);
+  
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -51,7 +59,10 @@ public class RobotContainer {
 
     // Configure default commands
     m_robotDrive.setDefaultCommand(new DefaultDriveCommand(m_robotDrive, m_driverController));
+    m_roboClimbersSubsystem.setDefaultCommand(new DefaultClimberCommand(m_roboClimbersSubsystem));
   }
+
+
 
   /**
    * Use this method to define your button->command mappings. Buttons can be
@@ -62,12 +73,17 @@ public class RobotContainer {
    * passing it to a
    * {@link JoystickButton}.
    */
+
+
   private void configureButtonBindings() {
 
     driveStart.onTrue(
       new InstantCommand(() -> {m_robotDrive.zeroHeading();})
     );
 
+    driveStart.onTrue(
+      new ClimbUpCommand(m_roboClimbersSubsystem)
+    );
   }
 
   /**
@@ -78,4 +94,5 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     return null;
   }
+
 }

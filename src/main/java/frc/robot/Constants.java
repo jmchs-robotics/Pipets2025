@@ -117,9 +117,10 @@ public final class Constants {
     // TODO: Change these numbers when we can measure the elevator on the actual robot
     public static final double L2_ALGAE = 21;
     public static final double L3_ALGAE = 36;
-    // L1 is min pos, and we're assuming L2 is also min pos; temp vals
-    public static final double L3_CORAL = 0;
-    public static final double L4_CORAL = 0;
+    // L1 is min pos
+    public static final double L2_CORAL = 9;
+    public static final double L3_CORAL = 25.5;
+    public static final double L4_CORAL = 48.5;
     public static final double CORAL_STATION = 0;
 
     public static final int primaryElevatorID = 2;

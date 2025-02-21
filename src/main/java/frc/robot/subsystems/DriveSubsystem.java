@@ -301,7 +301,7 @@ public class DriveSubsystem extends SubsystemBase {
   public Command pathFindToProcessor() {
 
     List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
-      new Pose2d(6.402, 1.490, Rotation2d.fromDegrees(-90)),
+      new Pose2d(6.042, 1.490, Rotation2d.fromDegrees(-90)),
       new Pose2d(6.042, 0.519, Rotation2d.fromDegrees(-90))
     );
 

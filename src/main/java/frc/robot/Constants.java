@@ -153,5 +153,10 @@ public final class Constants {
       new Translation3d(Units.inchesToMeters(14.5), 0, Units.inchesToMeters(10.5)), 
       new Rotation3d(0, 0, 0)
     );
+
+    public static final Transform3d kCam2Transform = new Transform3d(
+      new Translation3d(Units.inchesToMeters(-14.5), Units.inchesToMeters(-3.25), Units.inchesToMeters(10.5)),
+      new Rotation3d(0, Units.degreesToRadians(-30), Units.degreesToRadians(180))
+    );
   }
 }

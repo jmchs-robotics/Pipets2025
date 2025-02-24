@@ -81,7 +81,7 @@ public class RobotContainer {
       new InstantCommand(() -> {m_robotDrive.zeroHeading();})
     );
 
-    driveStart.onTrue(
+    driveRB.onTrue(
       new ClimbUpCommand(m_roboClimbersSubsystem)
     );
   }

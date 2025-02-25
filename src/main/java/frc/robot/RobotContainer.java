@@ -19,7 +19,9 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.*;
-import frc.robot.subsystems.*;
+import frc.robot.subsystems.elevator.*;
+import frc.robot.subsystems.drive.*;
+import frc.robot.subsystems.algae.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -37,7 +39,8 @@ public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
-  private final AlgaeSubsystem m_algaeSubsystem = new AlgaeSubsystem();
+  private final AlgaeFlipperSubsystem m_algaeFlipperSubsystem = new AlgaeFlipperSubsystem();
+  private final AlgaeWheelsSubsystem m_algaeWheelsSubsystem = new AlgaeWheelsSubsystem();
 
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
@@ -58,7 +61,8 @@ public class RobotContainer {
     // Configure default commands
     m_robotDrive.setDefaultCommand(new DefaultDriveCommand(m_robotDrive, m_driverController));
     m_elevatorSubsystem.setDefaultCommand(new DefaultElevatorCommand(m_elevatorSubsystem));
-    m_algaeSubsystem.setDefaultCommand(new DefaultAlgaeCommand(m_algaeSubsystem));
+    m_algaeFlipperSubsystem.setDefaultCommand(new DefaultAlgaeFlipperCommand(m_algaeFlipperSubsystem));
+    m_algaeWheelsSubsystem.setDefaultCommand(new DefaultAlgaeWheelsCommand(m_algaeWheelsSubsystem));
   }
 
   /**
@@ -81,15 +85,15 @@ public class RobotContainer {
     );
 
     driveY.toggleOnTrue(
-      new FlipFlipperUp(m_algaeSubsystem)
+      new FlipFlipperUp(m_algaeFlipperSubsystem)
     );
 
     driveA.whileTrue(
-      new AlgaeIntake(m_algaeSubsystem)
+      new AlgaeIntake(m_algaeWheelsSubsystem)
     );
 
     driveB.whileTrue(
-      new AlgaeExtake(m_algaeSubsystem)
+      new AlgaeExtake(m_algaeWheelsSubsystem)
     );
 
     // driveY.whileTrue(

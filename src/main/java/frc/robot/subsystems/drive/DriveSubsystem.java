@@ -6,7 +6,12 @@ package frc.robot.subsystems.drive;
 
 import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
+import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.Logged.Importance;
 import edu.wpi.first.hal.HAL;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -14,11 +19,33 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import java.util.List;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.controllers.PathFollowingController;
+import com.pathplanner.lib.path.GoalEndState;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.path.Waypoint;
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
+
+import choreo.trajectory.SwerveSample;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.subsystems.VisionSubsystem;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+@Logged
 public class DriveSubsystem extends SubsystemBase {
   // Create MAXSwerveModules
   private final MAXSwerveModule m_frontLeft = new MAXSwerveModule(
@@ -41,11 +68,18 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.kRearRightTurningCanId,
       DriveConstants.kBackRightChassisAngularOffset);
 
+  private final MAXSwerveModule[] mSwerveModules = {
+    m_frontLeft,
+    m_frontRight,
+    m_rearLeft,
+    m_rearRight
+  };
+
   // The gyro sensor
   private final AHRS m_gyro = new AHRS(NavXComType.kMXP_SPI);
 
   // Odometry class for tracking robot pose
-  SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
+  SwerveDrivePoseEstimator m_estimator = new SwerveDrivePoseEstimator(
       DriveConstants.kDriveKinematics,
       Rotation2d.fromDegrees(-m_gyro.getYaw()),
       new SwerveModulePosition[] {
@@ -53,18 +87,35 @@ public class DriveSubsystem extends SubsystemBase {
           m_frontRight.getPosition(),
           m_rearLeft.getPosition(),
           m_rearRight.getPosition()
-      });
+      },
+      new Pose2d(),
+      VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5)),
+      VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30))
+  );
+
+  private final PIDController xController = new PIDController(10.0, 0.0, 0.0);
+  private final PIDController yController = new PIDController(10.0, 0.0, 0.0);
+  private final PIDController headingController = new PIDController(7.5, 0.0, 0.0);
+
+  private final VisionSubsystem vision;
+
+  @Logged(name = "Estimated Pose", importance = Importance.INFO)
+  private Pose2d estimatedPose;
 
   /** Creates a new DriveSubsystem. */
-  public DriveSubsystem() {
+  public DriveSubsystem(VisionSubsystem vision) {
     // Usage reporting for MAXSwerve template
     HAL.report(tResourceType.kResourceType_RobotDrive, tInstances.kRobotDriveSwerve_MaxSwerve);
+    this.vision = vision;
+
+    headingController.enableContinuousInput(-Math.PI, Math.PI);
+    configPathPlanner();
   }
 
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
-    m_odometry.update(
+    m_estimator.update(
         Rotation2d.fromDegrees(-m_gyro.getYaw()),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
@@ -72,6 +123,21 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
         });
+    
+    for (int i = 0; i < vision.getCameraPoses().size(); i++) {
+      m_estimator.addVisionMeasurement(
+        vision.getCameraPoses().get(i),
+        vision.getCameraTimestamps().get(i),
+        VecBuilder.fill(
+          vision.getMinDistance(i) * DriveConstants.kEstimationCoefficient, 
+          vision.getMinDistance(i) * DriveConstants.kEstimationCoefficient,
+          5.0
+        )
+      );
+    }
+
+    vision.setReferencePose(getPose());
+    estimatedPose = getPose();
   }
 
   /**
@@ -80,7 +146,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return The pose.
    */
   public Pose2d getPose() {
-    return m_odometry.getPoseMeters();
+    return m_estimator.getEstimatedPosition();
   }
 
   /**
@@ -89,7 +155,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @param pose The pose to which to set the odometry.
    */
   public void resetOdometry(Pose2d pose) {
-    m_odometry.resetPosition(
+    m_estimator.resetPosition(
         Rotation2d.fromDegrees(-m_gyro.getYaw()),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
@@ -128,6 +194,24 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearRight.setDesiredState(swerveModuleStates[3]);
   }
 
+  private void driveFieldRelative(ChassisSpeeds speeds) {
+
+    var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
+    SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
+    m_frontLeft.setDesiredState(swerveModuleStates[0]);
+    m_frontRight.setDesiredState(swerveModuleStates[1]);
+    m_rearLeft.setDesiredState(swerveModuleStates[2]);
+    m_rearRight.setDesiredState(swerveModuleStates[3]);
+
+  }
+
+  public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
+    ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
+
+    SwerveModuleState[] targetStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(targetSpeeds);
+    setStates(targetStates);
+  }
+
   /**
    * Sets the wheels into an X formation to prevent movement.
    */
@@ -150,6 +234,22 @@ public class DriveSubsystem extends SubsystemBase {
     m_frontRight.setDesiredState(desiredStates[1]);
     m_rearLeft.setDesiredState(desiredStates[2]);
     m_rearRight.setDesiredState(desiredStates[3]);
+  }
+
+  public SwerveModuleState[] getModuleStates() {
+    SwerveModuleState[] currentStates = new SwerveModuleState[mSwerveModules.length];
+    for (int i = 0; i < mSwerveModules.length; i++){
+      currentStates[i] = mSwerveModules[i].getState();
+    }
+    return currentStates;      
+  }
+
+  public void setStates(SwerveModuleState[] targetStates) {
+    SwerveDriveKinematics.desaturateWheelSpeeds(targetStates, DriveConstants.kMaxSpeedMetersPerSecond);
+
+    for (int i = 0; i < mSwerveModules.length; i++) {
+      mSwerveModules[i].setDesiredState(targetStates[i]);
+    }
   }
 
   /** Resets the drive encoders to currently read a position of 0. */
@@ -182,4 +282,79 @@ public class DriveSubsystem extends SubsystemBase {
   public double getTurnRate() {
     return -m_gyro.getYaw() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
+
+  public void configPathPlanner() {
+
+    AutoBuilder.configure(
+      this::getPose, 
+      this::resetOdometry, 
+      () -> DriveConstants.kDriveKinematics.toChassisSpeeds(getModuleStates()), 
+      this::driveRobotRelative,
+      DriveConstants.ppDriveController,
+      DriveConstants.robotConfig, 
+      () -> {
+        var alliance = DriverStation.getAlliance();
+        if (alliance.isPresent()) {
+          return alliance.get() == DriverStation.Alliance.Red;
+        }
+        return false;
+      }, 
+      this
+    );
+  }
+
+  // public void pathFindToReef() {}
+
+  public Command pathFindToProcessor() {
+
+    List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
+      new Pose2d(6.042, 1.490, Rotation2d.fromDegrees(-90)),
+      new Pose2d(6.042, 0.519, Rotation2d.fromDegrees(-90))
+    );
+
+    PathPlannerPath path = new PathPlannerPath(
+      waypoints, 
+      DriveConstants.constraints, 
+      null, 
+      new GoalEndState(0.0, Rotation2d.fromDegrees(-90))
+    );
+
+    return AutoBuilder.followPath(path);
+
+  }
+
+  public Command pathFindToCoralStationRight() {
+
+    List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
+      new Pose2d(2.218, 1.478, Rotation2d.fromDegrees(-127.500)),
+      new Pose2d(1.618,0.674, Rotation2d.fromDegrees(-127.500))
+    );
+
+    PathPlannerPath path = new PathPlannerPath(
+      waypoints, 
+      DriveConstants.constraints, 
+      null, 
+      new GoalEndState(0.0, Rotation2d.fromDegrees(-127.5)));
+    
+    return AutoBuilder.followPath(path);
+
+  }
+
+  public Command pathFindToCoralStationLeft() {
+
+    List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
+      new Pose2d(2.098, 6.680, Rotation2d.fromDegrees(127.500)),
+      new Pose2d(1.606,7.328, Rotation2d.fromDegrees(127.500))
+    );
+
+    PathPlannerPath path = new PathPlannerPath(
+      waypoints, 
+      DriveConstants.constraints, 
+      null, 
+      new GoalEndState(0.0, Rotation2d.fromDegrees(127.5)));
+    
+    return AutoBuilder.followPath(path);
+
+  }
+
 }

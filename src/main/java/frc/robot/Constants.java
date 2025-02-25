@@ -4,10 +4,22 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.config.ModuleConfig;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.controllers.PathFollowingController;
+import com.pathplanner.lib.path.PathConstraints;
+
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -29,9 +41,9 @@ public final class Constants {
     public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
 
     // Chassis configuration
-    public static final double kTrackWidth = Units.inchesToMeters(29.5);
+    public static final double kTrackWidth = Units.inchesToMeters(29);
     // Distance between centers of right and left wheels on robot
-    public static final double kWheelBase = Units.inchesToMeters(29.5);
+    public static final double kWheelBase = Units.inchesToMeters(29);
     // Distance between front and back wheels on robot
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
         new Translation2d(kWheelBase / 2, kTrackWidth / 2),
@@ -57,6 +69,44 @@ public final class Constants {
     public static final int kRearRightTurningCanId = 42;
 
     public static final boolean kGyroReversed = false;
+
+    public static final double kEstimationCoefficient = 0.025;
+
+    public static final ModuleConfig moduleConfig = new ModuleConfig(
+      ModuleConstants.kWheelDiameterMeters / 2, 
+      kMaxSpeedMetersPerSecond, 
+      1, 
+      new DCMotor(
+        12, 
+        3.6, 
+        211, 
+        3.6, 
+        6784, 
+        1
+      ), 
+      ModuleConstants.kDrivingMotorReduction, 
+      50, 
+      1
+    );
+
+    public static final RobotConfig robotConfig = new RobotConfig(
+      20.411, 
+      5.54, //massKG * 0.521^2. 0.521 is the radius from the center of the robot to a module in meters
+      moduleConfig, 
+      kTrackWidth
+    );
+
+    public static final PPHolonomicDriveController ppDriveController = new PPHolonomicDriveController(
+      new PIDConstants(10.0, 2, 1), 
+      new PIDConstants(7.5, 0.0, 1)
+    );
+
+    public static final PathConstraints constraints = new PathConstraints(
+      AutoConstants.kMaxSpeedMetersPerSecond, 
+      AutoConstants.kMaxAccelerationMetersPerSecondSquared, 
+      AutoConstants.kMaxAngularSpeedRadiansPerSecond, 
+      AutoConstants.kMaxAngularSpeedRadiansPerSecondSquared
+    );
   }
 
   public static final class ModuleConstants {
@@ -147,5 +197,19 @@ public final class Constants {
     public static final double kP = 0.1;
     public static final double kI = 0;
     public static final double kD = 0;
+
   }
+
+  public static final class RobotToCamTransforms {
+    public static final Transform3d kCam1Transform = new Transform3d(
+      new Translation3d(Units.inchesToMeters(14.5), 0, Units.inchesToMeters(10.5)), 
+      new Rotation3d(0, 0, 0)
+    );
+
+    public static final Transform3d kCam2Transform = new Transform3d(
+      new Translation3d(Units.inchesToMeters(-14.5), Units.inchesToMeters(-3.25), Units.inchesToMeters(10.5)),
+      new Rotation3d(0, Units.degreesToRadians(-30), Units.degreesToRadians(180))
+    );
+  }
+  
 }

@@ -4,30 +4,21 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
-import frc.robot.Constants.AutoConstants;
-import frc.robot.Constants.DriveConstants;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.*;
 import frc.robot.subsystems.elevator.*;
 import frc.robot.subsystems.drive.*;
 import frc.robot.subsystems.algae.*;
+import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.subsystems.AutoSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import java.util.List;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -35,12 +26,17 @@ import java.util.List;
  * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
  * (including subsystems, commands, and button mappings) should be declared here.
  */
+@Logged
 public class RobotContainer {
   // The robot's subsystems
-  private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
   private final AlgaeFlipperSubsystem m_algaeFlipperSubsystem = new AlgaeFlipperSubsystem();
   private final AlgaeWheelsSubsystem m_algaeWheelsSubsystem = new AlgaeWheelsSubsystem();
+  private final VisionSubsystem m_vision = new VisionSubsystem();
+  private final DriveSubsystem m_robotDrive = new DriveSubsystem(m_vision);
+  private final AutoSubsystem m_auto = new AutoSubsystem(m_robotDrive);
+
+  public static final Field2d field = new Field2d();
 
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
@@ -50,6 +46,9 @@ public class RobotContainer {
   JoystickButton driveA = new JoystickButton(m_driverController, Button.kA.value);
   JoystickButton driveB = new JoystickButton(m_driverController, Button.kB.value);
   JoystickButton driveStart = new JoystickButton(m_driverController, Button.kStart.value);
+  POVButton driveUpDPad = new POVButton(m_driverController, 0);
+  POVButton driveRightDPad = new POVButton(m_driverController, 90);
+  
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -96,9 +95,13 @@ public class RobotContainer {
       new AlgaeExtake(m_algaeWheelsSubsystem)
     );
 
-    // driveY.whileTrue(
-    //   new RaiseElevatorManual(m_elevatorSubsystem)
-    // );
+    driveUpDPad.whileTrue(
+      m_robotDrive.pathFindToProcessor()
+    );
+
+    driveRightDPad.whileTrue(
+      m_robotDrive.pathFindToCoralStationRight()
+    );
 
   }
 
@@ -108,6 +111,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return null;
+    return m_auto.getAutoCommand();
   }
 }

@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.List;
 
@@ -125,9 +126,16 @@ public class DriveSubsystem extends SubsystemBase {
     for (int i = 0; i < vision.getCameraPoses().size(); i++) {
       m_estimator.addVisionMeasurement(
         vision.getCameraPoses().get(i),
-        vision.getCameraTimestamps().get(i)
+        vision.getCameraTimestamps().get(i),
+        VecBuilder.fill(
+          vision.getMinDistance(i) * DriveConstants.kEstimationCoefficient, 
+          vision.getMinDistance(i) * DriveConstants.kEstimationCoefficient,
+          5.0
+        )
       );
     }
+
+    SmartDashboard.putNumber("Cam 2 StdDevs", vision.getMinDistance(1));
 
     vision.setReferencePose(getPose());
     estimatedPose = getPose();

@@ -70,6 +70,8 @@ public final class Constants {
 
     public static final boolean kGyroReversed = false;
 
+    public static final double kEstimationCoefficient = 0.025;
+
     public static final ModuleConfig moduleConfig = new ModuleConfig(
       ModuleConstants.kWheelDiameterMeters / 2, 
       kMaxSpeedMetersPerSecond, 

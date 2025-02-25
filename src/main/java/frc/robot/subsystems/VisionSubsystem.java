@@ -60,4 +60,8 @@ public class VisionSubsystem extends SubsystemBase {
         return camTimestamps;
     }
 
+    public double getMinDistance(int num) {
+        return cams[num].getMinDistance();
+    }
+
 }

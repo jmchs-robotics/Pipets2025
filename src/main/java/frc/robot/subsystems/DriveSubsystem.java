@@ -135,8 +135,6 @@ public class DriveSubsystem extends SubsystemBase {
       );
     }
 
-    SmartDashboard.putNumber("Cam 2 StdDevs", vision.getMinDistance(1));
-
     vision.setReferencePose(getPose());
     estimatedPose = getPose();
   }
@@ -324,13 +322,20 @@ public class DriveSubsystem extends SubsystemBase {
 
   }
 
-  public Command pathFindToCoralStation() {
+  public Command pathFindToCoralStationRight() {
 
-      return AutoBuilder.pathfindToPoseFlipped(
-          new Pose2d(1.1357054710388184, 0.9016523361206055, Rotation2d.fromDegrees(-127.5)), 
-          DriveConstants.constraints, 
-          0
-      );
+    List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
+      new Pose2d(2.218, 1.478, Rotation2d.fromDegrees(-127.500)),
+      new Pose2d(1.618,0.674, Rotation2d.fromDegrees(-127.500))
+    );
+
+    PathPlannerPath path = new PathPlannerPath(
+      waypoints, 
+      DriveConstants.constraints, 
+      null, 
+      new GoalEndState(0.0, Rotation2d.fromDegrees(-127.5)));
+    
+    return AutoBuilder.followPath(path);
 
   }
 

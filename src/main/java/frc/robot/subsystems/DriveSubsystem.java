@@ -339,4 +339,21 @@ public class DriveSubsystem extends SubsystemBase {
 
   }
 
+  public Command pathFindToCoralStationLeft() {
+
+    List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
+      new Pose2d(2.098, 6.680, Rotation2d.fromDegrees(127.500)),
+      new Pose2d(1.606,7.328, Rotation2d.fromDegrees(127.500))
+    );
+
+    PathPlannerPath path = new PathPlannerPath(
+      waypoints, 
+      DriveConstants.constraints, 
+      null, 
+      new GoalEndState(0.0, Rotation2d.fromDegrees(127.5)));
+    
+    return AutoBuilder.followPath(path);
+
+  }
+
 }

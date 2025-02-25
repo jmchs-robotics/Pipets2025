@@ -37,12 +37,15 @@ public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
+  private final AlgaeSubsystem m_algaeSubsystem = new AlgaeSubsystem();
 
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
 
   JoystickButton driveX = new JoystickButton(m_driverController, Button.kX.value);
   JoystickButton driveY = new JoystickButton(m_driverController, Button.kY.value);
+  JoystickButton driveA = new JoystickButton(m_driverController, Button.kA.value);
+  JoystickButton driveB = new JoystickButton(m_driverController, Button.kB.value);
   JoystickButton driveStart = new JoystickButton(m_driverController, Button.kStart.value);
 
   /**
@@ -55,6 +58,7 @@ public class RobotContainer {
     // Configure default commands
     m_robotDrive.setDefaultCommand(new DefaultDriveCommand(m_robotDrive, m_driverController));
     m_elevatorSubsystem.setDefaultCommand(new DefaultElevatorCommand(m_elevatorSubsystem));
+    m_algaeSubsystem.setDefaultCommand(new DefaultAlgaeCommand(m_algaeSubsystem));
   }
 
   /**
@@ -76,9 +80,21 @@ public class RobotContainer {
       new MoveElevatorToSetpoint(m_elevatorSubsystem)
     );
 
-    driveY.whileTrue(
-      new RaiseElevatorManual(m_elevatorSubsystem)
+    driveY.toggleOnTrue(
+      new FlipFlipperUp(m_algaeSubsystem)
     );
+
+    driveA.whileTrue(
+      new AlgaeIntake(m_algaeSubsystem)
+    );
+
+    driveB.whileTrue(
+      new AlgaeExtake(m_algaeSubsystem)
+    );
+
+    // driveY.whileTrue(
+    //   new RaiseElevatorManual(m_elevatorSubsystem)
+    // );
 
   }
 

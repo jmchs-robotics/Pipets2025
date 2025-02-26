@@ -134,12 +134,12 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
     
 
-    private double calculateFeedForward(TrapezoidProfile.State state) {
-        // kS (static friction), kG (gravity), kV (velocity),
-        return ElevatorConstants.kS * Math.signum(state.velocity) +
-               ElevatorConstants.kG +
-               ElevatorConstants.kV * state.velocity;
-    }
+    // private double calculateFeedForward(TrapezoidProfile.State state) {
+    //     // kS (static friction), kG (gravity), kV (velocity),
+    //     return ElevatorConstants.kS * Math.signum(state.velocity) +
+    //            ElevatorConstants.kG +
+    //            ElevatorConstants.kV * state.velocity;
+    // }
 
     public void setPositionInches(double inches) {
         if (!isHomed && inches > 0) {

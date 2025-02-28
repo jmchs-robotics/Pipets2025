@@ -30,7 +30,9 @@ import com.pathplanner.lib.path.Waypoint;
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
 
+import frc.robot.RobotContainer;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.RobotContainer.ReefAlignment;
 import frc.robot.subsystems.vision.VisionSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -331,6 +333,30 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.constraints, 
       null, 
       new GoalEndState(0.0, Rotation2d.fromDegrees(127.5)));
+    
+    return AutoBuilder.followPath(path);
+
+  }
+
+  public Command pathFindToReef() {
+
+    List<Waypoint> waypoints;
+    GoalEndState endState;
+
+    if (RobotContainer.reefAlignment == ReefAlignment.LEFT) {
+
+    } else if (RobotContainer.reefAlignment == ReefAlignment.CENTER) {
+
+    } else {
+
+    }
+
+
+    PathPlannerPath path = new PathPlannerPath(
+      waypoints, 
+      DriveConstants.constraints, 
+      null, 
+      endState);
     
     return AutoBuilder.followPath(path);
 

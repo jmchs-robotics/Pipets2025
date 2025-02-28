@@ -30,13 +30,13 @@ public class ElevatorSubsystem extends SubsystemBase {
     private double setpoint = 0.0;
     double currentPos;
 
-    private final GenericEntry[] elevatorLevels = new GenericEntry[4];
-    public static final boolean[] levelBooleans = new boolean[4];
-
     public enum ElevatorPosition {
         HOMED(ElevatorConstants.minPos),
         L2_ALGAE(ElevatorConstants.L2_ALGAE),
-        L3_ALGAE(ElevatorConstants.L3_ALGAE);
+        L3_ALGAE(ElevatorConstants.L3_ALGAE),
+        L2_CORAL(ElevatorConstants.L2_CORAL),
+        L3_CORAL(ElevatorConstants.L3_CORAL),
+        L4_CORAL(ElevatorConstants.L4_CORAL);
 
         public final double positionInches;
         
@@ -73,8 +73,6 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         primaryMotor.setPosition(0);
         followerMotor.setPosition(0);
-
-        setUpDriverTab();
     }
 
     @Override
@@ -109,7 +107,6 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         // Update SmartDashboard
         updateTelemetry();
-        // updateDriverTab();
     }
 
     private void handleBottomLimit() {
@@ -191,6 +188,10 @@ public class ElevatorSubsystem extends SubsystemBase {
         return currentTarget;
     }
 
+    public void setCurrentTarget(ElevatorPosition target) {
+        currentTarget = target;
+    }
+
     public void moveToSetpoint() {
 
         if (isHomed) {
@@ -228,70 +229,6 @@ public class ElevatorSubsystem extends SubsystemBase {
         
         primaryMotor.set(MathUtil.clamp(power, -ElevatorConstants.max_output, ElevatorConstants.max_output));
     }
-
-    private void setUpDriverTab() {
-
-        ShuffleboardTab driverTab = Shuffleboard.getTab("Driver Tab");
-
-        elevatorLevels[0] = driverTab.add("L4", false)
-            .withWidget(BuiltInWidgets.kToggleButton)
-            .withSize(3, 1)
-            .withPosition(0, 0)
-            .getEntry();
-
-        elevatorLevels[1] = driverTab.add("L3", false)
-            .withWidget(BuiltInWidgets.kToggleButton)
-            .withSize(3, 1)
-            .withPosition(0, 1)
-            .getEntry();
-
-        elevatorLevels[2] = driverTab.add("L2", false)
-            .withWidget(BuiltInWidgets.kToggleButton)
-            .withSize(3, 1)
-            .withPosition(0, 2)
-            .getEntry();
-
-        elevatorLevels[3] = driverTab.add("L1", false)
-            .withWidget(BuiltInWidgets.kToggleButton)
-            .withSize(3, 1)
-            .withPosition(0, 3)
-            .getEntry();
-
-    }
-
-    // private void updateDriverTab() {
-
-    //     for (int i = 0; i < 4; i++) {
-
-    //         if (elevatorLevels[i].getBoolean(false) != levelBooleans[i] && elevatorLevels[i].getBoolean(false)) {
-    //             elevatorLevels[0].setBoolean(false);
-    //             levelBooleans[0] = false;
-    //             elevatorLevels[1].setBoolean(false);
-    //             levelBooleans[1] = false;
-    //             elevatorLevels[2].setBoolean(false);
-    //             levelBooleans[2] = false;
-    //             elevatorLevels[3].setBoolean(false);
-    //             levelBooleans[3] = false;
-
-    //             elevatorLevels[i].setBoolean(true);
-    //             levelBooleans[i] = true;
-    //         } else if (elevatorLevels[i].getBoolean(false) != levelBooleans[i]) {
-    //             levelBooleans[i] = false;
-    //         }
-
-    //     }
-
-    //     if (levelBooleans[0]) {
-    //         currentTarget = ElevatorPosition.POSITION_4;
-    //     } else if (levelBooleans[1]) {
-    //         currentTarget = ElevatorPosition.POSITION_3;
-    //     } else if (levelBooleans[2]) {
-    //         currentTarget = ElevatorPosition.POSITION_2;
-    //     } else if (levelBooleans[3]) {
-    //         currentTarget = ElevatorPosition.POSITION_1;
-    //     }
-
-    // }
 
     public TalonFX getPrimaryMotor() {
         return primaryMotor;

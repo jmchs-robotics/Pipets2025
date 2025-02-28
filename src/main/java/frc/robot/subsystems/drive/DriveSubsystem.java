@@ -114,17 +114,17 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearRight.getPosition()
         });
     
-    for (int i = 0; i < vision.getCameraPoses().size(); i++) {
-      m_estimator.addVisionMeasurement(
-        vision.getCameraPoses().get(i),
-        vision.getCameraTimestamps().get(i),
-        VecBuilder.fill(
-          vision.getMinDistance(i) * DriveConstants.kEstimationCoefficient, 
-          vision.getMinDistance(i) * DriveConstants.kEstimationCoefficient,
-          5.0
-        )
-      );
-    }
+    // for (int i = 0; i < vision.getCameraPoses().size(); i++) {
+    //   m_estimator.addVisionMeasurement(
+    //     vision.getCameraPoses().get(i),
+    //     vision.getCameraTimestamps().get(i),
+    //     VecBuilder.fill(
+    //       vision.getMinDistance(i) * DriveConstants.kEstimationCoefficient, 
+    //       vision.getMinDistance(i) * DriveConstants.kEstimationCoefficient,
+    //       5.0
+    //     )
+    //   );
+    // }
 
     vision.setReferencePose(getPose());
     estimatedPose = getPose();

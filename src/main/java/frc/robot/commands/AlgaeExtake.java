@@ -19,7 +19,7 @@ public class AlgaeExtake extends Command {
 
     @Override
     public void execute() {
-        m_algaeWheels.setWheelMotors(-0.5);
+        m_algaeWheels.setWheelMotors(0.5);
     }
 
     @Override

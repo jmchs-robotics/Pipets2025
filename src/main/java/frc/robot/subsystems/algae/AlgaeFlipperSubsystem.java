@@ -43,7 +43,7 @@ public class AlgaeFlipperSubsystem extends SubsystemBase {
     }
 
     public void flipFlipperUp() {
-        double rawOutput = pidController.calculate(flipMotor.getPosition().getValueAsDouble(), -3);
+        double rawOutput = pidController.calculate(flipMotor.getPosition().getValueAsDouble(), -10);
         double output = MathUtil.clamp(rawOutput, -1, 1);
         flipMotor.set(output);
     }

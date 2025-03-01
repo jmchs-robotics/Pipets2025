@@ -157,7 +157,7 @@ public final class Constants {
     public static final double maxPos = 43.5;
 
     public static final double max_output = 0.7; // Must be between 0 and 1 inclusive
-    public static final double rotationsPerInch = 1.125; // Number needs testing. Factors in gearbox
+    public static final double rotationsPerInch = 0.745; // Number needs testing. Factors in gearbox
     public static final double posTolerance = 0.5; // Half an inch of tolerance
 
     public static final double maxVelocity = 30; // Inches per second
@@ -181,9 +181,9 @@ public final class Constants {
     public static final double kS = 0;
     public static final double kV = 0;
     public static final double kG = 0;
-    public static final double kP = 0.5;
+    public static final double kP = 0.3;
     public static final double kI = 0;
-    public static final double kD = 0.01;
+    public static final double kD = 0.005;
 
   }
 

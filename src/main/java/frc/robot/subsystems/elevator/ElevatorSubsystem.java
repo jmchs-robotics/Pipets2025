@@ -111,7 +111,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     private void handleBottomLimit() {
         stopMotors();
-        primaryMotor.setPosition(ElevatorConstants.minPos * ElevatorConstants.rotationsPerInch);
+        primaryMotor.setPosition((ElevatorConstants.minPos * ElevatorConstants.rotationsPerInch));
         isHomed = true;
         setpoint = ElevatorConstants.minPos;
         currentState = new TrapezoidProfile.State(ElevatorConstants.minPos, 0);
@@ -185,6 +185,10 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public boolean isHomed() {
         return isHomed;
+    }
+
+    public void setHomed(boolean homed) {
+        isHomed = homed;
     }
 
     public ElevatorPosition getCurrentTarget() {

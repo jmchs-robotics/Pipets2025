@@ -54,6 +54,8 @@ public class RobotContainer {
   JoystickButton driveY = new JoystickButton(m_driverController, Button.kY.value);
   JoystickButton driveA = new JoystickButton(m_driverController, Button.kA.value);
   JoystickButton driveB = new JoystickButton(m_driverController, Button.kB.value);
+  JoystickButton driveRB = new JoystickButton(m_driverController, Button.kRightBumper.value);
+  JoystickButton driveLB = new JoystickButton(m_driverController, Button.kLeftBumper.value);
   POVButton driveUpDPad = new POVButton(m_driverController, 0);
   POVButton driveRightDPad = new POVButton(m_driverController, 90);
 
@@ -120,6 +122,14 @@ public class RobotContainer {
       new AlgaeExtake(m_algaeWheelsSubsystem)
     );
 
+    driveRB.toggleOnTrue(
+      new FlipCoralFlipperDown(m_coralFlipperSubsystem)
+    );
+
+    driveLB.whileTrue(
+      new CoralIntake(m_coralWheelsSubsystem)
+    );
+    
     driveUpDPad.whileTrue(
       m_robotDrive.pathFindToProcessor()
     );

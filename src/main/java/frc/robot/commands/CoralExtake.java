@@ -19,7 +19,7 @@ public class CoralExtake extends Command {
 
     @Override
     public void execute() {
-        m_coralWheels.setWheelMotors(-0.5);
+        m_coralWheels.setWheelMotors(0.5);
     }
 
     @Override

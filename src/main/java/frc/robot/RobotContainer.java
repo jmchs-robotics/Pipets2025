@@ -19,6 +19,7 @@ import frc.robot.subsystems.elevator.ElevatorSubsystem.ElevatorPosition;
 import frc.robot.subsystems.vision.*;
 import frc.robot.subsystems.drive.*;
 import frc.robot.subsystems.algae.*;
+import frc.robot.subsystems.coral.*;
 import frc.robot.subsystems.AutoSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -37,6 +38,8 @@ public class RobotContainer {
   private final ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
   private final AlgaeFlipperSubsystem m_algaeFlipperSubsystem = new AlgaeFlipperSubsystem();
   private final AlgaeWheelsSubsystem m_algaeWheelsSubsystem = new AlgaeWheelsSubsystem();
+  private final CoralWheelsSubsystem m_coralWheelsSubsystem = new CoralWheelsSubsystem();
+  private final CoralFlipperSubsystem m_coralFlipperSubsystem = new CoralFlipperSubsystem();
   private final VisionSubsystem m_vision = new VisionSubsystem();
   private final DriveSubsystem m_robotDrive = new DriveSubsystem(m_vision);
   private final AutoSubsystem m_auto = new AutoSubsystem(m_robotDrive);
@@ -46,11 +49,11 @@ public class RobotContainer {
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
 
+  JoystickButton driveStart = new JoystickButton(m_driverController, Button.kStart.value);
   JoystickButton driveX = new JoystickButton(m_driverController, Button.kX.value);
   JoystickButton driveY = new JoystickButton(m_driverController, Button.kY.value);
   JoystickButton driveA = new JoystickButton(m_driverController, Button.kA.value);
   JoystickButton driveB = new JoystickButton(m_driverController, Button.kB.value);
-  JoystickButton driveStart = new JoystickButton(m_driverController, Button.kStart.value);
   POVButton driveUpDPad = new POVButton(m_driverController, 0);
   POVButton driveRightDPad = new POVButton(m_driverController, 90);
 
@@ -80,6 +83,8 @@ public class RobotContainer {
     m_elevatorSubsystem.setDefaultCommand(new DefaultElevatorCommand(m_elevatorSubsystem));
     m_algaeFlipperSubsystem.setDefaultCommand(new DefaultAlgaeFlipperCommand(m_algaeFlipperSubsystem));
     m_algaeWheelsSubsystem.setDefaultCommand(new DefaultAlgaeWheelsCommand(m_algaeWheelsSubsystem));
+    m_coralWheelsSubsystem.setDefaultCommand(new DefaultCoralWheelsCommand(m_coralWheelsSubsystem));
+    m_coralFlipperSubsystem.setDefaultCommand(new DefaultCoralFlipperCommand(m_coralFlipperSubsystem));
 
     setUpDriverTab();
   }

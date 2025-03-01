@@ -1,6 +1,7 @@
 package frc.robot.subsystems.coral;
 
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
@@ -35,6 +36,7 @@ public class CoralFlipperSubsystem extends SubsystemBase {
         // goalState = new TrapezoidProfile.State(0, 0);
         // profile = new TrapezoidProfile(constraints);
 
+        flipMotor.setNeutralMode(NeutralModeValue.Brake);
         flipMotor.setPosition(0);
 
     }
@@ -44,13 +46,13 @@ public class CoralFlipperSubsystem extends SubsystemBase {
     }
 
     public void flipCoralFlipperUp() {
-        double rawOutput = pidController.calculate(flipMotor.getPosition().getValueAsDouble(), -3);
+        double rawOutput = pidController.calculate(flipMotor.getPosition().getValueAsDouble(), 1);
         double output = MathUtil.clamp(rawOutput, -1, 1);
         flipMotor.set(output);
     }
 
     public void flipCoralFlipperDown() {
-        double rawOutput = pidController.calculate(flipMotor.getPosition().getValueAsDouble(), 0);
+        double rawOutput = pidController.calculate(flipMotor.getPosition().getValueAsDouble(), 3);
         double output = MathUtil.clamp(rawOutput, -1, 1);
         flipMotor.set(output);
     }

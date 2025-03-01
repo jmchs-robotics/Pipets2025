@@ -66,8 +66,18 @@ public class AutoSubsystem extends SubsystemBase {
     }
 
     public Command getAutoCommand() {
-        validateAndCreatePaths();
-        return autoCommand;
+        // validateAndCreatePaths();
+        // return autoCommand;
+
+        m_driveSubsystem.resetOdometry(
+            new Pose2d(9.537028312683105, 4.743724822998047, Rotation2d.fromDegrees(0))
+        );
+
+        try {
+            return AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory("Test"));
+        } catch (Exception e) {
+            return Commands.none();
+        }
     }
 
     public void setUpAutoTab() {

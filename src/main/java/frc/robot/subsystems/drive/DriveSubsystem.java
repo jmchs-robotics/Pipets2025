@@ -16,33 +16,26 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.List;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.controllers.PathFollowingController;
 import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.Waypoint;
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
 
-import choreo.trajectory.SwerveSample;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.RobotContainer.ReefAlignment;
+import frc.robot.RobotContainer.ReefSide;
+import frc.robot.subsystems.vision.VisionSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 @Logged
@@ -93,8 +86,8 @@ public class DriveSubsystem extends SubsystemBase {
       VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30))
   );
 
-  private final PIDController xController = new PIDController(10.0, 0.0, 0.0);
-  private final PIDController yController = new PIDController(10.0, 0.0, 0.0);
+  // private final PIDController xController = new PIDController(10.0, 0.0, 0.0);
+  // private final PIDController yController = new PIDController(10.0, 0.0, 0.0);
   private final PIDController headingController = new PIDController(7.5, 0.0, 0.0);
 
   private final VisionSubsystem vision;
@@ -124,17 +117,17 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearRight.getPosition()
         });
     
-    for (int i = 0; i < vision.getCameraPoses().size(); i++) {
-      m_estimator.addVisionMeasurement(
-        vision.getCameraPoses().get(i),
-        vision.getCameraTimestamps().get(i),
-        VecBuilder.fill(
-          vision.getMinDistance(i) * DriveConstants.kEstimationCoefficient, 
-          vision.getMinDistance(i) * DriveConstants.kEstimationCoefficient,
-          5.0
-        )
-      );
-    }
+    // for (int i = 0; i < vision.getCameraPoses().size(); i++) {
+    //   m_estimator.addVisionMeasurement(
+    //     vision.getCameraPoses().get(i),
+    //     vision.getCameraTimestamps().get(i),
+    //     VecBuilder.fill(
+    //       vision.getMinDistance(i) * DriveConstants.kEstimationCoefficient, 
+    //       vision.getMinDistance(i) * DriveConstants.kEstimationCoefficient,
+    //       5.0
+    //     )
+    //   );
+    // }
 
     vision.setReferencePose(getPose());
     estimatedPose = getPose();
@@ -192,17 +185,6 @@ public class DriveSubsystem extends SubsystemBase {
     m_frontRight.setDesiredState(swerveModuleStates[1]);
     m_rearLeft.setDesiredState(swerveModuleStates[2]);
     m_rearRight.setDesiredState(swerveModuleStates[3]);
-  }
-
-  private void driveFieldRelative(ChassisSpeeds speeds) {
-
-    var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
-    SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
-    m_frontLeft.setDesiredState(swerveModuleStates[0]);
-    m_frontRight.setDesiredState(swerveModuleStates[1]);
-    m_rearLeft.setDesiredState(swerveModuleStates[2]);
-    m_rearRight.setDesiredState(swerveModuleStates[3]);
-
   }
 
   public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
@@ -352,6 +334,99 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.constraints, 
       null, 
       new GoalEndState(0.0, Rotation2d.fromDegrees(127.5)));
+    
+    return AutoBuilder.followPath(path);
+
+  }
+
+  public Command pathFindToReef() {
+
+    List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(new Pose2d());
+    GoalEndState endState = new GoalEndState(0, Rotation2d.fromDegrees(0));
+
+    if (RobotContainer.reefAlignment == ReefAlignment.LEFT) {
+      if (RobotContainer.reefSide == ReefSide.FRONT_LEFT) {
+        waypoints = PathPlannerPath.waypointsFromPoses(
+          new Pose2d(5.577, 6.014, Rotation2d.fromDegrees(-120.0)),
+          new Pose2d(5.119,5.137, Rotation2d.fromDegrees(-120.0))
+          );
+        }
+        else if (RobotContainer.reefSide == ReefSide.FRONT_MIDDLE) {
+          waypoints = PathPlannerPath.waypointsFromPoses(
+          new Pose2d(6.718,4.425, Rotation2d.fromDegrees(180)),
+          new Pose2d(5.772,4.425, Rotation2d.fromDegrees(180))
+          );
+        }
+        else if (RobotContainer.reefSide == ReefSide.FRONT_RIGHT) {
+          waypoints = PathPlannerPath.waypointsFromPoses(
+          new Pose2d(5.704,2.046, Rotation2d.fromDegrees(120)),
+          new Pose2d(5.128,2.894, Rotation2d.fromDegrees(120))
+          );
+        }
+        else if (RobotContainer.reefSide == ReefSide.BACK_LEFT) {
+          waypoints = PathPlannerPath.waypointsFromPoses(
+          new Pose2d(3.413,5.829, Rotation2d.fromDegrees(-60)),
+          new Pose2d(3.861,5.146, Rotation2d.fromDegrees(-60))
+          );
+        }
+        else if (RobotContainer.reefSide == ReefSide.BACK_MIDDLE) {
+          waypoints = PathPlannerPath.waypointsFromPoses(
+          new Pose2d(2.457,4.005, Rotation2d.fromDegrees(0)),
+          new Pose2d(3.198,4.005, Rotation2d.fromDegrees(0))
+          );
+        }
+        else if (RobotContainer.reefSide == ReefSide.BACK_RIGHT) {
+          waypoints = PathPlannerPath.waypointsFromPoses(
+          new Pose2d(3.354,2.075, Rotation2d.fromDegrees(60)),
+          new Pose2d(3.832,2.874, Rotation2d.fromDegrees(60))
+          );
+        }
+
+    } else if (RobotContainer.reefAlignment == ReefAlignment.RIGHT) {
+      if (RobotContainer.reefSide == ReefSide.FRONT_LEFT) {
+        waypoints = PathPlannerPath.waypointsFromPoses(
+        new Pose2d(5.860,5.760, Rotation2d.fromDegrees(-120)),
+        new Pose2d(5.411,4.990, Rotation2d.fromDegrees(-120))
+        );
+      }
+      else if (RobotContainer.reefSide == ReefSide.FRONT_MIDDLE) {
+        waypoints = PathPlannerPath.waypointsFromPoses(
+        new Pose2d(6.805,4.005, Rotation2d.fromDegrees(180)),
+        new Pose2d(5.782,4.005, Rotation2d.fromDegrees(180))
+        );
+      }
+      else if (RobotContainer.reefSide == ReefSide.FRONT_RIGHT) {
+        waypoints = PathPlannerPath.waypointsFromPoses(
+        new Pose2d(5.899,2.345, Rotation2d.fromDegrees(120)),
+        new Pose2d(5.460,3.069, Rotation2d.fromDegrees(120))
+        );
+      }
+      else if (RobotContainer.reefSide == ReefSide.BACK_LEFT) {
+        waypoints = PathPlannerPath.waypointsFromPoses(
+        new Pose2d(3.159,5.692, Rotation2d.fromDegrees(-60)),
+        new Pose2d(3.520,4.961, Rotation2d.fromDegrees(-60))
+        );
+      }
+      else if (RobotContainer.reefSide == ReefSide.BACK_MIDDLE) {
+        waypoints = PathPlannerPath.waypointsFromPoses(
+        new Pose2d(2.320,3.684, Rotation2d.fromDegrees(0)),
+        new Pose2d(3.198,3.684, Rotation2d.fromDegrees(0))
+        );
+      }
+      else if (RobotContainer.reefSide == ReefSide.BACK_RIGHT) {
+        waypoints = PathPlannerPath.waypointsFromPoses(
+        new Pose2d(3.673,1.938, Rotation2d.fromDegrees(60)),
+        new Pose2d(4.124,2.709, Rotation2d.fromDegrees(60))
+        );
+      }
+    }
+
+
+    PathPlannerPath path = new PathPlannerPath(
+      waypoints, 
+      DriveConstants.constraints, 
+      null, 
+      endState);
     
     return AutoBuilder.followPath(path);
 

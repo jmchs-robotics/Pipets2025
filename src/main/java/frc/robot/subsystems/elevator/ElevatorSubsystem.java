@@ -170,7 +170,10 @@ public class ElevatorSubsystem extends SubsystemBase {
 // hi! i am so happy im here today :) hg
     public void homeElevator() {
         primaryMotor.set(-0.1); // Slow downward movement until bottom limit is hit
-        if (!bottomLimit.get()) {
+        // if (!bottomLimit.get()) {
+        //     handleBottomLimit();
+        // }
+        if (primaryMotor.getSupplyCurrent().getValueAsDouble() > 5) {
             handleBottomLimit();
         }
     }

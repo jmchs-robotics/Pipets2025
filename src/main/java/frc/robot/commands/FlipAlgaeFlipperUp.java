@@ -3,11 +3,11 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.algae.AlgaeFlipperSubsystem;
 
-public class FlipFlipperUp extends Command {
+public class FlipAlgaeFlipperUp extends Command {
     
     private final AlgaeFlipperSubsystem m_algaeFlipper;
 
-    public FlipFlipperUp(AlgaeFlipperSubsystem algaeFlipper) {
+    public FlipAlgaeFlipperUp(AlgaeFlipperSubsystem algaeFlipper) {
 
         m_algaeFlipper = algaeFlipper;
         addRequirements(m_algaeFlipper);

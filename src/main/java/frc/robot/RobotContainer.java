@@ -23,6 +23,10 @@ import frc.robot.subsystems.coral.*;
 import frc.robot.subsystems.AutoSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 
@@ -111,7 +115,7 @@ public class RobotContainer {
     );
 
     driveY.toggleOnTrue(
-      new FlipFlipperUp(m_algaeFlipperSubsystem)
+      new FlipAlgaeFlipperUp(m_algaeFlipperSubsystem)
     );
 
     driveA.whileTrue(
@@ -330,5 +334,21 @@ public class RobotContainer {
       CENTER,
       RIGHT
     }
+
+    ParallelCommandGroup scoreCoral = new ParallelCommandGroup(
+      new MoveElevatorToSetpoint(m_elevatorSubsystem),
+      new FlipCoralFlipperDown(m_coralFlipperSubsystem)
+    );
+
+    SequentialCommandGroup intakeAlgae = new SequentialCommandGroup(
+      new ParallelRaceGroup(
+        new MoveElevatorToSetpoint(m_elevatorSubsystem),
+        new WaitCommand(1)
+      ),
+      new ParallelCommandGroup(
+        new MoveElevatorToSetpoint(m_elevatorSubsystem),
+        new FlipAlgaeFlipperUp(m_algaeFlipperSubsystem)
+      )
+    );
 
 }

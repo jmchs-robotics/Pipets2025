@@ -28,9 +28,11 @@ public class CoralFlipperSubsystem extends SubsystemBase {
         config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         config.CurrentLimits.SupplyCurrentLimit = 40; // 40 amp breaker on PDH
         config.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-        config.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Rotations.of(5).in(Units.Rotations);
+        config.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Degrees.of(135).in(Units.Rotations);
         config.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
-        config.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Rotations.of(0).in(Units.Rotations);
+        config.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Degrees.of(0).in(Units.Rotations);
+
+        config.Feedback.SensorToMechanismRatio = 12; // 12:1 gear ratio
 
         flipMotor.getConfigurator().apply(config);
 

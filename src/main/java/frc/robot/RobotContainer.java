@@ -85,8 +85,6 @@ public class RobotContainer {
 
     // Configure default commands
     m_robotDrive.setDefaultCommand(new DefaultDriveCommand(m_robotDrive, m_driverController));
-    m_algaeWheelsSubsystem.setDefaultCommand(new DefaultAlgaeWheelsCommand(m_algaeWheelsSubsystem));
-    m_coralWheelsSubsystem.setDefaultCommand(new DefaultCoralWheelsCommand(m_coralWheelsSubsystem));
 
     setUpDriverTab();
   }
@@ -107,7 +105,7 @@ public class RobotContainer {
     );
 
     driveX.toggleOnTrue(
-      new SetElevator(m_elevatorSubsystem)
+      new SetElevator(m_elevatorSubsystem, elevatorLevel)
     );
 
     // driveY.toggleOnTrue(
@@ -313,7 +311,8 @@ public class RobotContainer {
       LEVEL_3_CORAL,
       LEVEL_2_CORAL,
       LEVEL_3_ALGAE,
-      LEVEL_2_ALGAE
+      LEVEL_2_ALGAE,
+      CORAL_STATION
     }
 
     public enum ReefSide {
@@ -332,19 +331,25 @@ public class RobotContainer {
     }
 
     ParallelCommandGroup scoreCoralLow = new ParallelCommandGroup(
-      new SetElevator(m_elevatorSubsystem),
+      new SetElevator(m_elevatorSubsystem, elevatorLevel),
       new SetCoralFlipper(m_coralFlipperSubsystem, "scoreLow")
     );
 
     SequentialCommandGroup intakeAlgae = new SequentialCommandGroup(
       new ParallelRaceGroup(
-        new SetElevator(m_elevatorSubsystem),
+        new SetElevator(m_elevatorSubsystem, elevatorLevel),
         new WaitCommand(1)
       ),
       new ParallelCommandGroup(
-        new SetElevator(m_elevatorSubsystem),
+        new SetElevator(m_elevatorSubsystem, elevatorLevel),
         new SetAlgaeFlipper(m_algaeFlipperSubsystem, "up")
       )
+    );
+
+    ParallelCommandGroup intakeCoral = new ParallelCommandGroup(
+      new SetElevator(m_elevatorSubsystem, ElevatorLevel.CORAL_STATION),
+      new SetCoralFlipper(m_coralFlipperSubsystem, "coralStation"),
+      new CoralIntake(m_coralWheelsSubsystem)
     );
 
 }

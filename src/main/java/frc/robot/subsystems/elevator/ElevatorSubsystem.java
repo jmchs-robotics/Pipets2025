@@ -35,7 +35,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         config.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
         config.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Inches.of(ElevatorConstants.minPos).in(Units.Inches);
 
-        config.Feedback.SensorToMechanismRatio = ElevatorConstants.rotationsPerInch;
+        config.Feedback.SensorToMechanismRatio = 9; // 9:1 gear ratio 
 
         primaryMotor.getConfigurator().apply(config);
         followerMotor.getConfigurator().apply(config);

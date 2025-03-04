@@ -199,8 +199,8 @@ public final class Constants {
     public static final double kI = 0;
     public static final double kD = 0;
 
-    public static final Angle kAngleUp = edu.wpi.first.units.Units.Rotations.of(10);
-    public static final Angle kAngleDown = edu.wpi.first.units.Units.Rotations.of(0);
+    public static final Angle kAngleUp = edu.wpi.first.units.Units.Degrees.of(90);
+    public static final Angle kAngleDown = edu.wpi.first.units.Units.Degrees.of(0);
   
   }
 
@@ -214,10 +214,10 @@ public final class Constants {
     public static final double kD = 0;
 
     // Yes the whole import statement has to be there bc of the other units class colliding with it
-    public static final Angle kIdleAngle = edu.wpi.first.units.Units.Rotations.of(0);
-    public static final Angle kScoreLow = edu.wpi.first.units.Units.Rotations.of(1);
-    public static final Angle kScoreHigh = edu.wpi.first.units.Units.Rotations.of(2);
-    public static final Angle kCoralStation = edu.wpi.first.units.Units.Rotations.of(0.5);
+    public static final Angle kIdleAngle = edu.wpi.first.units.Units.Degrees.of(10);
+    public static final Angle kScoreLow = edu.wpi.first.units.Units.Degrees.of(100);
+    public static final Angle kScoreHigh = edu.wpi.first.units.Units.Degrees.of(135);
+    public static final Angle kCoralStation = edu.wpi.first.units.Units.Degrees.of(35);
 
   }
 

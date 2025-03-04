@@ -42,9 +42,9 @@ public final class Constants {
     public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
 
     // Chassis configuration
-    public static final double kTrackWidth = Units.inchesToMeters(29);
+    public static final double kTrackWidth = Units.inchesToMeters(29.5);
     // Distance between centers of right and left wheels on robot
-    public static final double kWheelBase = Units.inchesToMeters(29);
+    public static final double kWheelBase = Units.inchesToMeters(29.5);
     // Distance between front and back wheels on robot
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
         new Translation2d(kWheelBase / 2, kTrackWidth / 2),
@@ -91,8 +91,8 @@ public final class Constants {
     );
 
     public static final RobotConfig robotConfig = new RobotConfig(
-      20.411, 
-      5.54, //massKG * 0.521^2. 0.521 is the radius from the center of the robot to a module in meters
+      Units.lbsToKilograms(132.75), 
+      16.914,
       moduleConfig, 
       kTrackWidth
     );

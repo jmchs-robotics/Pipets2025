@@ -1,59 +1,50 @@
 package frc.robot.subsystems.coral;
 
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.NeutralOut;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
 
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.units.Units;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CoralConstants;
 
 public class CoralFlipperSubsystem extends SubsystemBase {
+    
     private final TalonFX flipMotor;
-    private final PIDController pidController;
+    private final TalonFXConfiguration config;
 
     public CoralFlipperSubsystem() {
 
         flipMotor = new TalonFX(CoralConstants.flipMotorID);
-        
-        // constraints = new TrapezoidProfile.Constraints(
-        //     AlgaeConstants.maxVelocity,
-        //     AlgaeConstants.maxAcceleration
-        // );
-        
-        pidController = new PIDController(
-            CoralConstants.kP,
-            CoralConstants.kI,
-            CoralConstants.kD
-        );
-        
-        pidController.setTolerance(0.1); // 0.5 inches position tolerance
-        
-        // Initialize states and profile
-        // currentState = new TrapezoidProfile.State(0, 0);
-        // goalState = new TrapezoidProfile.State(0, 0);
-        // profile = new TrapezoidProfile(constraints);
+        config = new TalonFXConfiguration();
 
-        flipMotor.setNeutralMode(NeutralModeValue.Brake);
-        flipMotor.setPosition(0);
+        config.Slot0.kP = CoralConstants.kP;
+        config.Slot0.kI = CoralConstants.kI;
+        config.Slot0.kD = CoralConstants.kD;
+
+        config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        config.CurrentLimits.SupplyCurrentLimit = 40; // 40 amp breaker on PDH
+        config.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+        config.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Rotations.of(5).in(Units.Rotations);
+        config.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+        config.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Rotations.of(0).in(Units.Rotations);
+
+        flipMotor.getConfigurator().apply(config);
 
     }
 
-    public void stopFlipperMotor() {
-        flipMotor.stopMotor();
+    public void setPosition(Angle angle) {
+        flipMotor.setControl(new PositionVoltage(angle.in(Units.Rotations)));
     }
 
-    public void flipCoralFlipperUp() {
-        double rawOutput = pidController.calculate(flipMotor.getPosition().getValueAsDouble(), 1);
-        double output = MathUtil.clamp(rawOutput, -1, 1);
-        flipMotor.set(output);
+    public void setNeutral() {
+        flipMotor.setControl(new NeutralOut());
     }
 
-    public void flipCoralFlipperDown() {
-        double rawOutput = pidController.calculate(flipMotor.getPosition().getValueAsDouble(), 3);
-        double output = MathUtil.clamp(rawOutput, -1, 1);
-        flipMotor.set(output);
+    public void resetSensorPosition(Angle setpoint) {
+        flipMotor.setPosition(setpoint.in(Units.Rotations));
     }
 }

@@ -1,16 +1,20 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.AlgaeConstants;
 import frc.robot.subsystems.algae.AlgaeFlipperSubsystem;
 
-public class FlipAlgaeFlipperUp extends Command {
+public class SetAlgaeFlipper extends Command {
     
     private final AlgaeFlipperSubsystem m_algaeFlipper;
+    private final String position;
 
-    public FlipAlgaeFlipperUp(AlgaeFlipperSubsystem algaeFlipper) {
+    public SetAlgaeFlipper(AlgaeFlipperSubsystem algaeFlipper, String pos) {
 
         m_algaeFlipper = algaeFlipper;
         addRequirements(m_algaeFlipper);
+
+        position = pos;
 
     }
     
@@ -19,12 +23,20 @@ public class FlipAlgaeFlipperUp extends Command {
 
     @Override
     public void execute() {
-        m_algaeFlipper.flipFlipperUp();
+
+        if (position.equals("up")) {
+            m_algaeFlipper.setPosition(AlgaeConstants.kAngleUp);
+        }
+
+        if (position.equals("down")) {
+            m_algaeFlipper.setPosition(AlgaeConstants.kAngleDown);
+        }
+        
     }
 
     @Override
     public boolean isFinished() {
-        return false;
+        return true;
     }
 
     @Override

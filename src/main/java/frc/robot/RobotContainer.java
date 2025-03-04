@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.*;
 import frc.robot.subsystems.elevator.*;
-import frc.robot.subsystems.elevator.ElevatorSubsystem.ElevatorPosition;
 import frc.robot.subsystems.vision.*;
 import frc.robot.subsystems.drive.*;
 import frc.robot.subsystems.algae.*;
@@ -86,11 +85,8 @@ public class RobotContainer {
 
     // Configure default commands
     m_robotDrive.setDefaultCommand(new DefaultDriveCommand(m_robotDrive, m_driverController));
-    m_elevatorSubsystem.setDefaultCommand(new DefaultElevatorCommand(m_elevatorSubsystem));
-    m_algaeFlipperSubsystem.setDefaultCommand(new DefaultAlgaeFlipperCommand(m_algaeFlipperSubsystem));
     m_algaeWheelsSubsystem.setDefaultCommand(new DefaultAlgaeWheelsCommand(m_algaeWheelsSubsystem));
     m_coralWheelsSubsystem.setDefaultCommand(new DefaultCoralWheelsCommand(m_coralWheelsSubsystem));
-    m_coralFlipperSubsystem.setDefaultCommand(new DefaultCoralFlipperCommand(m_coralFlipperSubsystem));
 
     setUpDriverTab();
   }
@@ -111,12 +107,12 @@ public class RobotContainer {
     );
 
     driveX.toggleOnTrue(
-      new MoveElevatorToSetpoint(m_elevatorSubsystem)
+      new SetElevator(m_elevatorSubsystem)
     );
 
-    driveY.toggleOnTrue(
-      new FlipAlgaeFlipperUp(m_algaeFlipperSubsystem)
-    );
+    // driveY.toggleOnTrue(
+    //   new FlipAlgaeFlipperUp(m_algaeFlipperSubsystem)
+    // );
 
     driveA.whileTrue(
       new AlgaeIntake(m_algaeWheelsSubsystem)
@@ -126,9 +122,9 @@ public class RobotContainer {
       new AlgaeExtake(m_algaeWheelsSubsystem)
     );
 
-    driveRB.toggleOnTrue(
-      new FlipCoralFlipperDown(m_coralFlipperSubsystem)
-    );
+    // driveRB.toggleOnTrue(
+    //   new FlipCoralFlipperDown(m_coralFlipperSubsystem)
+    // );
 
     driveLB.whileTrue(
       new CoralIntake(m_coralWheelsSubsystem)
@@ -335,19 +331,19 @@ public class RobotContainer {
       RIGHT
     }
 
-    ParallelCommandGroup scoreCoral = new ParallelCommandGroup(
-      new MoveElevatorToSetpoint(m_elevatorSubsystem),
-      new FlipCoralFlipperDown(m_coralFlipperSubsystem)
+    ParallelCommandGroup scoreCoralLow = new ParallelCommandGroup(
+      new SetElevator(m_elevatorSubsystem),
+      new SetCoralFlipper(m_coralFlipperSubsystem, "scoreLow")
     );
 
     SequentialCommandGroup intakeAlgae = new SequentialCommandGroup(
       new ParallelRaceGroup(
-        new MoveElevatorToSetpoint(m_elevatorSubsystem),
+        new SetElevator(m_elevatorSubsystem),
         new WaitCommand(1)
       ),
       new ParallelCommandGroup(
-        new MoveElevatorToSetpoint(m_elevatorSubsystem),
-        new FlipAlgaeFlipperUp(m_algaeFlipperSubsystem)
+        new SetElevator(m_elevatorSubsystem),
+        new SetAlgaeFlipper(m_algaeFlipperSubsystem, "up")
       )
     );
 

@@ -18,6 +18,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.Distance;
 
 
 /**
@@ -164,13 +166,13 @@ public final class Constants {
     public static final double maxAcceleration = 60; // Inches per second squared
 
     // TODO: Change these numbers when we can measure the elevator on the actual robot
-    public static final double L2_ALGAE = 21;
-    public static final double L3_ALGAE = 36;
+    public static final Distance L2_ALGAE = edu.wpi.first.units.Units.Inches.of(21);
+    public static final Distance L3_ALGAE = edu.wpi.first.units.Units.Inches.of(36);
     // L1 is min pos
-    public static final double L2_CORAL = 9;
-    public static final double L3_CORAL = 25.5;
-    public static final double L4_CORAL = 48.5;
-    public static final double CORAL_STATION = 0;
+    public static final Distance L2_CORAL = edu.wpi.first.units.Units.Inches.of(9);
+    public static final Distance L3_CORAL = edu.wpi.first.units.Units.Inches.of(25.5);
+    public static final Distance L4_CORAL = edu.wpi.first.units.Units.Inches.of(48.5);
+    public static final Distance CORAL_STATION = edu.wpi.first.units.Units.Inches.of(0);
 
     public static final int primaryElevatorID = 2;
     public static final int followerElevatorID = 1;
@@ -196,6 +198,9 @@ public final class Constants {
     public static final double kP = 0.1;
     public static final double kI = 0;
     public static final double kD = 0;
+
+    public static final Angle kAngleUp = edu.wpi.first.units.Units.Rotations.of(10);
+    public static final Angle kAngleDown = edu.wpi.first.units.Units.Rotations.of(0);
   
   }
 
@@ -207,6 +212,12 @@ public final class Constants {
     public static final double kP = 0.1;
     public static final double kI = 0;
     public static final double kD = 0;
+
+    // Yes the whole import statement has to be there bc of the other units class colliding with it
+    public static final Angle kIdleAngle = edu.wpi.first.units.Units.Rotations.of(0);
+    public static final Angle kScoreLow = edu.wpi.first.units.Units.Rotations.of(1);
+    public static final Angle kScoreHigh = edu.wpi.first.units.Units.Rotations.of(2);
+    public static final Angle kCoralStation = edu.wpi.first.units.Units.Rotations.of(0.5);
 
   }
 

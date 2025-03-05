@@ -174,6 +174,8 @@ public final class Constants {
     public static final Distance L4_CORAL = edu.wpi.first.units.Units.Inches.of(48.5);
     public static final Distance CORAL_STATION = edu.wpi.first.units.Units.Inches.of(0);
 
+    public static final Distance HOME = edu.wpi.first.units.Units.Inches.of(0);
+    
     public static final int primaryElevatorID = 2;
     public static final int followerElevatorID = 1;
     public static final int limitSwitchPort = 7;

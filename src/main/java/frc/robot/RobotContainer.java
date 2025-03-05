@@ -104,29 +104,33 @@ public class RobotContainer {
       new InstantCommand(() -> {m_robotDrive.zeroHeading();})
     );
 
-    driveX.toggleOnTrue(
+    driveRB.onTrue(
       new SetElevator(m_elevatorSubsystem, elevatorLevel)
     );
 
-    // driveY.toggleOnTrue(
-    //   new FlipAlgaeFlipperUp(m_algaeFlipperSubsystem)
-    // );
+    driveLB.onTrue(
+      new SetElevator(m_elevatorSubsystem, ElevatorLevel.HOME)
+    );
+
+    driveY.onTrue(
+      new SetAlgaeFlipper(m_algaeFlipperSubsystem, "up")
+    );
+
+    driveX.onTrue(
+      new SetAlgaeFlipper(m_algaeFlipperSubsystem, "down")
+    );
 
     driveA.whileTrue(
-      new AlgaeIntake(m_algaeWheelsSubsystem)
+      new SetCoralFlipper(m_coralFlipperSubsystem, "scoreLow")
     );
 
     driveB.whileTrue(
-      new AlgaeExtake(m_algaeWheelsSubsystem)
+      new SetCoralFlipper(m_coralFlipperSubsystem, "idle")
     );
 
-    // driveRB.toggleOnTrue(
-    //   new FlipCoralFlipperDown(m_coralFlipperSubsystem)
+    // driveLB.whileTrue(
+    //   new CoralIntake(m_coralWheelsSubsystem)
     // );
-
-    driveLB.whileTrue(
-      new CoralIntake(m_coralWheelsSubsystem)
-    );
     
     driveUpDPad.whileTrue(
       m_robotDrive.pathFindToProcessor()
@@ -312,7 +316,8 @@ public class RobotContainer {
       LEVEL_2_CORAL,
       LEVEL_3_ALGAE,
       LEVEL_2_ALGAE,
-      CORAL_STATION
+      CORAL_STATION,
+      HOME
     }
 
     public enum ReefSide {

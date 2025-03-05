@@ -45,6 +45,10 @@ public class SetElevator extends Command {
             m_elevator.setPosition(ElevatorConstants.L2_ALGAE);
         }
 
+        if (m_level == ElevatorLevel.HOME) {
+            m_elevator.setPosition(ElevatorConstants.HOME);
+        }
+
     }
 
     @Override

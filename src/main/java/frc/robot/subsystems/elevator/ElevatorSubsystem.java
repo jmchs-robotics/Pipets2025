@@ -5,6 +5,7 @@ import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.units.Units;
@@ -35,7 +36,9 @@ public class ElevatorSubsystem extends SubsystemBase {
         config.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
         config.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Inches.of(ElevatorConstants.minPos).in(Units.Inches);
 
-        config.Feedback.SensorToMechanismRatio = 9; // 9:1 gear ratio 
+        config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+
+        config.Feedback.SensorToMechanismRatio = 1/9; // 9:1 gear ratio 
 
         primaryMotor.getConfigurator().apply(config);
         followerMotor.getConfigurator().apply(config);

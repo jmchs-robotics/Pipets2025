@@ -76,7 +76,7 @@ public final class Constants {
     public static final ModuleConfig moduleConfig = new ModuleConfig(
       ModuleConstants.kWheelDiameterMeters / 2, 
       kMaxSpeedMetersPerSecond, 
-      1, 
+      1, // How much force is lost to friction 
       new DCMotor(
         12, 
         3.6, 
@@ -94,7 +94,12 @@ public final class Constants {
       Units.lbsToKilograms(132.75), 
       16.914,
       moduleConfig, 
-      kTrackWidth
+      new Translation2d[] {
+        new Translation2d(kWheelBase / 2, kTrackWidth / 2),
+        new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
+        new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
+        new Translation2d(-kWheelBase / 2, -kTrackWidth / 2)
+      }
     );
 
     public static final PPHolonomicDriveController ppDriveController = new PPHolonomicDriveController(

@@ -61,6 +61,7 @@ public class RobotContainer {
   JoystickButton driveLB = new JoystickButton(m_driverController, Button.kLeftBumper.value);
   POVButton driveUpDPad = new POVButton(m_driverController, 0);
   POVButton driveRightDPad = new POVButton(m_driverController, 90);
+  POVButton driveLeftDPad = new POVButton(m_driverController, 270);
 
   private final GenericEntry[] elevatorLevels = new GenericEntry[4];
   public static final boolean[] levelBooleans = new boolean[4];
@@ -138,6 +139,10 @@ public class RobotContainer {
 
     driveRightDPad.whileTrue(
       m_robotDrive.pathFindToCoralStationRight()
+    );
+
+    driveLeftDPad.whileTrue(
+      m_robotDrive.pathFindToCoralStationLeft()
     );
 
   }

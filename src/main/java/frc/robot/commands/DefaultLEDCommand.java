@@ -30,17 +30,21 @@ public class DefaultLEDCommand extends Command {
 
             if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
 
-                LEDPattern gradient = LEDPattern.gradient(LEDPattern.GradientType.kContinuous,
-                Color.kRed, Color.kPink, Color.kCrimson, Color.kSienna, Color.kTomato, Color.kDarkOrange, 
-                Color.kDarkMagenta, Color.kFirebrick);
+                // LEDPattern gradient = LEDPattern.gradient(LEDPattern.GradientType.kContinuous,
+                // Color.kRed, Color.kPink, Color.kCrimson, Color.kSienna, Color.kTomato, Color.kDarkOrange, 
+                // Color.kDarkMagenta, Color.kFirebrick);
+
+                LEDPattern gradient = LEDPattern.solid(Color.kRed);
 
                 m_led.setLEDPattern(gradient);
 
             } else {
 
-                LEDPattern gradient = LEDPattern.gradient(LEDPattern.GradientType.kContinuous, 
-                Color.kBlue, Color.kAliceBlue, Color.kAqua, Color.kAquamarine, Color.kAzure, 
-                Color.kBlueViolet, Color.kCadetBlue, Color.kDarkBlue, Color.kDarkCyan, Color.kMediumPurple);
+                // LEDPattern gradient = LEDPattern.gradient(LEDPattern.GradientType.kContinuous, 
+                // Color.kBlue, Color.kAliceBlue, Color.kAqua, Color.kAquamarine, Color.kAzure, 
+                // Color.kBlueViolet, Color.kCadetBlue, Color.kDarkBlue, Color.kDarkCyan, Color.kMediumPurple);
+
+                LEDPattern gradient = LEDPattern.solid(Color.kBlue);
 
                 m_led.setLEDPattern(gradient);
 

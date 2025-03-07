@@ -38,7 +38,7 @@ import java.util.List;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-  private final LEDSubsystem m_leds = new LEDSubsystem();
+  public final LEDSubsystem m_leds = new LEDSubsystem();
 
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);

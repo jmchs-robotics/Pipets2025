@@ -32,7 +32,7 @@ public class CoralFlipperSubsystem extends SubsystemBase {
         config.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
         config.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Degrees.of(0).in(Units.Rotations);
 
-        config.Feedback.SensorToMechanismRatio = 12; // 12:1 gear ratio
+        config.Feedback.SensorToMechanismRatio = 36; // 36:1 gear ratio
 
         flipMotor.getConfigurator().apply(config);
 

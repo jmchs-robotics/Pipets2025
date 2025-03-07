@@ -10,8 +10,8 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 
 public class LEDSubsystem extends SubsystemBase {
 
-    AddressableLED m_led = new AddressableLED(9);
-    AddressableLEDBuffer m_ledBuffer = new AddressableLEDBuffer(150);
+    private AddressableLED m_led = new AddressableLED(9);
+    private AddressableLEDBuffer m_ledBuffer = new AddressableLEDBuffer(150);
 
     public LEDSubsystem() {
 
@@ -20,6 +20,10 @@ public class LEDSubsystem extends SubsystemBase {
         m_led.setData(m_ledBuffer);
         m_led.start();        
 
+    }
+
+    public AddressableLED getLeds() {
+        return m_led;
     }
 
     public void setLEDPattern(LEDPattern pattern) {

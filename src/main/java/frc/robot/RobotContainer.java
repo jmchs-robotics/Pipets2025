@@ -19,6 +19,7 @@ import frc.robot.subsystems.vision.*;
 import frc.robot.subsystems.drive.*;
 import frc.robot.subsystems.algae.*;
 import frc.robot.subsystems.coral.*;
+import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.AutoSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -46,6 +47,7 @@ public class RobotContainer {
   private final VisionSubsystem m_vision = new VisionSubsystem();
   private final DriveSubsystem m_robotDrive = new DriveSubsystem(m_vision);
   private final AutoSubsystem m_auto = new AutoSubsystem(m_robotDrive);
+  public final LEDSubsystem m_leds = new LEDSubsystem();
 
   public static final Field2d field = new Field2d();
 
@@ -86,6 +88,7 @@ public class RobotContainer {
 
     // Configure default commands
     m_robotDrive.setDefaultCommand(new DefaultDriveCommand(m_robotDrive, m_driverController));
+    m_leds.setDefaultCommand(new DefaultLEDCommand(m_leds));
 
     setUpDriverTab();
   }

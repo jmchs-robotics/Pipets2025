@@ -4,7 +4,6 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.units.Units;
@@ -33,9 +32,7 @@ public class CoralFlipperSubsystem extends SubsystemBase {
         config.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
         config.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Degrees.of(0).in(Units.Rotations);
 
-        config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-
-        config.Feedback.SensorToMechanismRatio = 1/12; // 12:1 gear ratio
+        config.Feedback.SensorToMechanismRatio = 12; // 12:1 gear ratio
 
         flipMotor.getConfigurator().apply(config);
 

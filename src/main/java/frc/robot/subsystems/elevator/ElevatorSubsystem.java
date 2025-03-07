@@ -38,7 +38,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
-        config.Feedback.SensorToMechanismRatio = 1/9; // 9:1 gear ratio 
+        config.Feedback.SensorToMechanismRatio = 9; // 9:1 gear ratio 
 
         primaryMotor.getConfigurator().apply(config);
         followerMotor.getConfigurator().apply(config);

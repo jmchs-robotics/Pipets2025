@@ -216,8 +216,8 @@ public final class Constants {
     public static final int flipMotorID = 6;
     public static final int wheelMotorID = 7;
 
-    public static final double kP = 0.1;
-    public static final double kI = 0;
+    public static final double kP = 2;
+    public static final double kI = 1;
     public static final double kD = 0;
 
     // Yes the whole import statement has to be there bc of the other units class colliding with it

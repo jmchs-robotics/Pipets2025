@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Degrees;
+
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -60,8 +62,18 @@ public class AutoSubsystem extends SubsystemBase {
     }
 
     public Command getAutoCommand() {
-        validateAndCreatePaths();
-        return autoCommand;
+        // validateAndCreatePaths();
+        // return autoCommand;
+
+        m_driveSubsystem.resetOdometry(
+            new Pose2d(2, 6.5, Rotation2d.fromDegrees(0))
+        );
+
+        try {
+            return AutoBuilder.followPath(PathPlannerPath.fromPathFile("5MetersPathPlan"));
+        } catch (Exception e) {
+            return Commands.none();
+        }
     }
 
     public void setUpAutoTab() {
@@ -185,7 +197,7 @@ public class AutoSubsystem extends SubsystemBase {
             try {
                 if (nextPoint != currentPoint) {
                     PathPlannerPath path = PathPlannerPath.fromChoreoTrajectory("" + currentPoint + "-" + nextPoint);  
-                    trajectories.add(path.getIdealTrajectory(DriveConstants.robotConfig).get());
+                    trajectories.add(path.getIdealTrajectory(m_driveSubsystem.getRobotConfig()).get());
                     Command cmd = Commands.sequence(AutoBuilder.followPath(path), new WaitCommand(0.25));
                     segment = new ParallelRaceGroup(cmd);
                 }

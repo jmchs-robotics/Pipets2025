@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.List;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.Waypoint;
@@ -92,6 +93,7 @@ public class DriveSubsystem extends SubsystemBase {
   private final PIDController headingController = new PIDController(7.5, 0.0, 0.0);
 
   private final VisionSubsystem vision;
+  private RobotConfig robotConfig;
 
   @Logged(name = "Estimated Pose", importance = Importance.INFO)
   private Pose2d estimatedPose;
@@ -103,6 +105,13 @@ public class DriveSubsystem extends SubsystemBase {
     this.vision = vision;
 
     headingController.enableContinuousInput(-Math.PI, Math.PI);
+    
+    try {
+      robotConfig = RobotConfig.fromGUISettings();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    
     configPathPlanner();
   }
 
@@ -278,7 +287,7 @@ public class DriveSubsystem extends SubsystemBase {
       () -> DriveConstants.kDriveKinematics.toChassisSpeeds(getModuleStates()), 
       this::driveRobotRelative,
       DriveConstants.ppDriveController,
-      DriveConstants.robotConfig, 
+      robotConfig, 
       () -> {
         var alliance = DriverStation.getAlliance();
         if (alliance.isPresent()) {
@@ -288,6 +297,10 @@ public class DriveSubsystem extends SubsystemBase {
       }, 
       this
     );
+  }
+
+  public RobotConfig getRobotConfig() {
+    return robotConfig;
   }
 
   // public void pathFindToReef() {}

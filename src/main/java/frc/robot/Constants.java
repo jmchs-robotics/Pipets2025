@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
@@ -73,38 +74,38 @@ public final class Constants {
 
     public static final double kEstimationCoefficient = 0.025;
 
-    public static final ModuleConfig moduleConfig = new ModuleConfig(
-      ModuleConstants.kWheelDiameterMeters / 2, 
-      kMaxSpeedMetersPerSecond, 
-      1, // How much force is lost to friction 
-      new DCMotor(
-        12, 
-        3.6, 
-        211, 
-        3.6, 
-        6784, 
-        1
-      ), 
-      ModuleConstants.kDrivingMotorReduction, 
-      50, 
-      1
-    );
+    // public static final ModuleConfig moduleConfig = new ModuleConfig(
+    //   ModuleConstants.kWheelDiameterMeters / 2, 
+    //   3.95, 
+    //   0.85,
+    //   new DCMotor(
+    //     12, 
+    //     3.6, 
+    //     211, 
+    //     3.6, 
+    //     6784, 
+    //     1
+    //   ), 
+    //   ModuleConstants.kDrivingMotorReduction, 
+    //   40, 
+    //   1
+    // );
 
-    public static final RobotConfig robotConfig = new RobotConfig(
-      Units.lbsToKilograms(132.75), 
-      16.914,
-      moduleConfig, 
-      new Translation2d[] {
-        new Translation2d(kWheelBase / 2, kTrackWidth / 2),
-        new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
-        new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
-        new Translation2d(-kWheelBase / 2, -kTrackWidth / 2)
-      }
-    );
+    // public static final RobotConfig robotConfig = new RobotConfig(
+    //   Units.lbsToKilograms(132.75), 
+    //   20,
+    //   moduleConfig, 
+    //   new Translation2d[] {
+    //     new Translation2d(kWheelBase / 2, kTrackWidth / 2),
+    //     new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
+    //     new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
+    //     new Translation2d(-kWheelBase / 2, -kTrackWidth / 2)
+    //   }
+    // );
 
     public static final PPHolonomicDriveController ppDriveController = new PPHolonomicDriveController(
-      new PIDConstants(10, 0.12, 0), 
-      new PIDConstants(10, 0.0, 0)
+      new PIDConstants(10, 0.5, 0.05), 
+      new PIDConstants(10, 0.05, 0.1)
     );
 
     public static final PathConstraints constraints = new PathConstraints(

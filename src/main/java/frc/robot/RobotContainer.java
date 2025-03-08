@@ -109,7 +109,7 @@ public class RobotContainer {
     );
 
     driveRB.onTrue(
-      new SetElevator(m_elevatorSubsystem, elevatorLevel)
+      new SetElevator(m_elevatorSubsystem, ElevatorLevel.LEVEL_2_CORAL)
     );
 
     driveLB.onTrue(

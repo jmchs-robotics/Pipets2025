@@ -18,8 +18,8 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.ClimbUpCommand;
-import frc.robot.commands.DefaultClimberCommand;
+import frc.robot.commands.ClimbUp;
+import frc.robot.commands.ClimbDown;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Climbers.ClimbersSubsystem;
@@ -49,6 +49,7 @@ public class RobotContainer {
 
   JoystickButton driveStart = new JoystickButton(m_driverController, Button.kStart.value);
   JoystickButton driveRB = new JoystickButton(m_driverController, Button.kRightBumper.value);
+  JoystickButton driveLB = new JoystickButton(m_driverController, Button.kLeftBumper.value);
   
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -59,7 +60,6 @@ public class RobotContainer {
 
     // Configure default commands
     m_robotDrive.setDefaultCommand(new DefaultDriveCommand(m_robotDrive, m_driverController));
-    m_roboClimbersSubsystem.setDefaultCommand(new DefaultClimberCommand(m_roboClimbersSubsystem));
   }
 
 
@@ -81,9 +81,14 @@ public class RobotContainer {
       new InstantCommand(() -> {m_robotDrive.zeroHeading();})
     );
 
-    driveRB.onTrue(
-      new ClimbUpCommand(m_roboClimbersSubsystem)
+    driveRB.whileTrue(
+      new ClimbUp(m_roboClimbersSubsystem)
     );
+
+    driveLB.whileTrue(
+      new ClimbDown(m_roboClimbersSubsystem)
+    );
+    
   }
 
   /**

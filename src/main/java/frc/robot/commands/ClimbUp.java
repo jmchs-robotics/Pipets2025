@@ -3,11 +3,11 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Climbers.ClimbersSubsystem;
 
-public class DefaultClimberCommand extends Command {
+public class ClimbUp extends Command {
     
     private final ClimbersSubsystem m_climber;
 
-    public DefaultClimberCommand(ClimbersSubsystem climber) { // the constructor also we need to decide if it is climbers or climber :)
+    public ClimbUp(ClimbersSubsystem climber) { // the constructor also we need to decide if it is climbers or climber :)
 
         m_climber = climber;
         addRequirements(m_climber);
@@ -19,7 +19,7 @@ public class DefaultClimberCommand extends Command {
 
     @Override
     public void execute() {
-        m_climber.climbDown();
+        m_climber.setMotor(-0.25);
     }
 
     @Override
@@ -28,5 +28,7 @@ public class DefaultClimberCommand extends Command {
     }
 
     @Override
-    public void end(boolean interrupted) {}
+    public void end(boolean interrupted) {
+        m_climber.stopClimbMotor();
+    }
 }

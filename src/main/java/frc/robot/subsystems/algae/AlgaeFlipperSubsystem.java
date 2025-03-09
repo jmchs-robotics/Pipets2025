@@ -35,7 +35,7 @@ public class AlgaeFlipperSubsystem extends SubsystemBase {
 
         config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
-        config.Feedback.SensorToMechanismRatio = 9; // 45:1 gear ratio
+        config.Feedback.SensorToMechanismRatio = 45; // 45:1 gear ratio
 
         flipMotor.getConfigurator().apply(config);
 

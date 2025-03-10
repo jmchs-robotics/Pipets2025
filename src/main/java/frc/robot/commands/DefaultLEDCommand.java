@@ -61,6 +61,48 @@ public class DefaultLEDCommand extends Command {
 
         }
 
+        if (RobotContainer.elevatorLevel == ElevatorLevel.LEVEL_2_CORAL) {
+
+            LEDPattern pattern = LEDPattern.steps(
+                Map.of(
+                    0,
+                    Color.kWhite,
+                    1.0/3.0,
+                    alliance == Alliance.Blue
+                        ? Color.kBlue
+                        : Color.kRed
+                )
+            );
+
+            m_led.setLEDPattern(pattern);
+
+        }
+
+        if (RobotContainer.elevatorLevel == ElevatorLevel.LEVEL_3_ALGAE) {
+
+            LEDPattern pattern = LEDPattern.solid(Color.kSeaGreen);
+
+            m_led.setLEDPattern(pattern);
+
+        }
+
+        if (RobotContainer.elevatorLevel == ElevatorLevel.LEVEL_2_ALGAE) {
+
+            LEDPattern pattern = LEDPattern.steps(
+                Map.of(
+                    0,
+                    Color.kSeaGreen,
+                    1.0/2.0,
+                    alliance == Alliance.Blue
+                        ? Color.kBlue
+                        : Color.kRed
+                )
+            );
+
+            m_led.setLEDPattern(pattern);
+
+        }
+
     }
 
     @Override

@@ -19,7 +19,7 @@ public class ClimbDown extends Command {
 
     @Override
     public void execute() {
-        m_climber.setMotor(0.25);
+        m_climber.setMotor(1);
     }
 
     @Override

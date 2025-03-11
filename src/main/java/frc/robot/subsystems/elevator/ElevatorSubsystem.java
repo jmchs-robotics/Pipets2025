@@ -39,7 +39,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
         
-        config.Feedback.SensorToMechanismRatio = 9; // 9:1 gear ratio 
+        config.Feedback.SensorToMechanismRatio = 9; // 9:1 gear ratio -> TODO: Maybe try to replace it with RotationsToInches ratio?
 
         primaryMotor.getConfigurator().apply(config);
         followerMotor.getConfigurator().apply(config);
@@ -58,6 +58,10 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public void resetSensorPosition(Angle setpoint) {
         primaryMotor.setPosition(setpoint.in(Units.Rotations));
-        followerMotor.setPosition(-setpoint.in(Units.Rotations));
+
+        // TODO: Generally elevators get pretty mad if you try to set it negative and then call positive setpoints...
+        // Maybe create a new config with config.MotorOutput.Inverted to CW+?
+        // Or just delete this line since you're never going to call on the follower motor position
+        followerMotor.setPosition(-setpoint.in(Units.Rotations)); 
     }
 }

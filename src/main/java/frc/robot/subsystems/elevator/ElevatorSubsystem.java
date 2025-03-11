@@ -33,9 +33,9 @@ public class ElevatorSubsystem extends SubsystemBase {
         config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         config.CurrentLimits.SupplyCurrentLimit = 40; // 40 amp breaker on PDH
         config.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-        config.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Rotations.of(ElevatorConstants.maxPos * ElevatorConstants.rotationsPerInch).in(Units.Rotations);
+        config.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Inches.of(ElevatorConstants.maxPos).in(Units.Inches);
         config.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
-        config.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Rotations.of(ElevatorConstants.minPos * ElevatorConstants.rotationsPerInch).in(Units.Rotations);
+        config.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Inches.of(ElevatorConstants.minPos).in(Units.Inches);
 
         config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
         
@@ -46,8 +46,8 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     }
 
-    public void setPosition(Angle height) {
-        primaryMotor.setControl(new PositionVoltage(height.in(Units.Rotations)));
+    public void setPosition(Distance height) {
+        primaryMotor.setControl(new PositionVoltage(height.in(Units.Inches)));
         followerMotor.setControl(new Follower(primaryMotor.getDeviceID(), true));
     }
 
@@ -56,8 +56,8 @@ public class ElevatorSubsystem extends SubsystemBase {
         followerMotor.setControl(new NeutralOut());
     }
 
-    public void resetSensorPosition(Angle setpoint) {
-        primaryMotor.setPosition(setpoint.in(Units.Rotations));
-        followerMotor.setPosition(-setpoint.in(Units.Rotations));
+    public void resetSensorPosition(Distance setpoint) {
+        primaryMotor.setPosition(setpoint.in(Units.Inches));
+        followerMotor.setPosition(-setpoint.in(Units.Inches));
     }
 }

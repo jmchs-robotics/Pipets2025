@@ -19,7 +19,7 @@
   "defaultMaxAngAccel": 720.0,
   "defaultNominalVoltage": 12.0,
   "robotMass": 60.214,
-  "robotMOI": 2.91,
+  "robotMOI": 2.969,
   "robotTrackwidth": 0.546,
   "driveWheelRadius": 0.038,
   "driveGearing": 4.714,

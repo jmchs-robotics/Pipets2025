@@ -114,6 +114,12 @@ public final class Constants {
       AutoConstants.kMaxAngularSpeedRadiansPerSecond, 
       AutoConstants.kMaxAngularSpeedRadiansPerSecondSquared
     );
+
+    // ROBOT IS 6.75 INCHES BACK FROM REEF WHEN SCORING CORAL
+    // RIGHT SIDE SCORING IS 11.5 INCHES TO THE RIGHT
+    // LEFT SIDE SHOULD BE RELATIVELY CENTERED
+    // ALGAE SHOULD BE ABLE TO JUST GO AGAINST THE REEF WHEN AUTO ALIGNED
+    // ALGAE IS ALSO CENTERED ON THE REEF
   }
 
   public static final class ModuleConstants {

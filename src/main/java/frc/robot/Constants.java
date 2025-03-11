@@ -172,6 +172,9 @@ public final class Constants {
     public static final double maxAcceleration = 60; // Inches per second squared
 
     // TODO: Change these numbers when we can measure the elevator on the actual robot
+
+    // TODO: Angles and Inches don't match up very nicely - Maybe try deleting rotationsPerInch from each Angle?
+    // Or just use Distance and Inches, choose that or Angles in raw Rotations
     public static final Angle L2_ALGAE = edu.wpi.first.units.Units.Rotations.of(21 * rotationsPerInch);
     public static final Angle L3_ALGAE = edu.wpi.first.units.Units.Rotations.of(36 * rotationsPerInch);
     // L1 is min pos
@@ -186,7 +189,8 @@ public final class Constants {
     public static final int followerElevatorID = 1;
     public static final int limitSwitchPort = 7;
 
-    // I think we need to use SysID tuning to figure out kS and kV and kG?????
+    // I think we need to use SysID tuning to figure out kS and kV and kG??????
+    // TODO: We have decent SVG values in our (3245's) code if you would like to try them! 
     // TODO: Tune PID :(
     public static final double kS = 0;
     public static final double kV = 0;

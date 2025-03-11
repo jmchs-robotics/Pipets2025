@@ -39,6 +39,8 @@ public class AlgaeFlipperSubsystem extends SubsystemBase {
 
         flipMotor.getConfigurator().apply(config);
 
+        flipMotor.setPosition(0);
+
     }
 
     public void setPosition(Angle angle) {

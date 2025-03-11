@@ -162,7 +162,7 @@ public final class Constants {
     // From bottom of elevator structure to bottom of second stage
     // If testing doesn't work with these numbers, subtract 4.75 from all position measurements
     public static final double minPos = 0;
-    public static final double maxPos = 43.5;
+    public static final double maxPos = 4.1;
 
     public static final double max_output = 0.7; // Must be between 0 and 1 inclusive
     public static final double rotationsPerInch = 0.745; // Number needs testing. Factors in gearbox
@@ -172,28 +172,23 @@ public final class Constants {
     public static final double maxAcceleration = 60; // Inches per second squared
 
     // TODO: Change these numbers when we can measure the elevator on the actual robot
-    public static final Distance L2_ALGAE = edu.wpi.first.units.Units.Inches.of(21);
-    public static final Distance L3_ALGAE = edu.wpi.first.units.Units.Inches.of(36);
+    public static final Angle L2_ALGAE = edu.wpi.first.units.Units.Rotations.of(0);
+    public static final Angle L3_ALGAE = edu.wpi.first.units.Units.Rotations.of(0);
     // L1 is min pos
-    public static final Distance L2_CORAL = edu.wpi.first.units.Units.Inches.of(9);
-    public static final Distance L3_CORAL = edu.wpi.first.units.Units.Inches.of(25.5);
-    public static final Distance L4_CORAL = edu.wpi.first.units.Units.Inches.of(48.5);
-    public static final Distance CORAL_STATION = edu.wpi.first.units.Units.Inches.of(0);
+    public static final Angle L2_CORAL = edu.wpi.first.units.Units.Rotations.of(0);
+    public static final Angle L3_CORAL = edu.wpi.first.units.Units.Rotations.of(1.5);
+    public static final Angle L4_CORAL = edu.wpi.first.units.Units.Rotations.of(4.05);
+    public static final Angle CORAL_STATION = edu.wpi.first.units.Units.Rotations.of(0);
 
-    public static final Distance HOME = edu.wpi.first.units.Units.Inches.of(0);
+    public static final Angle HOME = edu.wpi.first.units.Units.Rotations.of(0.1);
     
     public static final int primaryElevatorID = 2;
     public static final int followerElevatorID = 1;
     public static final int limitSwitchPort = 7;
 
-    // I think we need to use SysID tuning to figure out kS and kV and kG?????
-    // TODO: Tune PID :(
-    public static final double kS = 0;
-    public static final double kV = 0;
-    public static final double kG = 0;
-    public static final double kP = 0.3;
-    public static final double kI = 0;
-    public static final double kD = 0.005;
+    public static final double kP = 2.5;
+    public static final double kI = 0.8;
+    public static final double kD = 0.1;
 
   }
 
@@ -222,10 +217,10 @@ public final class Constants {
     public static final double kD = 0;
 
     // Yes the whole import statement has to be there bc of the other units class colliding with it
-    public static final Angle kIdleAngle = edu.wpi.first.units.Units.Degrees.of(10);
-    public static final Angle kScoreLow = edu.wpi.first.units.Units.Degrees.of(100);
-    public static final Angle kScoreHigh = edu.wpi.first.units.Units.Degrees.of(135);
-    public static final Angle kCoralStation = edu.wpi.first.units.Units.Degrees.of(35);
+    public static final Angle kIdleAngle = edu.wpi.first.units.Units.Rotations.of(0);
+    public static final Angle kScoreLow = edu.wpi.first.units.Units.Rotations.of(0.125);
+    public static final Angle kScoreHigh = edu.wpi.first.units.Units.Rotations.of(0.15);
+    // public static final Angle kCoralStation = edu.wpi.first.units.Units.Rotations.of(35);
 
   }
 

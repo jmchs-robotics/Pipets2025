@@ -109,23 +109,27 @@ public class RobotContainer {
     );
 
     driveRB.onTrue(
-      new SetElevator(m_elevatorSubsystem, ElevatorLevel.LEVEL_2_CORAL)
+      new SetElevator(m_elevatorSubsystem, ElevatorLevel.LEVEL_4_CORAL)
     );
 
     driveLB.onTrue(
       new SetElevator(m_elevatorSubsystem, ElevatorLevel.HOME)
     );
 
-    driveY.onTrue(
-      new SetAlgaeFlipper(m_algaeFlipperSubsystem, "up")
-    );
+    // driveY.onTrue(
+    //   new SetAlgaeFlipper(m_algaeFlipperSubsystem, "up")
+    // );
 
-    driveX.onTrue(
-      new SetAlgaeFlipper(m_algaeFlipperSubsystem, "down")
+    // driveX.onTrue(
+    //   new SetAlgaeFlipper(m_algaeFlipperSubsystem, "down")
+    // );
+
+    driveX.whileTrue(
+      new CoralExtake(m_coralWheelsSubsystem)
     );
 
     driveA.whileTrue(
-      new SetCoralFlipper(m_coralFlipperSubsystem, "scoreLow")
+      new SetCoralFlipper(m_coralFlipperSubsystem, "scoreHigh")
     );
 
     driveB.whileTrue(

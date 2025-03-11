@@ -8,6 +8,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CoralConstants;
 
@@ -36,6 +37,13 @@ public class CoralFlipperSubsystem extends SubsystemBase {
 
         flipMotor.getConfigurator().apply(config);
 
+        flipMotor.setPosition(0);
+
+    }
+
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("Coral Flipper Motor Rotations", flipMotor.getPosition().getValueAsDouble());
     }
 
     public void setPosition(Angle angle) {

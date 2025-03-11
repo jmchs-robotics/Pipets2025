@@ -32,7 +32,16 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.RobotContainer.ElevatorLevel;
+import frc.robot.commands.CoralExtake;
+import frc.robot.commands.SetCoralFlipper;
+import frc.robot.commands.SetElevator;
+import frc.robot.subsystems.algae.AlgaeFlipperSubsystem;
+import frc.robot.subsystems.algae.AlgaeWheelsSubsystem;
+import frc.robot.subsystems.coral.CoralFlipperSubsystem;
+import frc.robot.subsystems.coral.CoralWheelsSubsystem;
 import frc.robot.subsystems.drive.DriveSubsystem;
+import frc.robot.subsystems.elevator.ElevatorSubsystem;
 
 public class AutoSubsystem extends SubsystemBase {
 
@@ -43,17 +52,34 @@ public class AutoSubsystem extends SubsystemBase {
     GenericEntry autoEntry;
 
     private DriveSubsystem m_driveSubsystem;
+    private ElevatorSubsystem m_elevatorSubsystem;
+    private CoralFlipperSubsystem m_coralFlipper;
+    private CoralWheelsSubsystem m_coralWheels;
+    private AlgaeFlipperSubsystem m_algaeFlipper;
+    private AlgaeWheelsSubsystem m_algaeWheels;
 
     private char[] REEF_SPOTS = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'};
+    private char[] CORAL_STATION_SPOTS = {'V', 'W'};
 
-    public AutoSubsystem(DriveSubsystem drive) {
+    public AutoSubsystem(
+        DriveSubsystem drive,
+        ElevatorSubsystem elevator,
+        CoralFlipperSubsystem coralFlipper,
+        CoralWheelsSubsystem coralWheels,
+        AlgaeFlipperSubsystem algaeFlipper,
+        AlgaeWheelsSubsystem algaeWheels) {
 
-        NetworkTable table = NetworkTableInstance.getDefault().getTable("Shuffleboard").getSubTable("Auto Tab");
-        autoEntry = table.getTopic("Auto Path Sequence").getGenericEntry();
-        
-        m_driveSubsystem = drive;
+            NetworkTable table = NetworkTableInstance.getDefault().getTable("Shuffleboard").getSubTable("Auto Tab");
+            autoEntry = table.getTopic("Auto Path Sequence").getGenericEntry();
+            
+            m_driveSubsystem = drive;
+            m_elevatorSubsystem = elevator;
+            m_coralFlipper = coralFlipper;
+            m_coralWheels = coralWheels;
+            m_algaeFlipper = algaeFlipper;
+            m_algaeWheels = algaeWheels;
 
-        setUpAutoTab();
+            setUpAutoTab();
     }
 
     @Override
@@ -62,18 +88,8 @@ public class AutoSubsystem extends SubsystemBase {
     }
 
     public Command getAutoCommand() {
-        // validateAndCreatePaths();
-        // return autoCommand;
-
-        m_driveSubsystem.resetOdometry(
-            new Pose2d(2, 6.5, Rotation2d.fromDegrees(0))
-        );
-
-        try {
-            return AutoBuilder.followPath(PathPlannerPath.fromPathFile("5MetersPathPlan"));
-        } catch (Exception e) {
-            return Commands.none();
-        }
+        validateAndCreatePaths();
+        return autoCommand;
     }
 
     public void setUpAutoTab() {
@@ -196,7 +212,7 @@ public class AutoSubsystem extends SubsystemBase {
 
             try {
                 if (nextPoint != currentPoint) {
-                    PathPlannerPath path = PathPlannerPath.fromChoreoTrajectory("" + currentPoint + "-" + nextPoint);  
+                    PathPlannerPath path = PathPlannerPath.fromPathFile("PP" + currentPoint + "-" + nextPoint);  
                     trajectories.add(path.getIdealTrajectory(m_driveSubsystem.getRobotConfig()).get());
                     Command cmd = Commands.sequence(AutoBuilder.followPath(path), new WaitCommand(0.25));
                     segment = new ParallelRaceGroup(cmd);
@@ -205,14 +221,30 @@ public class AutoSubsystem extends SubsystemBase {
                 setFeedback("Couldn't Find Path File");
                 autoCommand = Commands.runOnce(() -> {});
                 return;
-            }
-
-            // TODO: Put back in once PID tuning is done
-            if (indexOfAutoChar(REEF_SPOTS, nextPoint) != -1) {
-                // Raise elevator while on the way
-            }            
+            }          
 
             finalPath.addCommands(segment);
+
+            if (indexOfAutoChar(REEF_SPOTS, nextPoint) != -1) {
+                finalPath.addCommands(
+                    Commands.sequence(
+                        // Raise elevator to L4 and Lower Coral
+                        Commands.parallel(
+                            new SetElevator(m_elevatorSubsystem, ElevatorLevel.LEVEL_4_CORAL),
+                            new SetCoralFlipper(m_coralFlipper, "scoreHigh")
+                        ),
+                        // Give time for them to raise up b/c they technically finish instantly
+                        new WaitCommand(0.5),
+                        // Score the coral
+                        new CoralExtake(m_coralWheels).withTimeout(0.5),
+                        // Bring the elevator back down and store coral
+                        Commands.parallel(
+                            new SetElevator(m_elevatorSubsystem, ElevatorLevel.HOME),
+                            new SetCoralFlipper(m_coralFlipper, "idle")
+                        )
+                    )
+                );
+            }
 
             // TODO: Put back in once PID tuning is done
             // if (indexOfAutoChar(CORAL_SPOTS, nextPoint) != -1) {

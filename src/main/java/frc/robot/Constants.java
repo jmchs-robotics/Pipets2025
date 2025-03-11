@@ -203,12 +203,12 @@ public final class Constants {
     public static final int rightMotorID = 4;
     public static final int leftMotorID = 5;
 
-    public static final double kP = 0.1;
-    public static final double kI = 0;
-    public static final double kD = 0;
+    public static final double kP = 15;
+    public static final double kI = 2;
+    public static final double kD = 0.2;
 
-    public static final Angle kAngleUp = edu.wpi.first.units.Units.Degrees.of(90);
-    public static final Angle kAngleDown = edu.wpi.first.units.Units.Degrees.of(0);
+    public static final Angle kAngleUp = edu.wpi.first.units.Units.Degrees.of(0);
+    public static final Angle kAngleDown = edu.wpi.first.units.Units.Degrees.of(-90);
   
   }
 

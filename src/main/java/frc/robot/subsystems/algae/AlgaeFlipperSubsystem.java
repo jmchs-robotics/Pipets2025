@@ -29,9 +29,9 @@ public class AlgaeFlipperSubsystem extends SubsystemBase {
         config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         config.CurrentLimits.SupplyCurrentLimit = 40; // 40 amp breaker on PDH
         config.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-        config.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Degrees.of(90).in(Units.Rotations);
+        config.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Degrees.of(0).in(Units.Rotations);
         config.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
-        config.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Degrees.of(0).in(Units.Rotations);
+        config.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Degrees.of(-90).in(Units.Rotations);
 
         config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 

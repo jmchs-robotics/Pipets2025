@@ -108,33 +108,41 @@ public class RobotContainer {
       new InstantCommand(() -> {m_robotDrive.zeroHeading();})
     );
 
-    driveRB.and(() -> elevatorLevel == ElevatorLevel.LEVEL_4_CORAL).onTrue(
-      new SetElevator(m_elevatorSubsystem, ElevatorLevel.LEVEL_4_CORAL)
+    driveRB.onTrue(
+      new SetElevator(m_elevatorSubsystem, ElevatorLevel.LEVEL_3_ALGAE)
     );
 
     driveLB.onTrue(
-      new SetElevator(m_elevatorSubsystem, ElevatorLevel.HOME)
+      LowerElevatorCommand
     );
 
-    // driveY.onTrue(
-    //   new SetAlgaeFlipper(m_algaeFlipperSubsystem, "up")
-    // );
+    driveY.onTrue(
+      new SetAlgaeFlipper(m_algaeFlipperSubsystem, "up")
+    );
 
-    // driveX.onTrue(
-    //   new SetAlgaeFlipper(m_algaeFlipperSubsystem, "down")
-    // );
-
-    driveX.whileTrue(
-      new CoralExtake(m_coralWheelsSubsystem)
+    driveX.onTrue(
+      new SetAlgaeFlipper(m_algaeFlipperSubsystem, "down")
     );
 
     driveA.whileTrue(
-      new SetCoralFlipper(m_coralFlipperSubsystem, "scoreHigh")
+      new AlgaeIntake(m_algaeWheelsSubsystem)
     );
 
     driveB.whileTrue(
-      new SetCoralFlipper(m_coralFlipperSubsystem, "idle")
+      new AlgaeExtake(m_algaeWheelsSubsystem)
     );
+
+    // driveX.whileTrue(
+    //   new CoralExtake(m_coralWheelsSubsystem)
+    // );
+
+    // driveA.whileTrue(
+    //   new SetCoralFlipper(m_coralFlipperSubsystem, "scoreHigh")
+    // );
+
+    // driveB.whileTrue(
+    //   new SetCoralFlipper(m_coralFlipperSubsystem, "idle")
+    // );
 
     // driveLB.whileTrue(
     //   new CoralIntake(m_coralWheelsSubsystem)
@@ -346,6 +354,11 @@ public class RobotContainer {
       CENTER,
       RIGHT
     }
+
+    SequentialCommandGroup LowerElevatorCommand = new SequentialCommandGroup(
+      new SetElevator(m_elevatorSubsystem, ElevatorLevel.HOME),
+      new ZeroElevator(m_elevatorSubsystem)
+    );
 
     ParallelCommandGroup scoreCoralLow = new ParallelCommandGroup(
       new SetElevator(m_elevatorSubsystem, elevatorLevel),

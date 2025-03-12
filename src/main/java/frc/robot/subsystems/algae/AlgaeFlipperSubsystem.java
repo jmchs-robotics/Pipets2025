@@ -9,6 +9,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.AlgaeConstants;
 
@@ -29,9 +30,9 @@ public class AlgaeFlipperSubsystem extends SubsystemBase {
         config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         config.CurrentLimits.SupplyCurrentLimit = 40; // 40 amp breaker on PDH
         config.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-        config.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Degrees.of(0).in(Units.Rotations);
+        config.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Rotations.of(0).in(Units.Rotations);
         config.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
-        config.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Degrees.of(-90).in(Units.Rotations);
+        config.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Rotations.of(-0.25).in(Units.Rotations);
 
         config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
@@ -41,6 +42,11 @@ public class AlgaeFlipperSubsystem extends SubsystemBase {
 
         flipMotor.setPosition(0);
 
+    }
+
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("Algae Flip Motor Position", flipMotor.getPosition().getValueAsDouble());
     }
 
     public void setPosition(Angle angle) {

@@ -67,6 +67,13 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public void resetSensorPosition(Angle setpoint) {
         primaryMotor.setPosition(setpoint.in(Units.Rotations));
-        followerMotor.setPosition(-setpoint.in(Units.Rotations));
+    }
+
+    public double getCurrentPosition() {
+        return primaryMotor.getPosition().getValueAsDouble();
+    }
+
+    public double getCurrentVelocity() {
+        return primaryMotor.getVelocity().getValueAsDouble();
     }
 }

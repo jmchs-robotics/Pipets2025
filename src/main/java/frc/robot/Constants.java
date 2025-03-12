@@ -120,6 +120,7 @@ public final class Constants {
     // LEFT SIDE SHOULD BE RELATIVELY CENTERED
     // ALGAE SHOULD BE ABLE TO JUST GO AGAINST THE REEF WHEN AUTO ALIGNED
     // ALGAE IS ALSO CENTERED ON THE REEF
+    // CORAL "PRONGS" ARE 7.5 INCHES ON EITHER SIDE OF THE CENTER OF THE REEF
   }
 
   public static final class ModuleConstants {
@@ -178,23 +179,23 @@ public final class Constants {
     public static final double maxAcceleration = 60; // Inches per second squared
 
     // TODO: Change these numbers when we can measure the elevator on the actual robot
-    public static final Angle L2_ALGAE = edu.wpi.first.units.Units.Rotations.of(0);
-    public static final Angle L3_ALGAE = edu.wpi.first.units.Units.Rotations.of(0);
+    public static final Angle L2_ALGAE = edu.wpi.first.units.Units.Rotations.of(1.7);
+    public static final Angle L3_ALGAE = edu.wpi.first.units.Units.Rotations.of(3.3);
     // L1 is min pos
     public static final Angle L2_CORAL = edu.wpi.first.units.Units.Rotations.of(0);
     public static final Angle L3_CORAL = edu.wpi.first.units.Units.Rotations.of(1.5);
     public static final Angle L4_CORAL = edu.wpi.first.units.Units.Rotations.of(4.05);
     public static final Angle CORAL_STATION = edu.wpi.first.units.Units.Rotations.of(0);
 
-    public static final Angle HOME = edu.wpi.first.units.Units.Rotations.of(0.1);
+    public static final Angle HOME = edu.wpi.first.units.Units.Rotations.of(0);
     
     public static final int primaryElevatorID = 2;
     public static final int followerElevatorID = 1;
     public static final int limitSwitchPort = 7;
 
-    public static final double kP = 2.5;
-    public static final double kI = 0.8;
-    public static final double kD = 0.1;
+    public static final double kP = 2;
+    public static final double kI = 0.5;
+    public static final double kD = 0.2;
 
   }
 
@@ -208,8 +209,8 @@ public final class Constants {
     public static final double kI = 2;
     public static final double kD = 0.2;
 
-    public static final Angle kAngleUp = edu.wpi.first.units.Units.Degrees.of(0);
-    public static final Angle kAngleDown = edu.wpi.first.units.Units.Degrees.of(-90);
+    public static final Angle kAngleDown = edu.wpi.first.units.Units.Rotations.of(0);
+    public static final Angle kAngleUp = edu.wpi.first.units.Units.Rotations.of(-0.249);
   
   }
 

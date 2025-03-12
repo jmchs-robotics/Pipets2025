@@ -57,4 +57,12 @@ public class CoralFlipperSubsystem extends SubsystemBase {
     public void resetSensorPosition(Angle setpoint) {
         flipMotor.setPosition(setpoint.in(Units.Rotations));
     }
+
+    public double getCurrentPosition() {
+        return flipMotor.getPosition().getValueAsDouble();
+    }
+
+    public double getCurrentVelocity() {
+        return flipMotor.getVelocity().getValueAsDouble();
+    }
 }

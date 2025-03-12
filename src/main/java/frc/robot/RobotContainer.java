@@ -55,13 +55,15 @@ public class RobotContainer {
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
 
   JoystickButton driveStart = new JoystickButton(m_driverController, Button.kStart.value);
-  JoystickButton driveX = new JoystickButton(m_driverController, Button.kX.value);
-  JoystickButton driveY = new JoystickButton(m_driverController, Button.kY.value);
+  JoystickButton driveBack = new JoystickButton(m_driverController, Button.kBack.value);
   JoystickButton driveA = new JoystickButton(m_driverController, Button.kA.value);
   JoystickButton driveB = new JoystickButton(m_driverController, Button.kB.value);
+  JoystickButton driveX = new JoystickButton(m_driverController, Button.kX.value);
+  JoystickButton driveY = new JoystickButton(m_driverController, Button.kY.value);
   JoystickButton driveRB = new JoystickButton(m_driverController, Button.kRightBumper.value);
   JoystickButton driveLB = new JoystickButton(m_driverController, Button.kLeftBumper.value);
   POVButton driveUpDPad = new POVButton(m_driverController, 0);
+  POVButton driveDownDPad = new POVButton(m_driverController, 180);
   POVButton driveRightDPad = new POVButton(m_driverController, 90);
   POVButton driveLeftDPad = new POVButton(m_driverController, 270);
 
@@ -107,57 +109,58 @@ public class RobotContainer {
     driveStart.onTrue(
       new InstantCommand(() -> {m_robotDrive.zeroHeading();})
     );
-
-    driveRB.onTrue(
-      new SetElevator(m_elevatorSubsystem, ElevatorLevel.LEVEL_3_ALGAE)
-    );
-
-    driveLB.onTrue(
-      LowerElevatorCommand
-    );
-
-    driveY.onTrue(
-      new SetAlgaeFlipper(m_algaeFlipperSubsystem, "up")
-    );
-
-    driveX.onTrue(
-      new SetAlgaeFlipper(m_algaeFlipperSubsystem, "down")
-    );
-
-    driveA.whileTrue(
-      new AlgaeIntake(m_algaeWheelsSubsystem)
-    );
-
-    driveB.whileTrue(
-      new AlgaeExtake(m_algaeWheelsSubsystem)
-    );
-
-    // driveX.whileTrue(
-    //   new CoralExtake(m_coralWheelsSubsystem)
-    // );
-
-    // driveA.whileTrue(
-    //   new SetCoralFlipper(m_coralFlipperSubsystem, "scoreHigh")
-    // );
-
-    // driveB.whileTrue(
-    //   new SetCoralFlipper(m_coralFlipperSubsystem, "idle")
-    // );
-
-    // driveLB.whileTrue(
-    //   new CoralIntake(m_coralWheelsSubsystem)
-    // );
     
     driveUpDPad.whileTrue(
       m_robotDrive.pathFindToProcessor()
     );
 
+    driveDownDPad.and(() -> elevatorLevel == ElevatorLevel.LEVEL_4_CORAL).whileTrue(
+      new ParallelCommandGroup(
+        m_robotDrive.pathFindToReef(),
+        ScoreCoralL4Command
+      )
+    );
+
+    driveDownDPad.and(() -> elevatorLevel == ElevatorLevel.LEVEL_3_CORAL).whileTrue(
+      new ParallelCommandGroup(
+        m_robotDrive.pathFindToReef(),
+        ScoreCoralL3Command
+      )
+    );
+
+    driveDownDPad.and(() -> elevatorLevel == ElevatorLevel.LEVEL_2_CORAL).whileTrue(
+      new ParallelCommandGroup(
+        m_robotDrive.pathFindToReef(),
+        ScoreCoralL2Command
+      )
+    );
+
+    driveDownDPad.and(() -> elevatorLevel == ElevatorLevel.LEVEL_3_ALGAE).whileTrue(
+      new ParallelCommandGroup(
+        m_robotDrive.pathFindToReef(),
+        IntakeAlgaeL3
+      )
+    );
+
+    driveDownDPad.and(() -> elevatorLevel == ElevatorLevel.LEVEL_2_ALGAE).whileTrue(
+      new ParallelCommandGroup(
+        m_robotDrive.pathFindToReef(),
+        IntakeAlgaeL2
+      )
+    );
+
     driveRightDPad.whileTrue(
-      m_robotDrive.pathFindToCoralStationRight()
+      new ParallelCommandGroup(
+        m_robotDrive.pathFindToCoralStationRight(),
+        IntakeCoral
+      )
     );
 
     driveLeftDPad.whileTrue(
-      m_robotDrive.pathFindToCoralStationLeft()
+      new ParallelCommandGroup(
+        m_robotDrive.pathFindToCoralStationLeft(),
+        IntakeCoral
+      )
     );
 
   }
@@ -355,31 +358,99 @@ public class RobotContainer {
       RIGHT
     }
 
+    SequentialCommandGroup RaiseElevatorL3CoralCommand = new SequentialCommandGroup(
+      new ZeroElevator(m_elevatorSubsystem),
+      new SetElevator(m_elevatorSubsystem, ElevatorLevel.LEVEL_3_CORAL)
+    );
+
+    SequentialCommandGroup RaiseElevatorL4CoralCommand = new SequentialCommandGroup(
+      new ZeroElevator(m_elevatorSubsystem),
+      new SetElevator(m_elevatorSubsystem, ElevatorLevel.LEVEL_4_CORAL)
+    );
+
+    SequentialCommandGroup RaiseElevatorL2AlgaeCommand = new SequentialCommandGroup(
+      new ZeroElevator(m_elevatorSubsystem),
+      new SetElevator(m_elevatorSubsystem, ElevatorLevel.LEVEL_2_ALGAE)
+    );
+
+    SequentialCommandGroup RaiseElevatorL3AlgaeCommand = new SequentialCommandGroup(
+      new ZeroElevator(m_elevatorSubsystem),
+      new SetElevator(m_elevatorSubsystem, ElevatorLevel.LEVEL_3_ALGAE)
+    );
+
+    SequentialCommandGroup RaiseElevatorCoralStationCommand = new SequentialCommandGroup(
+      new ZeroElevator(m_elevatorSubsystem),
+      new SetElevator(m_elevatorSubsystem, ElevatorLevel.CORAL_STATION)
+    );
+
     SequentialCommandGroup LowerElevatorCommand = new SequentialCommandGroup(
       new SetElevator(m_elevatorSubsystem, ElevatorLevel.HOME),
       new ZeroElevator(m_elevatorSubsystem)
     );
 
-    ParallelCommandGroup scoreCoralLow = new ParallelCommandGroup(
-      new SetElevator(m_elevatorSubsystem, elevatorLevel),
+    SequentialCommandGroup RaiseAlgaeFlipperCommand = new SequentialCommandGroup(
+      new ZeroAlgaeFlipper(m_algaeFlipperSubsystem),
+      new SetAlgaeFlipper(m_algaeFlipperSubsystem, "up")
+    );
+
+    SequentialCommandGroup LowerAlgaeFlipperCommand = new SequentialCommandGroup(
+      new SetAlgaeFlipper(m_algaeFlipperSubsystem, "down"),
+      new ZeroAlgaeFlipper(m_algaeFlipperSubsystem)
+    );
+
+    SequentialCommandGroup LowerCoralFlipperLowCommand = new SequentialCommandGroup(
+      new ZeroCoralFlipper(m_coralFlipperSubsystem),
+      new SetCoralFlipper(m_coralFlipperSubsystem, "scoreHigh")
+    );
+
+    SequentialCommandGroup LowerCoralFlipperHighCommand = new SequentialCommandGroup(
+      new ZeroCoralFlipper(m_coralFlipperSubsystem),
       new SetCoralFlipper(m_coralFlipperSubsystem, "scoreLow")
     );
 
-    SequentialCommandGroup intakeAlgae = new SequentialCommandGroup(
-      new ParallelRaceGroup(
-        new SetElevator(m_elevatorSubsystem, elevatorLevel),
-        new WaitCommand(1)
-      ),
-      new ParallelCommandGroup(
-        new SetElevator(m_elevatorSubsystem, elevatorLevel),
-        new SetAlgaeFlipper(m_algaeFlipperSubsystem, "up")
-      )
+    SequentialCommandGroup LowerCoralFlipperCoralStationCommand = new SequentialCommandGroup(
+      new ZeroCoralFlipper(m_coralFlipperSubsystem),
+      new SetCoralFlipper(m_coralFlipperSubsystem, "coralStation")
     );
 
-    ParallelCommandGroup intakeCoral = new ParallelCommandGroup(
-      new SetElevator(m_elevatorSubsystem, ElevatorLevel.CORAL_STATION),
-      new SetCoralFlipper(m_coralFlipperSubsystem, "coralStation"),
-      new CoralIntake(m_coralWheelsSubsystem)
+    SequentialCommandGroup RaiseCoralFlipperCommand = new SequentialCommandGroup(
+      new SetCoralFlipper(m_coralFlipperSubsystem, "idle"),
+      new ZeroCoralFlipper(m_coralFlipperSubsystem)
     );
+
+    ParallelCommandGroup ScoreCoralL2Command = new ParallelCommandGroup(
+      LowerElevatorCommand,
+      LowerCoralFlipperLowCommand
+    );
+
+    ParallelCommandGroup ScoreCoralL3Command = new ParallelCommandGroup(
+      RaiseElevatorL3CoralCommand,
+      LowerCoralFlipperLowCommand
+    );
+
+    ParallelCommandGroup ScoreCoralL4Command = new ParallelCommandGroup(
+      RaiseElevatorL4CoralCommand,
+      LowerCoralFlipperHighCommand
+    );
+
+    SequentialCommandGroup IntakeAlgaeL2 = new SequentialCommandGroup(
+      RaiseElevatorL2AlgaeCommand,
+      new WaitCommand(0.25),
+      RaiseAlgaeFlipperCommand,
+      new AlgaeIntake(m_algaeWheelsSubsystem)
+    );
+
+    SequentialCommandGroup IntakeAlgaeL3 = new SequentialCommandGroup(
+      RaiseElevatorL3AlgaeCommand,
+      new WaitCommand(0.25),
+      RaiseAlgaeFlipperCommand,
+      new AlgaeIntake(m_algaeWheelsSubsystem)
+    );
+
+    ParallelCommandGroup IntakeCoral = new ParallelCommandGroup(
+      RaiseElevatorCoralStationCommand,
+      LowerCoralFlipperCoralStationCommand,
+      new CoralIntake(m_coralWheelsSubsystem)
+    );    
 
 }

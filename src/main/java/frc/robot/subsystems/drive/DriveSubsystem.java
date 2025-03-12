@@ -357,7 +357,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   }
 
-  public Command pathFindToReef() {
+  public Command pathFindToReefCoral() {
 
     List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(new Pose2d());
     GoalEndState endState = new GoalEndState(0, Rotation2d.fromDegrees(0));
@@ -475,6 +475,76 @@ public class DriveSubsystem extends SubsystemBase {
       }
     }
 
+    PathPlannerPath path = new PathPlannerPath(
+      waypoints, 
+      DriveConstants.constraints, 
+      null, 
+      endState);
+    
+    return AutoBuilder.followPath(path);
+
+  }
+
+  public Command pathFindToReefAlgae() {
+
+    List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(new Pose2d());
+    GoalEndState endState = new GoalEndState(0, Rotation2d.fromDegrees(0));
+
+    if (RobotContainer.reefSide == ReefSide.FRONT_LEFT) {
+
+      waypoints = PathPlannerPath.waypointsFromPoses(
+        new Pose2d(5.335, 5.434, Rotation2d.fromDegrees(-120)),
+        new Pose2d(5.167, 5.146, Rotation2d.fromDegrees(-120))
+      );
+
+      endState = new GoalEndState(0, Rotation2d.fromDegrees(-120));
+
+    } else if (RobotContainer.reefSide == ReefSide.FRONT_MIDDLE) {
+
+      waypoints = PathPlannerPath.waypointsFromPoses(
+        new Pose2d(6.160, 4.030, Rotation2d.fromDegrees(180)),
+        new Pose2d(5.180, 4.030, Rotation2d.fromDegrees(180))
+      );
+
+      endState = new GoalEndState(0, Rotation2d.fromDegrees(180));
+      
+    } else if (RobotContainer.reefSide == ReefSide.FRONT_RIGHT) {
+
+      waypoints = PathPlannerPath.waypointsFromPoses(
+        new Pose2d(5.335, 2.616, Rotation2d.fromDegrees(120)),
+        new Pose2d(5.167, 2.904, Rotation2d.fromDegrees(120))
+      );
+
+      endState = new GoalEndState(0, Rotation2d.fromDegrees(120));
+      
+    } else if (RobotContainer.reefSide == ReefSide.BACK_LEFT) {
+
+      waypoints = PathPlannerPath.waypointsFromPoses(
+        new Pose2d(3.680, 5.434, Rotation2d.fromDegrees(-60)),
+        new Pose2d(3.840, 5.146, Rotation2d.fromDegrees(-60))
+      );
+
+      endState = new GoalEndState(0, Rotation2d.fromDegrees(-60));
+      
+    } else if (RobotContainer.reefSide == ReefSide.BACK_MIDDLE) {
+
+      waypoints = PathPlannerPath.waypointsFromPoses(
+        new Pose2d(2.850, 4.030, Rotation2d.fromDegrees(0)),
+        new Pose2d(3.190, 4.030, Rotation2d.fromDegrees(0))
+      );
+
+      endState = new GoalEndState(0, Rotation2d.fromDegrees(0));
+      
+    } else if (RobotContainer.reefSide == ReefSide.BACK_RIGHT) {
+
+      waypoints = PathPlannerPath.waypointsFromPoses(
+        new Pose2d(3.680, 2.616, Rotation2d.fromDegrees(60)),
+        new Pose2d(3.840, 2.904, Rotation2d.fromDegrees(60))
+      );
+
+      endState = new GoalEndState(0, Rotation2d.fromDegrees(60));
+      
+    }
 
     PathPlannerPath path = new PathPlannerPath(
       waypoints, 

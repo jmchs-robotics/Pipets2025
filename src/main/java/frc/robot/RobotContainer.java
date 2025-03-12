@@ -116,6 +116,30 @@ public class RobotContainer {
     driveStart.onTrue(
       new InstantCommand(() -> {m_robotDrive.zeroHeading();})
     );
+
+    driveA.whileTrue(
+      new CoralExtake(m_coralWheelsSubsystem)
+    );
+
+    driveB.whileTrue(
+      new AlgaeExtake(m_algaeWheelsSubsystem)
+    );
+
+    driveX.onTrue(
+      RaiseCoralFlipperCommand
+    );
+
+    driveY.onTrue(
+      LowerAlgaeFlipperCommand
+    );
+
+    driveRB.onTrue(
+      LowerElevatorCommand
+    );
+
+    driveLB.whileTrue(
+      new ClimbUp(m_climbersSubsystem)
+    );
     
     driveUpDPad.whileTrue(
       m_robotDrive.pathFindToProcessor()
@@ -123,35 +147,35 @@ public class RobotContainer {
 
     driveDownDPad.and(() -> elevatorLevel == ElevatorLevel.LEVEL_4_CORAL).whileTrue(
       new ParallelCommandGroup(
-        m_robotDrive.pathFindToReef(),
+        m_robotDrive.pathFindToReefCoral(),
         ScoreCoralL4Command
       )
     );
 
     driveDownDPad.and(() -> elevatorLevel == ElevatorLevel.LEVEL_3_CORAL).whileTrue(
       new ParallelCommandGroup(
-        m_robotDrive.pathFindToReef(),
+        m_robotDrive.pathFindToReefCoral(),
         ScoreCoralL3Command
       )
     );
 
     driveDownDPad.and(() -> elevatorLevel == ElevatorLevel.LEVEL_2_CORAL).whileTrue(
       new ParallelCommandGroup(
-        m_robotDrive.pathFindToReef(),
+        m_robotDrive.pathFindToReefCoral(),
         ScoreCoralL2Command
       )
     );
 
     driveDownDPad.and(() -> elevatorLevel == ElevatorLevel.LEVEL_3_ALGAE).whileTrue(
       new ParallelCommandGroup(
-        m_robotDrive.pathFindToReef(),
+        m_robotDrive.pathFindToReefAlgae(),
         IntakeAlgaeL3
       )
     );
 
     driveDownDPad.and(() -> elevatorLevel == ElevatorLevel.LEVEL_2_ALGAE).whileTrue(
       new ParallelCommandGroup(
-        m_robotDrive.pathFindToReef(),
+        m_robotDrive.pathFindToReefAlgae(),
         IntakeAlgaeL2
       )
     );

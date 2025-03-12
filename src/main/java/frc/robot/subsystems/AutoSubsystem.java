@@ -56,8 +56,6 @@ public class AutoSubsystem extends SubsystemBase {
     private ElevatorSubsystem m_elevatorSubsystem;
     private CoralFlipperSubsystem m_coralFlipper;
     private CoralWheelsSubsystem m_coralWheels;
-    private AlgaeFlipperSubsystem m_algaeFlipper;
-    private AlgaeWheelsSubsystem m_algaeWheels;
 
     private char[] REEF_SPOTS = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'};
     private char[] CORAL_STATION_SPOTS = {'V', 'W'};
@@ -66,9 +64,7 @@ public class AutoSubsystem extends SubsystemBase {
         DriveSubsystem drive,
         ElevatorSubsystem elevator,
         CoralFlipperSubsystem coralFlipper,
-        CoralWheelsSubsystem coralWheels,
-        AlgaeFlipperSubsystem algaeFlipper,
-        AlgaeWheelsSubsystem algaeWheels) {
+        CoralWheelsSubsystem coralWheels) {
 
             NetworkTable table = NetworkTableInstance.getDefault().getTable("Shuffleboard").getSubTable("Auto Tab");
             autoEntry = table.getTopic("Auto Path Sequence").getGenericEntry();
@@ -77,8 +73,6 @@ public class AutoSubsystem extends SubsystemBase {
             m_elevatorSubsystem = elevator;
             m_coralFlipper = coralFlipper;
             m_coralWheels = coralWheels;
-            m_algaeFlipper = algaeFlipper;
-            m_algaeWheels = algaeWheels;
 
             setUpAutoTab();
     }
@@ -183,26 +177,38 @@ public class AutoSubsystem extends SubsystemBase {
         trajectories.clear();
 
         if (autoString.length() <= 1) {
-            setFeedback("Default Path (Shoot and Sit)"); //this sounds like martina not pipets
+            setFeedback("Default Path (Do nothing and cry)");
             return;
         }
 
         // TODO: Put in the rest of the starting points
         if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
             if (autoString.charAt(0) == '1') {
-                m_driveSubsystem.resetOdometry(new Pose2d(9.519278526306152, 0.45708832144737244, Rotation2d.fromDegrees(0)));
+                m_driveSubsystem.resetOdometry(new Pose2d(10.38, 0.500, Rotation2d.fromDegrees(0)));
             } else if (autoString.charAt(0) == '2') {
-                m_driveSubsystem.resetOdometry(new Pose2d(9.548373222351074, 1.8935472965240479, Rotation2d.fromDegrees(0)));
+                m_driveSubsystem.resetOdometry(new Pose2d(10.38, 1.890, Rotation2d.fromDegrees(0)));
             } else if (autoString.charAt(0) == '3') {
-                m_driveSubsystem.resetOdometry(new Pose2d(9.519433975219727, 3.2536780834198, Rotation2d.fromDegrees(0)));
+                m_driveSubsystem.resetOdometry(new Pose2d(10.38, 3.300, Rotation2d.fromDegrees(0)));
+            } else if (autoString.charAt(0) == '4') {
+                m_driveSubsystem.resetOdometry(new Pose2d(10.38, 4.750, Rotation2d.fromDegrees(0)));
+            } else if (autoString.charAt(0) == '5') {
+                m_driveSubsystem.resetOdometry(new Pose2d(10.38, 6.160, Rotation2d.fromDegrees(0)));
+            } else if (autoString.charAt(0) == '6') {
+                m_driveSubsystem.resetOdometry(new Pose2d(10.38, 7.550, Rotation2d.fromDegrees(0)));
             }
         } else {
             if (autoString.charAt(0) == '1') {
-                m_driveSubsystem.resetOdometry(new Pose2d(8.043037414550781, 7.610836029052734, Rotation2d.fromDegrees(180)));
+                m_driveSubsystem.resetOdometry(new Pose2d(7.170, 7.550, Rotation2d.fromDegrees(180)));
             } else if (autoString.charAt(0) == '2') {
-                m_driveSubsystem.resetOdometry(new Pose2d(8.043037414550781, 6.162851810455322, Rotation2d.fromDegrees(180)));
+                m_driveSubsystem.resetOdometry(new Pose2d(7.170, 6.160, Rotation2d.fromDegrees(180)));
             } else if (autoString.charAt(0) == '3') {
-                m_driveSubsystem.resetOdometry(new Pose2d(8.05, 4.75, Rotation2d.fromDegrees(180)));
+                m_driveSubsystem.resetOdometry(new Pose2d(7.170, 4.750, Rotation2d.fromDegrees(180)));
+            } else if (autoString.charAt(0) == '4') {
+                m_driveSubsystem.resetOdometry(new Pose2d(7.170, 3.300, Rotation2d.fromDegrees(180)));
+            } else if (autoString.charAt(0) == '5') {
+                m_driveSubsystem.resetOdometry(new Pose2d(7.170, 1.890, Rotation2d.fromDegrees(180)));
+            } else if (autoString.charAt(0) == '6') {
+                m_driveSubsystem.resetOdometry(new Pose2d(7.170, 0.500, Rotation2d.fromDegrees(180)));
             }
         }
 
@@ -254,12 +260,16 @@ public class AutoSubsystem extends SubsystemBase {
             if (indexOfAutoChar(CORAL_STATION_SPOTS, nextPoint) != -1) {
                 finalPath.addCommands(
                     Commands.sequence(
+                        // Raise elevator to the coral station level
                         Commands.parallel(
                             new SetElevator(m_elevatorSubsystem, ElevatorLevel.CORAL_STATION),
                             new SetCoralFlipper(m_coralFlipper, "coralStation")
                         ),
+                        // Give it time to raise
                         new WaitCommand(0.5),
+                        // Give a lot of time to intake so the human play has time to throw the piece
                         new CoralIntake(m_coralWheels).withTimeout(1.5),
+                        // Put the elevator back so we can drive
                         Commands.parallel(
                             new SetElevator(m_elevatorSubsystem, ElevatorLevel.HOME),
                             new SetCoralFlipper(m_coralFlipper, "idle")

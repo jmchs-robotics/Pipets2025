@@ -187,6 +187,7 @@ public class AutoSubsystem extends SubsystemBase {
             return;
         }
 
+        // TODO: Put in the rest of the starting points
         if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
             if (autoString.charAt(0) == '1') {
                 m_driveSubsystem.resetOdometry(new Pose2d(9.519278526306152, 0.45708832144737244, Rotation2d.fromDegrees(0)));

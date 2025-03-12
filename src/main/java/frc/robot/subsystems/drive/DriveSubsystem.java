@@ -365,8 +365,8 @@ public class DriveSubsystem extends SubsystemBase {
     if (RobotContainer.reefAlignment == ReefAlignment.LEFT) {
       if (RobotContainer.reefSide == ReefSide.FRONT_LEFT) {
         waypoints = PathPlannerPath.waypointsFromPoses(
-          new Pose2d(5.577, 6.014, Rotation2d.fromDegrees(-120)),
-          new Pose2d(5.119,5.137, Rotation2d.fromDegrees(-120))
+            new Pose2d(5.577, 6.014, Rotation2d.fromDegrees(-120)),
+            new Pose2d(5.195, 5.297, Rotation2d.fromDegrees(-120))
           );
           
           endState = new GoalEndState(0, Rotation2d.fromDegrees(-120));
@@ -374,8 +374,8 @@ public class DriveSubsystem extends SubsystemBase {
         }
         else if (RobotContainer.reefSide == ReefSide.FRONT_MIDDLE) {
           waypoints = PathPlannerPath.waypointsFromPoses(
-          new Pose2d(6.655,4.019, Rotation2d.fromDegrees(180)),
-          new Pose2d(5.742,4.019, Rotation2d.fromDegrees(180))
+            new Pose2d(6.655, 4.019, Rotation2d.fromDegrees(180)),
+            new Pose2d(5.971, 4.047, Rotation2d.fromDegrees(180))
           );
 
           endState = new GoalEndState(0, Rotation2d.fromDegrees(180));
@@ -383,8 +383,8 @@ public class DriveSubsystem extends SubsystemBase {
         }
         else if (RobotContainer.reefSide == ReefSide.FRONT_RIGHT) {
           waypoints = PathPlannerPath.waypointsFromPoses(
-          new Pose2d(5.616,2.075, Rotation2d.fromDegrees(120)),
-          new Pose2d(5.138,2.923, Rotation2d.fromDegrees(120))
+            new Pose2d(5.616, 2.075, Rotation2d.fromDegrees(120)),
+            new Pose2d(5.227, 2.735, Rotation2d.fromDegrees(120))
           );
           
           endState = new GoalEndState(0, Rotation2d.fromDegrees(120));
@@ -392,8 +392,8 @@ public class DriveSubsystem extends SubsystemBase {
         }
         else if (RobotContainer.reefSide == ReefSide.BACK_LEFT) {
           waypoints = PathPlannerPath.waypointsFromPoses(
-          new Pose2d(3.413,5.829, Rotation2d.fromDegrees(-60)),
-          new Pose2d(3.861,5.146, Rotation2d.fromDegrees(-60))
+            new Pose2d(3.413, 5.829, Rotation2d.fromDegrees(-60)),
+            new Pose2d(3.753, 5.355, Rotation2d.fromDegrees(-60))
           );
 
           endState = new GoalEndState(0, Rotation2d.fromDegrees(-60));
@@ -401,8 +401,8 @@ public class DriveSubsystem extends SubsystemBase {
         }
         else if (RobotContainer.reefSide == ReefSide.BACK_MIDDLE) {
           waypoints = PathPlannerPath.waypointsFromPoses(
-          new Pose2d(2.457,4.005, Rotation2d.fromDegrees(0)),
-          new Pose2d(3.198,4.005, Rotation2d.fromDegrees(0))
+            new Pose2d(2.457, 4.005, Rotation2d.fromDegrees(0)),
+            new Pose2d(3, 4, Rotation2d.fromDegrees(0))
           );
           
           endState = new GoalEndState(0, Rotation2d.fromDegrees(0));
@@ -410,8 +410,8 @@ public class DriveSubsystem extends SubsystemBase {
         }
         else if (RobotContainer.reefSide == ReefSide.BACK_RIGHT) {
           waypoints = PathPlannerPath.waypointsFromPoses(
-          new Pose2d(3.354,2.075, Rotation2d.fromDegrees(60)),
-          new Pose2d(3.832,2.874, Rotation2d.fromDegrees(60))
+            new Pose2d(3.354, 2.075, Rotation2d.fromDegrees(60)),
+            new Pose2d(3.785, 2.723, Rotation2d.fromDegrees(60))
           );
           
           endState = new GoalEndState(0, Rotation2d.fromDegrees(60));
@@ -421,8 +421,8 @@ public class DriveSubsystem extends SubsystemBase {
     } else if (RobotContainer.reefAlignment == ReefAlignment.RIGHT) {
       if (RobotContainer.reefSide == ReefSide.FRONT_LEFT) {
         waypoints = PathPlannerPath.waypointsFromPoses(
-        new Pose2d(5.255,6.033, Rotation2d.fromDegrees(-120)),
-        new Pose2d(4.816,5.322, Rotation2d.fromDegrees(-120))
+          new Pose2d(5.255, 6.033, Rotation2d.fromDegrees(-120)),
+          new Pose2d(4.895, 5.477, Rotation2d.fromDegrees(-120))
         );
         
         endState = new GoalEndState(0, Rotation2d.fromDegrees(-120));
@@ -430,8 +430,8 @@ public class DriveSubsystem extends SubsystemBase {
       }
       else if (RobotContainer.reefSide == ReefSide.FRONT_MIDDLE) {
         waypoints = PathPlannerPath.waypointsFromPoses(
-        new Pose2d(6.728,4.366, Rotation2d.fromDegrees(180)),
-        new Pose2d(5.792,4.366, Rotation2d.fromDegrees(180))
+          new Pose2d(6.728, 4.366, Rotation2d.fromDegrees(180)),
+          new Pose2d(5.971, 4.387, Rotation2d.fromDegrees(180))
         );
         
         endState = new GoalEndState(0, Rotation2d.fromDegrees(180));
@@ -439,8 +439,8 @@ public class DriveSubsystem extends SubsystemBase {
       }
       else if (RobotContainer.reefSide == ReefSide.FRONT_RIGHT) {
         waypoints = PathPlannerPath.waypointsFromPoses(
-        new Pose2d(5.899,2.345, Rotation2d.fromDegrees(120)),
-        new Pose2d(5.460,3.069, Rotation2d.fromDegrees(120))
+          new Pose2d(5.899, 2.345, Rotation2d.fromDegrees(120)),
+          new Pose2d(5.527, 2.915, Rotation2d.fromDegrees(120))
         );
         
         endState = new GoalEndState(0, Rotation2d.fromDegrees(120));
@@ -448,8 +448,8 @@ public class DriveSubsystem extends SubsystemBase {
       }
       else if (RobotContainer.reefSide == ReefSide.BACK_LEFT) {
         waypoints = PathPlannerPath.waypointsFromPoses(
-        new Pose2d(3.058,5.721, Rotation2d.fromDegrees(-60)),
-        new Pose2d(3.520,4.961, Rotation2d.fromDegrees(-60))
+          new Pose2d(3.058, 5.721, Rotation2d.fromDegrees(-60)),
+          new Pose2d(3.453, 5.165, Rotation2d.fromDegrees(-60))
         );
         
         endState = new GoalEndState(0, Rotation2d.fromDegrees(-60));
@@ -457,8 +457,8 @@ public class DriveSubsystem extends SubsystemBase {
       }
       else if (RobotContainer.reefSide == ReefSide.BACK_MIDDLE) {
         waypoints = PathPlannerPath.waypointsFromPoses(
-        new Pose2d(2.320,3.684, Rotation2d.fromDegrees(0)),
-        new Pose2d(3.198,3.684, Rotation2d.fromDegrees(0))
+          new Pose2d(2.320, 3.684, Rotation2d.fromDegrees(0)),
+          new Pose2d(3, 3.643, Rotation2d.fromDegrees(0))
         );
         
         endState = new GoalEndState(0, Rotation2d.fromDegrees(0));
@@ -466,8 +466,8 @@ public class DriveSubsystem extends SubsystemBase {
       }
       else if (RobotContainer.reefSide == ReefSide.BACK_RIGHT) {
         waypoints = PathPlannerPath.waypointsFromPoses(
-        new Pose2d(3.673,1.938, Rotation2d.fromDegrees(60)),
-        new Pose2d(4.124,2.709, Rotation2d.fromDegrees(60))
+          new Pose2d(3.673, 1.938, Rotation2d.fromDegrees(60)),
+          new Pose2d(4.085, 2.533, Rotation2d.fromDegrees(60))
         );
         
         endState = new GoalEndState(0, Rotation2d.fromDegrees(60));

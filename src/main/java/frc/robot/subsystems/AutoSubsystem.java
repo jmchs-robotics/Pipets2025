@@ -34,6 +34,7 @@ import frc.robot.RobotContainer;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.RobotContainer.ElevatorLevel;
 import frc.robot.commands.CoralExtake;
+import frc.robot.commands.CoralIntake;
 import frc.robot.commands.SetCoralFlipper;
 import frc.robot.commands.SetElevator;
 import frc.robot.subsystems.algae.AlgaeFlipperSubsystem;
@@ -225,6 +226,7 @@ public class AutoSubsystem extends SubsystemBase {
 
             finalPath.addCommands(segment);
 
+            // If we're at the reef, then do this whole scoring sequence
             if (indexOfAutoChar(REEF_SPOTS, nextPoint) != -1) {
                 finalPath.addCommands(
                     Commands.sequence(
@@ -241,15 +243,32 @@ public class AutoSubsystem extends SubsystemBase {
                         Commands.parallel(
                             new SetElevator(m_elevatorSubsystem, ElevatorLevel.HOME),
                             new SetCoralFlipper(m_coralFlipper, "idle")
-                        )
+                        ),
+                        new WaitCommand(0.5)
                     )
                 );
             }
 
-            // TODO: Put back in once PID tuning is done
-            // if (indexOfAutoChar(CORAL_SPOTS, nextPoint) != -1) {
-                // Intake coral AFTER we've followed the path
+            // If we're at the coral station,
+            if (indexOfAutoChar(CORAL_STATION_SPOTS, nextPoint) != -1) {
+                finalPath.addCommands(
+                    Commands.sequence(
+                        Commands.parallel(
+                            new SetElevator(m_elevatorSubsystem, ElevatorLevel.CORAL_STATION),
+                            new SetCoralFlipper(m_coralFlipper, "coralStation")
+                        ),
+                        new WaitCommand(0.5),
+                        new CoralIntake(m_coralWheels).withTimeout(1.5),
+                        Commands.parallel(
+                            new SetElevator(m_elevatorSubsystem, ElevatorLevel.HOME),
+                            new SetCoralFlipper(m_coralFlipper, "idle")
+                        ),
+                        new WaitCommand(0.5)
+                    )
+                );
             }
+            
+        }
 
         autoCommand = finalPath;
         setFeedback("Created Path Sequence");

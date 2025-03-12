@@ -227,7 +227,8 @@ public final class Constants {
     public static final Angle kIdleAngle = edu.wpi.first.units.Units.Rotations.of(0);
     public static final Angle kScoreLow = edu.wpi.first.units.Units.Rotations.of(0.125);
     public static final Angle kScoreHigh = edu.wpi.first.units.Units.Rotations.of(0.15);
-    // public static final Angle kCoralStation = edu.wpi.first.units.Units.Rotations.of(35);
+    // TODO: TAKE THESE MEASUREMENTS
+    public static final Angle kCoralStation = edu.wpi.first.units.Units.Rotations.of(35);
 
   }
 

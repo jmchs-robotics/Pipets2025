@@ -19,12 +19,13 @@ import frc.robot.subsystems.vision.*;
 import frc.robot.subsystems.drive.*;
 import frc.robot.subsystems.algae.*;
 import frc.robot.subsystems.coral.*;
+import frc.robot.subsystems.climbers.*;
 import frc.robot.subsystems.LEDSubsystem;
+import frc.robot.subsystems.climbers.ClimbersSubsystem;
 import frc.robot.subsystems.AutoSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -38,12 +39,14 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
  */
 @Logged
 public class RobotContainer {
+
   // The robot's subsystems
   private final ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
   private final AlgaeFlipperSubsystem m_algaeFlipperSubsystem = new AlgaeFlipperSubsystem();
   private final AlgaeWheelsSubsystem m_algaeWheelsSubsystem = new AlgaeWheelsSubsystem();
   private final CoralWheelsSubsystem m_coralWheelsSubsystem = new CoralWheelsSubsystem();
   private final CoralFlipperSubsystem m_coralFlipperSubsystem = new CoralFlipperSubsystem();
+  private final ClimbersSubsystem m_climbersSubsystem = new ClimbersSubsystem();
   private final VisionSubsystem m_vision = new VisionSubsystem();
   private final DriveSubsystem m_robotDrive = new DriveSubsystem(m_vision);
   private final AutoSubsystem m_auto = new AutoSubsystem(m_robotDrive, m_elevatorSubsystem, m_coralFlipperSubsystem, m_coralWheelsSubsystem);
@@ -95,6 +98,8 @@ public class RobotContainer {
     setUpDriverTab();
   }
 
+
+
   /**
    * Use this method to define your button->command mappings. Buttons can be
    * created by
@@ -104,6 +109,8 @@ public class RobotContainer {
    * passing it to a
    * {@link JoystickButton}.
    */
+
+
   private void configureButtonBindings() {
 
     driveStart.onTrue(
@@ -162,7 +169,7 @@ public class RobotContainer {
         IntakeCoral
       )
     );
-
+    
   }
 
   /**

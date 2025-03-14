@@ -3,11 +3,11 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.coral.CoralWheelsSubsystem;
 
-public class CoralIntake extends Command {
+public class DefaultCoralWheelsCommand extends Command {
 
-    private final CoralWheelsSubsystem m_coralWheels;
+    private CoralWheelsSubsystem m_coralWheels;
 
-    public CoralIntake(CoralWheelsSubsystem coralWheels) {
+    public DefaultCoralWheelsCommand(CoralWheelsSubsystem coralWheels) {
 
         m_coralWheels = coralWheels;
         addRequirements(m_coralWheels);
@@ -19,7 +19,7 @@ public class CoralIntake extends Command {
 
     @Override
     public void execute() {
-        m_coralWheels.setWheelMotors(-0.25);
+        m_coralWheels.setWheelMotors(-0.05);
     }
 
     @Override
@@ -28,7 +28,6 @@ public class CoralIntake extends Command {
     }
 
     @Override
-    public void end(boolean interrupted) {
-        m_coralWheels.stopWheelMotors();
-    }
+    public void end(boolean interrupted) {}
+    
 }

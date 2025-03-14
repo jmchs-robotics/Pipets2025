@@ -243,7 +243,7 @@ public class AutoSubsystem extends SubsystemBase {
                             new SetCoralFlipper(m_coralFlipper, "scoreHigh")
                         ),
                         // Give time for them to raise up b/c they technically finish instantly
-                        new WaitCommand(0.5),
+                        new WaitCommand(1.25),
                         // Score the coral
                         new CoralExtake(m_coralWheels).withTimeout(0.5),
                         // Bring the elevator back down and store coral

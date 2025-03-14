@@ -17,7 +17,7 @@ public class ZeroCoralFlipper extends Command {
 
     @Override
     public boolean isFinished() {
-        return (m_coralFlipper.getCurrentPosition() < 0.05 && m_coralFlipper.getCurrentVelocity() == 0);
+        return (m_coralFlipper.getCurrentPosition() < 0.01 && m_coralFlipper.getCurrentVelocity() == 0);
     }
 
     @Override

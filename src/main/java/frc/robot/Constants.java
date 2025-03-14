@@ -185,7 +185,7 @@ public final class Constants {
     public static final Angle L2_CORAL = edu.wpi.first.units.Units.Rotations.of(0);
     public static final Angle L3_CORAL = edu.wpi.first.units.Units.Rotations.of(1.5);
     public static final Angle L4_CORAL = edu.wpi.first.units.Units.Rotations.of(4.05);
-    public static final Angle CORAL_STATION = edu.wpi.first.units.Units.Rotations.of(0);
+    public static final Angle CORAL_STATION = edu.wpi.first.units.Units.Rotations.of(0.15);
 
     public static final Angle HOME = edu.wpi.first.units.Units.Rotations.of(0);
     
@@ -219,28 +219,28 @@ public final class Constants {
     public static final int flipMotorID = 6;
     public static final int wheelMotorID = 7;
 
-    public static final double kP = 3;
+    public static final double kP = 10;
     public static final double kI = 1;
-    public static final double kD = 0;
+    public static final double kD = 0.1;
 
     // Yes the whole import statement has to be there bc of the other units class colliding with it
     public static final Angle kIdleAngle = edu.wpi.first.units.Units.Rotations.of(0);
     public static final Angle kScoreLow = edu.wpi.first.units.Units.Rotations.of(0.125);
     public static final Angle kScoreHigh = edu.wpi.first.units.Units.Rotations.of(0.15);
     // TODO: TAKE THESE MEASUREMENTS
-    public static final Angle kCoralStation = edu.wpi.first.units.Units.Rotations.of(35);
+    public static final Angle kCoralStation = edu.wpi.first.units.Units.Rotations.of(0.042);
 
   }
 
   public static final class RobotToCamTransforms {
     public static final Transform3d kCam1Transform = new Transform3d(
-      new Translation3d(Units.inchesToMeters(14.5), 0, Units.inchesToMeters(10.5)), 
-      new Rotation3d(0, 0, 0)
+      new Translation3d(Units.inchesToMeters(14.75), Units.inchesToMeters(1.25), Units.inchesToMeters(12)), 
+      new Rotation3d(0, Units.degreesToRadians(30), 0)
     );
 
     public static final Transform3d kCam2Transform = new Transform3d(
-      new Translation3d(Units.inchesToMeters(-14.5), Units.inchesToMeters(-3.25), Units.inchesToMeters(10.5)),
-      new Rotation3d(0, Units.degreesToRadians(-30), Units.degreesToRadians(180))
+      new Translation3d(Units.inchesToMeters(-14.75), Units.inchesToMeters(-3), Units.inchesToMeters(12)),
+      new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(180))
     );
   }
   

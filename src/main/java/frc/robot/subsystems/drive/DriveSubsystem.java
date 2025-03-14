@@ -20,6 +20,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.List;
@@ -319,6 +320,10 @@ public class DriveSubsystem extends SubsystemBase {
       new GoalEndState(0.0, Rotation2d.fromDegrees(-90))
     );
 
+    if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
+      path = path.flipPath();
+    }
+
     return AutoBuilder.followPath(path);
 
   }
@@ -335,6 +340,10 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.constraints, 
       null, 
       new GoalEndState(0.0, Rotation2d.fromDegrees(-127.5)));
+
+    if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
+      path = path.flipPath();
+    }
     
     return AutoBuilder.followPath(path);
 
@@ -352,6 +361,10 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.constraints, 
       null, 
       new GoalEndState(0.0, Rotation2d.fromDegrees(127.5)));
+
+    if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
+      path = path.flipPath();
+    }
     
     return AutoBuilder.followPath(path);
 
@@ -359,7 +372,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   public Command pathFindToReefCoral() {
 
-    List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(new Pose2d());
+    List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(new Pose2d(), new Pose2d());
     GoalEndState endState = new GoalEndState(0, Rotation2d.fromDegrees(0));
 
     if (RobotContainer.reefAlignment == ReefAlignment.LEFT) {
@@ -480,6 +493,10 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.constraints, 
       null, 
       endState);
+
+    if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
+      path = path.flipPath();
+    }
     
     return AutoBuilder.followPath(path);
 
@@ -487,7 +504,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   public Command pathFindToReefAlgae() {
 
-    List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(new Pose2d());
+    List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(new Pose2d(), new Pose2d());
     GoalEndState endState = new GoalEndState(0, Rotation2d.fromDegrees(0));
 
     if (RobotContainer.reefSide == ReefSide.FRONT_LEFT) {
@@ -551,6 +568,10 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.constraints, 
       null, 
       endState);
+
+    if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
+      path = path.flipPath();
+    }
     
     return AutoBuilder.followPath(path);
 

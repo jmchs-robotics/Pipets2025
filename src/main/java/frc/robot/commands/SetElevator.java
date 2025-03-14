@@ -49,6 +49,10 @@ public class SetElevator extends Command {
             m_elevator.setPosition(ElevatorConstants.HOME);
         }
 
+        if (m_level == ElevatorLevel.CORAL_STATION) {
+            m_elevator.setPosition(ElevatorConstants.CORAL_STATION);
+        }
+
     }
 
     @Override

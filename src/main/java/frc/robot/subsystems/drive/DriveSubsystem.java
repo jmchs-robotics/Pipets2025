@@ -86,7 +86,7 @@ public class DriveSubsystem extends SubsystemBase {
       },
       new Pose2d(),
       VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5)),
-      VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30))
+      VecBuilder.fill(0.5, 0.5, Double.MAX_VALUE)
   );
 
   // private final PIDController xController = new PIDController(10.0, 0.0, 0.0);
@@ -135,7 +135,7 @@ public class DriveSubsystem extends SubsystemBase {
         VecBuilder.fill(
           vision.getMinDistance(i) * DriveConstants.kEstimationCoefficient, 
           vision.getMinDistance(i) * DriveConstants.kEstimationCoefficient,
-          5.0
+          Double.MAX_VALUE
         )
       );
     }
@@ -361,6 +361,12 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.constraints, 
       null, 
       new GoalEndState(0.0, Rotation2d.fromDegrees(127.5)));
+
+    try {
+      path = PathPlannerPath.fromPathFile("CoralStationLeft");
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
 
     // if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
     //   path = path.flipPath();

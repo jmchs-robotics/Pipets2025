@@ -1,6 +1,7 @@
 package frc.robot.subsystems.algae;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -67,5 +68,13 @@ public class AlgaeFlipperSubsystem extends SubsystemBase {
 
     public double getCurrentVelocity() {
         return flipMotor.getVelocity().getValueAsDouble();
+    }
+
+    public void setAlgaeFlipperManual(double speed) {
+        flipMotor.set(speed);
+    }
+
+    public void stopMotorsManual() {
+        flipMotor.stopMotor();
     }
 }

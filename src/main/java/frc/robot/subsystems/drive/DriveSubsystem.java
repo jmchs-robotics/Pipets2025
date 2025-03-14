@@ -128,17 +128,17 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearRight.getPosition()
         });
     
-    // for (int i = 0; i < vision.getCameraPoses().size(); i++) {
-    //   m_estimator.addVisionMeasurement(
-    //     vision.getCameraPoses().get(i),
-    //     vision.getCameraTimestamps().get(i),
-    //     VecBuilder.fill(
-    //       vision.getMinDistance(i) * DriveConstants.kEstimationCoefficient, 
-    //       vision.getMinDistance(i) * DriveConstants.kEstimationCoefficient,
-    //       5.0
-    //     )
-    //   );
-    // }
+    for (int i = 0; i < vision.getCameraPoses().size(); i++) {
+      m_estimator.addVisionMeasurement(
+        vision.getCameraPoses().get(i),
+        vision.getCameraTimestamps().get(i),
+        VecBuilder.fill(
+          vision.getMinDistance(i) * DriveConstants.kEstimationCoefficient, 
+          vision.getMinDistance(i) * DriveConstants.kEstimationCoefficient,
+          5.0
+        )
+      );
+    }
 
     SmartDashboard.putNumber("Gyro Yaw", m_gyro.getYaw());
     SmartDashboard.putNumber("Gyro Pitch", m_gyro.getPitch());
@@ -320,9 +320,9 @@ public class DriveSubsystem extends SubsystemBase {
       new GoalEndState(0.0, Rotation2d.fromDegrees(-90))
     );
 
-    if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
-      path = path.flipPath();
-    }
+    // if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
+    //   path = path.flipPath();
+    // }
 
     return AutoBuilder.followPath(path);
 
@@ -341,9 +341,9 @@ public class DriveSubsystem extends SubsystemBase {
       null, 
       new GoalEndState(0.0, Rotation2d.fromDegrees(-127.5)));
 
-    if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
-      path = path.flipPath();
-    }
+    // if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
+    //   path = path.flipPath();
+    // }
     
     return AutoBuilder.followPath(path);
 
@@ -362,9 +362,9 @@ public class DriveSubsystem extends SubsystemBase {
       null, 
       new GoalEndState(0.0, Rotation2d.fromDegrees(127.5)));
 
-    if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
-      path = path.flipPath();
-    }
+    // if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
+    //   path = path.flipPath();
+    // }
     
     return AutoBuilder.followPath(path);
 
@@ -494,9 +494,9 @@ public class DriveSubsystem extends SubsystemBase {
       null, 
       endState);
 
-    if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
-      path = path.flipPath();
-    }
+    // if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
+    //   path = path.flipPath();
+    // }
     
     return AutoBuilder.followPath(path);
 
@@ -569,9 +569,9 @@ public class DriveSubsystem extends SubsystemBase {
       null, 
       endState);
 
-    if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
-      path = path.flipPath();
-    }
+    // if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
+    //   path = path.flipPath();
+    // }
     
     return AutoBuilder.followPath(path);
 

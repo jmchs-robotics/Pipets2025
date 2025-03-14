@@ -57,6 +57,7 @@ public class RobotContainer {
 
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
+  XboxController m_operatorController = new XboxController(OIConstants.kOperatorControllerPort);
 
   JoystickButton driveStart = new JoystickButton(m_driverController, Button.kStart.value);
   JoystickButton driveBack = new JoystickButton(m_driverController, Button.kBack.value);
@@ -70,6 +71,17 @@ public class RobotContainer {
   POVButton driveDownDPad = new POVButton(m_driverController, 180);
   POVButton driveRightDPad = new POVButton(m_driverController, 90);
   POVButton driveLeftDPad = new POVButton(m_driverController, 270);
+
+  JoystickButton operatorA = new JoystickButton(m_operatorController, Button.kA.value);
+  JoystickButton operatorB = new JoystickButton(m_operatorController, Button.kB.value);
+  JoystickButton operatorX = new JoystickButton(m_operatorController, Button.kX.value);
+  JoystickButton operatorY = new JoystickButton(m_operatorController, Button.kY.value);
+  JoystickButton operatorRB = new JoystickButton(m_operatorController, Button.kRightBumper.value);
+  JoystickButton operatorLB = new JoystickButton(m_operatorController, Button.kLeftBumper.value);
+  POVButton operatorUpDPad = new POVButton(m_operatorController, 0);
+  POVButton operatorDownDPad = new POVButton(m_operatorController, 180);
+  POVButton operatorRightDPad = new POVButton(m_operatorController, 90);
+  POVButton operatorLeftDPad = new POVButton(m_operatorController, 270);
 
   private final GenericEntry[] elevatorLevels = new GenericEntry[4];
   public static final boolean[] levelBooleans = new boolean[4];
@@ -123,7 +135,7 @@ public class RobotContainer {
     );
 
     driveBack.onTrue(
-      new HomeElevatorManually(m_elevatorSubsystem)
+      new LowerElevatorManual(m_elevatorSubsystem)
     );
 
     driveA.whileTrue(
@@ -163,20 +175,20 @@ public class RobotContainer {
       new ClimbUp(m_climbersSubsystem)
     );
     
-    driveUpDPad.whileTrue(
-      m_robotDrive.pathFindToProcessor()
-    );
+    // driveUpDPad.whileTrue(
+    //   m_robotDrive.pathFindToProcessor()
+    // );
 
     driveDownDPad.and(() -> elevatorLevel == ElevatorLevel.LEVEL_4_CORAL).whileTrue(
       new ParallelCommandGroup(
-        m_robotDrive.pathFindToReefCoral(),
+        // m_robotDrive.pathFindToReefCoral(),
         new ParallelCommandGroup(
           Commands.sequence(
-            new ZeroElevator(m_elevatorSubsystem),
+            // new ZeroElevator(m_elevatorSubsystem),
             new SetElevator(m_elevatorSubsystem, ElevatorLevel.LEVEL_4_CORAL)
           ),
           Commands.sequence(
-            new ZeroCoralFlipper(m_coralFlipperSubsystem),
+            // new ZeroCoralFlipper(m_coralFlipperSubsystem),
             new SetCoralFlipper(m_coralFlipperSubsystem, "scoreHigh")
           )
         )
@@ -185,14 +197,14 @@ public class RobotContainer {
 
     driveDownDPad.and(() -> elevatorLevel == ElevatorLevel.LEVEL_3_CORAL).whileTrue(
       new ParallelCommandGroup(
-        m_robotDrive.pathFindToReefCoral(),
+        // m_robotDrive.pathFindToReefCoral(),
         new ParallelCommandGroup(
           Commands.sequence(
-            new ZeroElevator(m_elevatorSubsystem),
+            // new ZeroElevator(m_elevatorSubsystem),
             new SetElevator(m_elevatorSubsystem, ElevatorLevel.LEVEL_3_CORAL)
           ),
           Commands.sequence(
-            new ZeroCoralFlipper(m_coralFlipperSubsystem),
+            // new ZeroCoralFlipper(m_coralFlipperSubsystem),
             new SetCoralFlipper(m_coralFlipperSubsystem, "scoreLow")
           )
         )
@@ -201,14 +213,14 @@ public class RobotContainer {
 
     driveDownDPad.and(() -> elevatorLevel == ElevatorLevel.LEVEL_2_CORAL).whileTrue(
       new ParallelCommandGroup(
-        m_robotDrive.pathFindToReefCoral(),
+        // m_robotDrive.pathFindToReefCoral(),
         new ParallelCommandGroup(
           Commands.sequence(
             new SetElevator(m_elevatorSubsystem, ElevatorLevel.HOME),
             new ZeroElevator(m_elevatorSubsystem)
           ),
           Commands.sequence(
-            new ZeroCoralFlipper(m_coralFlipperSubsystem),
+            // new ZeroCoralFlipper(m_coralFlipperSubsystem),
             new SetCoralFlipper(m_coralFlipperSubsystem, "scoreLow")
           )
         )
@@ -217,15 +229,15 @@ public class RobotContainer {
 
     driveDownDPad.and(() -> elevatorLevel == ElevatorLevel.LEVEL_3_ALGAE).whileTrue(
       new ParallelCommandGroup(
-        m_robotDrive.pathFindToReefAlgae(),
+        // m_robotDrive.pathFindToReefAlgae(),
         new SequentialCommandGroup(
           Commands.sequence(
-            new ZeroElevator(m_elevatorSubsystem),
+            // new ZeroElevator(m_elevatorSubsystem),
             new SetElevator(m_elevatorSubsystem, ElevatorLevel.LEVEL_3_ALGAE)
           ),
           new WaitCommand(0.25),
           Commands.sequence(
-            new ZeroAlgaeFlipper(m_algaeFlipperSubsystem),
+            // new ZeroAlgaeFlipper(m_algaeFlipperSubsystem),
             new SetAlgaeFlipper(m_algaeFlipperSubsystem, "up")
           ),
           new AlgaeIntake(m_algaeWheelsSubsystem)
@@ -235,15 +247,15 @@ public class RobotContainer {
 
     driveDownDPad.and(() -> elevatorLevel == ElevatorLevel.LEVEL_2_ALGAE).whileTrue(
       new ParallelCommandGroup(
-        m_robotDrive.pathFindToReefAlgae(),
+        // m_robotDrive.pathFindToReefAlgae(),
         new SequentialCommandGroup(
           Commands.sequence(
-            new ZeroElevator(m_elevatorSubsystem),
+            // new ZeroElevator(m_elevatorSubsystem),
             new SetElevator(m_elevatorSubsystem, ElevatorLevel.LEVEL_2_ALGAE)
           ),
           new WaitCommand(0.25),
           Commands.sequence(
-            new ZeroAlgaeFlipper(m_algaeFlipperSubsystem),
+            // new ZeroAlgaeFlipper(m_algaeFlipperSubsystem),
             new SetAlgaeFlipper(m_algaeFlipperSubsystem, "up")
           ),
           new AlgaeIntake(m_algaeWheelsSubsystem)
@@ -253,14 +265,14 @@ public class RobotContainer {
 
     driveRightDPad.whileTrue(
       new ParallelCommandGroup(
-        m_robotDrive.pathFindToCoralStationRight(),
+        // m_robotDrive.pathFindToCoralStationRight(),
         new ParallelCommandGroup(
           Commands.sequence(
-            new ZeroElevator(m_elevatorSubsystem),
+            // new ZeroElevator(m_elevatorSubsystem),
             new SetElevator(m_elevatorSubsystem, ElevatorLevel.CORAL_STATION)
           ),
           Commands.sequence(
-            new ZeroCoralFlipper(m_coralFlipperSubsystem),
+            // new ZeroCoralFlipper(m_coralFlipperSubsystem),
             new SetCoralFlipper(m_coralFlipperSubsystem, "coralStation")
           ),
           new CoralIntake(m_coralWheelsSubsystem)
@@ -270,19 +282,59 @@ public class RobotContainer {
 
     driveLeftDPad.whileTrue(
       new ParallelCommandGroup(
-        m_robotDrive.pathFindToCoralStationLeft(),
+        // m_robotDrive.pathFindToCoralStationLeft(),
         new ParallelCommandGroup(
           Commands.sequence(
-            new ZeroElevator(m_elevatorSubsystem),
+            // new ZeroElevator(m_elevatorSubsystem),
             new SetElevator(m_elevatorSubsystem, ElevatorLevel.CORAL_STATION)
           ),
           Commands.sequence(
-            new ZeroCoralFlipper(m_coralFlipperSubsystem),
+            // new ZeroCoralFlipper(m_coralFlipperSubsystem),
             new SetCoralFlipper(m_coralFlipperSubsystem, "coralStation")
           ),
           new CoralIntake(m_coralWheelsSubsystem)
         )
       )
+    );
+
+    operatorA.whileTrue(
+      new LowerCoralFlipperManual(m_coralFlipperSubsystem)
+    );
+
+    operatorB.whileTrue(
+      new RaiseCoralFlipperManual(m_coralFlipperSubsystem)
+    );
+
+    operatorX.whileTrue(
+      new LowerAlgaeFlipperManual(m_algaeFlipperSubsystem)
+    );
+
+    operatorY.whileTrue(
+      new RaiseAlgaeFlipperManual(m_algaeFlipperSubsystem)
+    );
+
+    operatorLB.whileTrue(
+      new LowerElevatorManual(m_elevatorSubsystem)
+    );
+
+    operatorRB.whileTrue(
+      new RaiseElevatorManual(m_elevatorSubsystem)
+    );
+
+    operatorUpDPad.whileTrue(
+      new CoralIntake(m_coralWheelsSubsystem)
+    );
+
+    operatorDownDPad.whileTrue(
+      new CoralExtake(m_coralWheelsSubsystem)
+    );
+
+    operatorRightDPad.whileTrue(
+      new AlgaeIntake(m_algaeWheelsSubsystem)
+    );
+
+    operatorLeftDPad.whileTrue(
+      new AlgaeExtake(m_algaeWheelsSubsystem)
     );
 
     // driveA.whileTrue(

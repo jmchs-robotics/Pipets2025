@@ -7,6 +7,7 @@ import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -27,6 +28,8 @@ public class BulldogCamera {
     public double camTimestamp;
     public double minDistance;
 
+    private final int[] validTags = {6, 7, 8, 9, 10, 11, 17, 18, 19, 20, 21, 22};
+
     public BulldogCamera(String name, Transform3d robotToCam) {
 
         this.name = name;
@@ -42,12 +45,21 @@ public class BulldogCamera {
         var results = cam.getAllUnreadResults();
         if (!results.isEmpty()) {
 
-            var result = results.get(results.size() - 1);
-            Optional<EstimatedRobotPose> currentPose = photonPoseEstimator.update(result);
+            var rawResult = results.get(results.size() - 1);
+            var targetsUsed = rawResult.targets;
+            var filteredTargets = filterTags(targetsUsed);
+            // the getMultiTagresult might mess with the tag filtering if it includes filtered out tags
+            // the metadata might also goof with the filtered tags
+            var newResult = new PhotonPipelineResult(
+                rawResult.metadata,
+                filteredTargets,
+                rawResult.getMultiTagResult()
+            );
+            Optional<EstimatedRobotPose> currentPose = photonPoseEstimator.update(newResult);
     
             if (currentPose.isPresent()) {
 
-                if (result.hasTargets()) {
+                if (newResult.hasTargets()) {
                     targets = currentPose.get().targetsUsed;
                 }
 
@@ -93,4 +105,28 @@ public class BulldogCamera {
     public double getMinDistance() {
         return minDistance;
     }
+
+    private List<PhotonTrackedTarget> filterTags(List<PhotonTrackedTarget> tags) {
+
+        List<PhotonTrackedTarget> filteredResults = tags;
+
+        for (int i = filteredResults.size() - 1; i >= 0; i--) {
+            if (!isValidTag(filteredResults.get(i).fiducialId)) {
+                filteredResults.remove(i);
+            }
+        }
+
+        return filteredResults;
+
+    }
+
+    private boolean isValidTag(int tagNum) {
+        for (int tag : validTags) {
+            if (tagNum == tag) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

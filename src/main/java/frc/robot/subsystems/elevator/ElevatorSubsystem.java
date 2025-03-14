@@ -85,4 +85,9 @@ public class ElevatorSubsystem extends SubsystemBase {
         primaryMotor.set(speed);
         followerMotor.setControl(new Follower(primaryMotor.getDeviceID(), true));
     }
+
+    public void stopMotorsManual() {
+        primaryMotor.stopMotor();
+        followerMotor.stopMotor();
+    }
 }

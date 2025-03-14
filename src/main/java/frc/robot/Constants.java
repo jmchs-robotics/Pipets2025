@@ -142,6 +142,7 @@ public final class Constants {
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kOperatorControllerPort = 1;
     public static final double kDriveDeadband = 0.1;
   }
 
@@ -185,7 +186,7 @@ public final class Constants {
     public static final Angle L2_CORAL = edu.wpi.first.units.Units.Rotations.of(0);
     public static final Angle L3_CORAL = edu.wpi.first.units.Units.Rotations.of(1.5);
     public static final Angle L4_CORAL = edu.wpi.first.units.Units.Rotations.of(4.05);
-    public static final Angle CORAL_STATION = edu.wpi.first.units.Units.Rotations.of(0.15);
+    public static final Angle CORAL_STATION = edu.wpi.first.units.Units.Rotations.of(0);
 
     public static final Angle HOME = edu.wpi.first.units.Units.Rotations.of(0);
     

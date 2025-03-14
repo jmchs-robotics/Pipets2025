@@ -1,14 +1,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.ElevatorConstants;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 
-public class HomeElevatorManually extends Command {
+public class LowerElevatorManual extends Command {
 
     private ElevatorSubsystem m_elevator;
 
-    public HomeElevatorManually(ElevatorSubsystem elevator) {
+    public LowerElevatorManual(ElevatorSubsystem elevator) {
 
         m_elevator = elevator;
         addRequirements(m_elevator);
@@ -22,13 +21,12 @@ public class HomeElevatorManually extends Command {
 
     @Override
     public boolean isFinished() {
-        return m_elevator.getSupplyCurrent() > 5;
+        return false;
     }
 
     @Override
     public void end(boolean interrupted) {
-        m_elevator.setNeutral();
-        m_elevator.resetSensorPosition(ElevatorConstants.HOME);
+        m_elevator.stopMotorsManual();
     }
     
 }

@@ -76,4 +76,13 @@ public class ElevatorSubsystem extends SubsystemBase {
     public double getCurrentVelocity() {
         return primaryMotor.getVelocity().getValueAsDouble();
     }
+
+    public double getSupplyCurrent() {
+        return primaryMotor.getSupplyCurrent().getValueAsDouble();
+    }
+
+    public void setElevatorManual(double speed) {
+        primaryMotor.set(speed);
+        followerMotor.setControl(new Follower(primaryMotor.getDeviceID(), true));
+    }
 }

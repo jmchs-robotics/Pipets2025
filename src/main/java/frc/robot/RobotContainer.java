@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.*;
 import frc.robot.subsystems.elevator.*;
@@ -119,6 +120,10 @@ public class RobotContainer {
 
     driveStart.onTrue(
       new InstantCommand(() -> {m_robotDrive.zeroHeading();})
+    );
+
+    driveBack.onTrue(
+      new HomeElevatorManually(m_elevatorSubsystem)
     );
 
     driveA.whileTrue(
@@ -485,6 +490,26 @@ public class RobotContainer {
         elevatorLevel = ElevatorLevel.LEVEL_2_CORAL;
       } else if (levelBooleans[2] && reefAlignmentsBoolean[1]) {
         elevatorLevel = ElevatorLevel.LEVEL_2_ALGAE;
+      }
+
+      if (reefSidesBoolean[0]) {
+        reefSide = ReefSide.FRONT_LEFT;
+      } else if (reefSidesBoolean[1]) {
+        reefSide = ReefSide.FRONT_MIDDLE;
+      } else if (reefSidesBoolean[2]) {
+        reefSide = ReefSide.FRONT_RIGHT;
+      } else if (reefSidesBoolean[3]) {
+        reefSide = ReefSide.BACK_LEFT;
+      } else if (reefSidesBoolean[4]) {
+        reefSide = ReefSide.BACK_MIDDLE;
+      } else if (reefSidesBoolean[5]) {
+        reefSide = ReefSide.BACK_RIGHT;
+      }
+
+      for (int i = 0; i < 3; i++) {
+        if (reefAlignmentsBoolean[i]) {
+          reefAlignment = ReefAlignment.values()[i];
+        }
       }
 
     }

@@ -3,7 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.RobotContainer.ElevatorLevel;
-import frc.robot.subsystems.elevator.ElevatorSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
 
 public class SetElevator extends Command {
     
@@ -11,16 +11,11 @@ public class SetElevator extends Command {
     private final ElevatorLevel m_level;
 
     public SetElevator(ElevatorSubsystem elevator, ElevatorLevel level) {
+        m_level = level;
 
         m_elevator = elevator;
         addRequirements(m_elevator);
-
-        m_level = level;
-
     }
-
-    @Override
-    public void initialize() {}
 
     @Override
     public void execute() {
@@ -59,8 +54,4 @@ public class SetElevator extends Command {
     public boolean isFinished() {
         return true;
     }
-
-    @Override
-    public void end(boolean interrupted) {}
-    
 }

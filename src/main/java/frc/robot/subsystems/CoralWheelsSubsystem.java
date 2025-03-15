@@ -1,10 +1,8 @@
-package frc.robot.subsystems.coral;
+package frc.robot.subsystems;
 
-import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CoralConstants;
 
@@ -25,5 +23,4 @@ public class CoralWheelsSubsystem extends SubsystemBase {
     public void setWheelMotors(double speed) {
         wheelMotor.set(speed);
     }
-    
 }

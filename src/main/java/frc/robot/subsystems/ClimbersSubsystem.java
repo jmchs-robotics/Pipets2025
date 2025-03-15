@@ -1,4 +1,4 @@
-package frc.robot.subsystems.climbers;
+package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 
@@ -10,9 +10,7 @@ public class ClimbersSubsystem extends SubsystemBase {
    private final TalonFX climbMotor;
 
     public ClimbersSubsystem() {
-
         climbMotor = new TalonFX(ClimberConstants.climbMotorID);
-
     }
 
     public void stopClimbMotor() {

@@ -1,39 +1,42 @@
-package frc.robot.subsystems.coral;
+package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.CoralConstants;
+import frc.robot.Constants.AlgaeConstants;
 
-public class CoralFlipperSubsystem extends SubsystemBase {
+public class AlgaeFlipperSubsystem extends SubsystemBase {
     
     private final TalonFX flipMotor;
     private final TalonFXConfiguration config;
 
-    public CoralFlipperSubsystem() {
+    public AlgaeFlipperSubsystem() {
 
-        flipMotor = new TalonFX(CoralConstants.flipMotorID);
+        flipMotor = new TalonFX(AlgaeConstants.flipMotorID);
         config = new TalonFXConfiguration();
 
-        config.Slot0.kP = CoralConstants.kP;
-        config.Slot0.kI = CoralConstants.kI;
-        config.Slot0.kD = CoralConstants.kD;
+        config.Slot0.kP = AlgaeConstants.kP;
+        config.Slot0.kI = AlgaeConstants.kI;
+        config.Slot0.kD = AlgaeConstants.kD;
 
         config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         config.CurrentLimits.SupplyCurrentLimit = 40; // 40 amp breaker on PDH
         config.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-        config.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Degrees.of(135).in(Units.Rotations);
+        config.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Rotations.of(0).in(Units.Rotations);
         config.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
-        config.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Degrees.of(0).in(Units.Rotations);
+        config.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Rotations.of(-0.25).in(Units.Rotations);
 
-        config.Feedback.SensorToMechanismRatio = 36; // 36:1 gear ratio
+        config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+
+        config.Feedback.SensorToMechanismRatio = 45; // 45:1 gear ratio
 
         flipMotor.getConfigurator().apply(config);
 
@@ -43,7 +46,8 @@ public class CoralFlipperSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Coral Flipper Motor Rotations", flipMotor.getPosition().getValueAsDouble());
+        SmartDashboard.putNumber("Algae Flip Motor Position", flipMotor.getPosition().getValueAsDouble());
+        // SmartDashboard.putNumber("Algae Flip Motor Velocity", primaryMotor.getVelocity().getValueAsDouble());
     }
 
     public void setPosition(Angle angle) {
@@ -66,7 +70,7 @@ public class CoralFlipperSubsystem extends SubsystemBase {
         return flipMotor.getVelocity().getValueAsDouble();
     }
 
-    public void setCoralFlipperManual(double speed) {
+    public void setAlgaeFlipperManual(double speed) {
         flipMotor.set(speed);
     }
 

@@ -2,7 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.CoralConstants;
-import frc.robot.subsystems.coral.CoralFlipperSubsystem;
+import frc.robot.subsystems.CoralFlipperSubsystem;
 
 public class SetCoralFlipper extends Command {
     
@@ -10,16 +10,11 @@ public class SetCoralFlipper extends Command {
     private final String position;
 
     public SetCoralFlipper(CoralFlipperSubsystem coralFlipper, String pos) {
+        position = pos;
 
         m_coralFlipper = coralFlipper;
         addRequirements(m_coralFlipper);
-
-        position = pos;
-
     }
-    
-    @Override
-    public void initialize() {}
 
     @Override
     public void execute() {
@@ -46,7 +41,4 @@ public class SetCoralFlipper extends Command {
     public boolean isFinished() {
         return true;
     }
-
-    @Override
-    public void end(boolean interrupted) {}
 }

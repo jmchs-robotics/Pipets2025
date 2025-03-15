@@ -6,9 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -17,13 +15,10 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.*;
-import frc.robot.subsystems.elevator.*;
-import frc.robot.subsystems.vision.*;
-import frc.robot.subsystems.drive.*;
-import frc.robot.subsystems.algae.*;
-import frc.robot.subsystems.coral.*;
-import frc.robot.subsystems.climbers.*;
+import frc.robot.subsystems.*;
 import frc.robot.subsystems.LEDSubsystem;
+import frc.robot.subsystems.AlgaeFlipperSubsystem;
+import frc.robot.subsystems.AlgaeWheelsSubsystem;
 import frc.robot.subsystems.AutoSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -34,12 +29,6 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 
-/*
- * This class is where the bulk of the robot should be declared.  Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
- * (including subsystems, commands, and button mappings) should be declared here.
- */
 @Logged
 public class RobotContainer {
 
@@ -101,10 +90,6 @@ public class RobotContainer {
   public static ReefSide reefSide;
   public static ReefAlignment reefAlignment;
   
-
-  /**
-   * The container for the robot. Contains subsystems, OI devices, and commands.
-   */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
@@ -116,19 +101,6 @@ public class RobotContainer {
 
     setUpDriverTab();
   }
-
-
-
-  /**
-   * Use this method to define your button->command mappings. Buttons can be
-   * created by
-   * instantiating a {@link edu.wpi.first.wpilibj.GenericHID} or one of its
-   * subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then calling
-   * passing it to a
-   * {@link JoystickButton}.
-   */
-
 
   private void configureButtonBindings() {
 
@@ -176,10 +148,6 @@ public class RobotContainer {
     driveLB.and(() -> !climbModeBoolean).whileTrue(
       new ClimbUp(m_climbersSubsystem)
     );
-    
-    // driveUpDPad.whileTrue(
-    //   m_robotDrive.pathFindToProcessor()
-    // );
 
     driveDownDPad.and(() -> elevatorLevel == ElevatorLevel.LEVEL_4_CORAL).whileTrue(
       new ParallelCommandGroup(
@@ -352,11 +320,6 @@ public class RobotContainer {
     
   }
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
   public Command getAutonomousCommand() {
     return m_auto.getAutoCommand();
   }

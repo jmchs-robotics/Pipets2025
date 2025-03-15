@@ -2,17 +2,15 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.ElevatorConstants;
-import frc.robot.subsystems.elevator.ElevatorSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
 
 public class ZeroElevator extends Command {
 
     private final ElevatorSubsystem m_elevator;
 
     public ZeroElevator(ElevatorSubsystem elevator) {
-
         m_elevator = elevator;
         addRequirements(m_elevator);
-
     }
 
     @Override
@@ -25,5 +23,4 @@ public class ZeroElevator extends Command {
         m_elevator.setNeutral();
         m_elevator.resetSensorPosition(ElevatorConstants.HOME);
     }
-    
 }

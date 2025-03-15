@@ -1,4 +1,4 @@
-package frc.robot.subsystems.elevator;
+package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
@@ -10,7 +10,6 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
-import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorConstants;
@@ -42,17 +41,21 @@ public class ElevatorSubsystem extends SubsystemBase {
         
         config.Feedback.SensorToMechanismRatio = 9; // 9:1 gear ratio 
 
-        primaryMotor.getConfigurator().apply(config);
-        followerMotor.getConfigurator().apply(config);
-
-        primaryMotor.setPosition(0);
-        followerMotor.setPosition(0);
-
+        configureMotors(primaryMotor);
+        configureMotors(followerMotor);
+        
     }
 
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Elevator Motor Rotations", primaryMotor.getPosition().getValueAsDouble());
+        // SmartDashboard.putNumber("Elevator Motor Velocity", primaryMotor.getVelocity().getValueAsDouble());
+        // SmartDashboard.putNumber("Elevator Motor Current", primaryMotor.getSupplyCurrent().getValueAsDouble());
+    }
+
+    public void configureMotors(TalonFX motor) {
+        motor.getConfigurator().apply(config);
+        motor.setPosition(0);
     }
 
     public void setPosition(Angle height) {

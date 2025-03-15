@@ -18,10 +18,8 @@ public class DefaultLEDCommand extends Command {
     private Alliance alliance = null;
 
     public DefaultLEDCommand(LEDSubsystem led) {
-
         m_led = led;
         addRequirements(m_led);
-
     }
 
     @Override
@@ -37,16 +35,12 @@ public class DefaultLEDCommand extends Command {
 
     @Override
     public void execute() {
-
         if (RobotContainer.elevatorLevel == ElevatorLevel.LEVEL_4_CORAL) {
-
             LEDPattern pattern = LEDPattern.solid(Color.kWhite);
             m_led.setLEDPattern(pattern);
-
         }
 
         if (RobotContainer.elevatorLevel == ElevatorLevel.LEVEL_3_CORAL) {
-
             LEDPattern pattern = LEDPattern.steps(
                 Map.of(
                     0, 
@@ -56,13 +50,10 @@ public class DefaultLEDCommand extends Command {
                         ? Color.kBlue
                         : Color.kRed)
                 );
-
             m_led.setLEDPattern(pattern);
-
         }
 
         if (RobotContainer.elevatorLevel == ElevatorLevel.LEVEL_2_CORAL) {
-
             LEDPattern pattern = LEDPattern.steps(
                 Map.of(
                     0,
@@ -73,17 +64,12 @@ public class DefaultLEDCommand extends Command {
                         : Color.kRed
                 )
             );
-
             m_led.setLEDPattern(pattern);
-
         }
 
         if (RobotContainer.elevatorLevel == ElevatorLevel.LEVEL_3_ALGAE) {
-
             LEDPattern pattern = LEDPattern.solid(Color.kSeaGreen);
-
             m_led.setLEDPattern(pattern);
-
         }
 
         if (RobotContainer.elevatorLevel == ElevatorLevel.LEVEL_2_ALGAE) {
@@ -98,19 +84,7 @@ public class DefaultLEDCommand extends Command {
                         : Color.kRed
                 )
             );
-
             m_led.setLEDPattern(pattern);
-
         }
-
     }
-
-    @Override
-    public boolean isFinished() {
-        return false;
-    }
-
-    @Override
-    public void end(boolean interrupted) {}
-    
 }

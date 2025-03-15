@@ -2,17 +2,15 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.CoralConstants;
-import frc.robot.subsystems.coral.CoralFlipperSubsystem;
+import frc.robot.subsystems.CoralFlipperSubsystem;
 
 public class ZeroCoralFlipper extends Command {
     
     private final CoralFlipperSubsystem m_coralFlipper;
 
     public ZeroCoralFlipper(CoralFlipperSubsystem coralFlipper) {
-
         m_coralFlipper = coralFlipper;
         addRequirements(m_coralFlipper);
-
     }
 
     @Override
@@ -25,5 +23,4 @@ public class ZeroCoralFlipper extends Command {
         m_coralFlipper.setNeutral();
         m_coralFlipper.setPosition(CoralConstants.kIdleAngle);
     }
-
 }

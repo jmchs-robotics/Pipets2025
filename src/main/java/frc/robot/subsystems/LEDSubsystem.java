@@ -14,12 +14,10 @@ public class LEDSubsystem extends SubsystemBase {
     private AddressableLEDBuffer m_ledBuffer = new AddressableLEDBuffer(150);
 
     public LEDSubsystem() {
-
         m_led.setLength(m_ledBuffer.getLength());
 
         m_led.setData(m_ledBuffer);
-        m_led.start();        
-
+        m_led.start();
     }
 
     public AddressableLED getLeds() {
@@ -27,19 +25,14 @@ public class LEDSubsystem extends SubsystemBase {
     }
 
     public void setLEDPattern(LEDPattern pattern) {
-
         pattern.applyTo(m_ledBuffer);
         m_led.setData(m_ledBuffer);
-
     }
 
     public void setScrollingRainbow() {
-        LEDPattern rainbow = LEDPattern.rainbow(255, 128)
-                .scrollAtAbsoluteSpeed(MetersPerSecond.of(1), Meters.of(1 / 60.0));
-
-            setLEDPattern(rainbow);
+        LEDPattern rainbow = LEDPattern.rainbow(255, 128).scrollAtAbsoluteSpeed(MetersPerSecond.of(1), Meters.of(1 / 60.0));
+        setLEDPattern(rainbow);
     }
-
 }
 
     

@@ -1,4 +1,4 @@
-package frc.robot.subsystems.algae;
+package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -12,10 +12,8 @@ public class AlgaeWheelsSubsystem extends SubsystemBase {
     private final SparkMax leftMotor;
 
     public AlgaeWheelsSubsystem() {
-
         rightMotor = new SparkMax(AlgaeConstants.rightMotorID, MotorType.kBrushless);
         leftMotor = new SparkMax(AlgaeConstants.leftMotorID, MotorType.kBrushless);
-        
     }
 
     public void stopWheelMotors() {

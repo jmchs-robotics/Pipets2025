@@ -4,7 +4,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.OIConstants;
-import frc.robot.subsystems.drive.DriveSubsystem;
+import frc.robot.subsystems.DriveSubsystem;
 
 public class DefaultDriveCommand extends Command {
 
@@ -21,9 +21,6 @@ public class DefaultDriveCommand extends Command {
     }
 
     @Override
-    public void initialize() {}
-
-    @Override
     public void execute() {
         m_drive.drive(
             -MathUtil.applyDeadband(m_controller.getLeftY() * 0.9, OIConstants.kDriveDeadband), 
@@ -33,13 +30,4 @@ public class DefaultDriveCommand extends Command {
         );
 
     }
-
-    @Override
-    public boolean isFinished() {
-        return false;
-    }
-
-    @Override
-    public void end(boolean interrupted) {}
-    
 }

@@ -37,12 +37,6 @@ import frc.robot.commands.CoralExtake;
 import frc.robot.commands.CoralIntake;
 import frc.robot.commands.SetCoralFlipper;
 import frc.robot.commands.SetElevator;
-import frc.robot.subsystems.algae.AlgaeFlipperSubsystem;
-import frc.robot.subsystems.algae.AlgaeWheelsSubsystem;
-import frc.robot.subsystems.coral.CoralFlipperSubsystem;
-import frc.robot.subsystems.coral.CoralWheelsSubsystem;
-import frc.robot.subsystems.drive.DriveSubsystem;
-import frc.robot.subsystems.elevator.ElevatorSubsystem;
 
 public class AutoSubsystem extends SubsystemBase {
 

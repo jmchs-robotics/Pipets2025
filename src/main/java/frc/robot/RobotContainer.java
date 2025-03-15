@@ -22,7 +22,7 @@ import frc.robot.subsystems.vision.*;
 import frc.robot.subsystems.drive.*;
 import frc.robot.subsystems.algae.*;
 import frc.robot.subsystems.coral.*;
-import frc.robot.subsystems.Climbers.*;
+import frc.robot.subsystems.climbers.*;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.AutoSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -83,9 +83,7 @@ public class RobotContainer {
   POVButton operatorUpDPad = new POVButton(m_operatorController, 0);
   POVButton operatorDownDPad = new POVButton(m_operatorController, 180);
   POVButton operatorRightDPad = new POVButton(m_operatorController, 90);
-  POVButton operatorLeftDPad = new POVButton(m_operatorController, 270);
-  JoystickButton operatorRT = new JoystickButton(m_operatorController, Axis.kRightTrigger.value);
-  JoystickButton operatorLT = new JoystickButton(m_operatorController, Axis.kLeftTrigger.value);
+  POVButton operatorLeftDPad = new POVButton(m_operatorController, 270); 
 
   private final GenericEntry[] elevatorLevels = new GenericEntry[4];
   public static final boolean[] levelBooleans = new boolean[4];
@@ -269,35 +267,19 @@ public class RobotContainer {
 
     driveRightDPad.whileTrue(
       new ParallelCommandGroup(
-        // m_robotDrive.pathFindToCoralStationRight(),
-        new ParallelCommandGroup(
-          Commands.sequence(
-            // new ZeroElevator(m_elevatorSubsystem),
-            new SetElevator(m_elevatorSubsystem, ElevatorLevel.CORAL_STATION)
-          ),
-          Commands.sequence(
-            // new ZeroCoralFlipper(m_coralFlipperSubsystem),
-            new SetCoralFlipper(m_coralFlipperSubsystem, "coralStation")
-          ),
-          new CoralIntake(m_coralWheelsSubsystem)
-        )
+        new SlideRight(m_robotDrive),
+        new SetElevator(m_elevatorSubsystem, ElevatorLevel.CORAL_STATION),
+        new SetCoralFlipper(m_coralFlipperSubsystem, "coralStation"),
+        new CoralIntake(m_coralWheelsSubsystem)
       )
     );
 
     driveLeftDPad.whileTrue(
       new ParallelCommandGroup(
-        m_robotDrive.pathFindToCoralStationLeft(),
-        new ParallelCommandGroup(
-          Commands.sequence(
-            // new ZeroElevator(m_elevatorSubsystem),
-            new SetElevator(m_elevatorSubsystem, ElevatorLevel.CORAL_STATION)
-          ),
-          Commands.sequence(
-            // new ZeroCoralFlipper(m_coralFlipperSubsystem),
-            new SetCoralFlipper(m_coralFlipperSubsystem, "coralStation")
-          ),
-          new CoralIntake(m_coralWheelsSubsystem)
-        )
+        new SlideLeft(m_robotDrive),
+        new SetElevator(m_elevatorSubsystem, ElevatorLevel.CORAL_STATION),
+        new SetCoralFlipper(m_coralFlipperSubsystem, "coralStation"),
+        new CoralIntake(m_coralWheelsSubsystem)
       )
     );
 
@@ -339,14 +321,6 @@ public class RobotContainer {
 
     operatorLeftDPad.whileTrue(
       new AlgaeExtake(m_algaeWheelsSubsystem)
-    );
-
-    operatorRT.whileTrue(
-      new SlideRight(m_robotDrive, m_operatorController)
-    );
-
-    operatorLT.whileTrue(
-      new SlideLeft(m_robotDrive, m_operatorController)
     );
 
     // driveA.whileTrue(

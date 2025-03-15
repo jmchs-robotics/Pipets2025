@@ -1,22 +1,14 @@
 package frc.robot.commands;
 
-import java.lang.ModuleLayer.Controller;
-
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.drive.DriveSubsystem;
 
-public class SlideLeft extends Command{
+public class SlideLeft extends Command {
 
     private final DriveSubsystem m_drive;
-    private final XboxController m_controller;
 
-    public SlideLeft(DriveSubsystem drive, XboxController controller) {
-        
-        m_controller = controller;
+    public SlideLeft(DriveSubsystem drive) {
 
         m_drive = drive;
         addRequirements(m_drive);
@@ -24,14 +16,11 @@ public class SlideLeft extends Command{
    }
 
    @Override
-    public void initialize() {
-
-    }
+    public void initialize() {}
 
     @Override
     public void execute() {
-        m_drive.driveRobotRelative(new ChassisSpeeds(-0.1, 0, 0));
-        
+        m_drive.driveRobotRelative(new ChassisSpeeds(0, 0.1, 0));     
     }
 
     @Override
@@ -40,7 +29,6 @@ public class SlideLeft extends Command{
     }
 
     @Override
-    public void end(boolean interrupted) {
-        
-    }
+    public void end(boolean interrupted) {}
+
 }

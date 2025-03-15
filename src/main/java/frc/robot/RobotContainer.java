@@ -135,7 +135,7 @@ public class RobotContainer {
     );
 
     driveBack.onTrue(
-      new LowerElevatorManual(m_elevatorSubsystem)
+      new InstantCommand(() -> {m_elevatorSubsystem.resetSensorPosition(ElevatorConstants.HOME);})
     );
 
     driveA.whileTrue(
@@ -282,7 +282,7 @@ public class RobotContainer {
 
     driveLeftDPad.whileTrue(
       new ParallelCommandGroup(
-        // m_robotDrive.pathFindToCoralStationLeft(),
+        m_robotDrive.pathFindToCoralStationLeft(),
         new ParallelCommandGroup(
           Commands.sequence(
             // new ZeroElevator(m_elevatorSubsystem),

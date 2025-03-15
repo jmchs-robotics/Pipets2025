@@ -35,7 +35,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         config.CurrentLimits.SupplyCurrentLimit = 40; // 40 amp breaker on PDH
         config.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
         config.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Rotations.of(ElevatorConstants.maxPos).in(Units.Rotations);
-        config.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+        config.SoftwareLimitSwitch.ReverseSoftLimitEnable = false;
         config.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Rotations.of(ElevatorConstants.minPos).in(Units.Rotations);
 
         config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;

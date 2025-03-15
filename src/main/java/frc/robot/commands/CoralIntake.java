@@ -19,7 +19,7 @@ public class CoralIntake extends Command {
 
     @Override
     public void execute() {
-        m_coralWheels.setWheelMotors(-0.25);
+        m_coralWheels.setWheelMotors(-0.3);
     }
 
     @Override

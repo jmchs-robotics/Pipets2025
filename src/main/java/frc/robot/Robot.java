@@ -27,7 +27,7 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
 
   public Robot() {
-    Epilogue.bind(this);
+     Epilogue.bind(this);
   }
 
   /**

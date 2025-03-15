@@ -6,7 +6,9 @@ package frc.robot;
 
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -20,7 +22,7 @@ import frc.robot.subsystems.vision.*;
 import frc.robot.subsystems.drive.*;
 import frc.robot.subsystems.algae.*;
 import frc.robot.subsystems.coral.*;
-import frc.robot.subsystems.climbers.*;
+import frc.robot.subsystems.Climbers.*;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.AutoSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -82,6 +84,8 @@ public class RobotContainer {
   POVButton operatorDownDPad = new POVButton(m_operatorController, 180);
   POVButton operatorRightDPad = new POVButton(m_operatorController, 90);
   POVButton operatorLeftDPad = new POVButton(m_operatorController, 270);
+  JoystickButton operatorRT = new JoystickButton(m_operatorController, Axis.kRightTrigger.value);
+  JoystickButton operatorLT = new JoystickButton(m_operatorController, Axis.kLeftTrigger.value);
 
   private final GenericEntry[] elevatorLevels = new GenericEntry[4];
   public static final boolean[] levelBooleans = new boolean[4];
@@ -335,6 +339,14 @@ public class RobotContainer {
 
     operatorLeftDPad.whileTrue(
       new AlgaeExtake(m_algaeWheelsSubsystem)
+    );
+
+    operatorRT.whileTrue(
+      new SlideRight(m_robotDrive, m_operatorController)
+    );
+
+    operatorLT.whileTrue(
+      new SlideLeft(m_robotDrive, m_operatorController)
     );
 
     // driveA.whileTrue(

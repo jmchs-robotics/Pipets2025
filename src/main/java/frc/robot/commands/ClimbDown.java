@@ -1,7 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.climbers.ClimbersSubsystem;
+import frc.robot.subsystems.Climbers.ClimbersSubsystem;
 
 public class ClimbDown extends Command {
     

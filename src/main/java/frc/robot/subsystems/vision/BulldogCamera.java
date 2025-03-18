@@ -28,6 +28,10 @@ public class BulldogCamera {
     public double camTimestamp;
     public double minDistance;
 
+    public double camToTagX;
+    public double camToTagY;
+    public double camToTagZ;
+
     private final int[] validTags = {6, 7, 8, 9, 10, 11, 17, 18, 19, 20, 21, 22};
 
     public BulldogCamera(String name, Transform3d robotToCam) {
@@ -69,13 +73,20 @@ public class BulldogCamera {
                         double minDistance = Double.MAX_VALUE;
                         for (PhotonTrackedTarget target : targets) {
                             double distance = target.getBestCameraToTarget().getTranslation().getNorm();
+                            var camToTagTranslation = target.getBestCameraToTarget();
                             if (distance < minDistance) {
                                 minDistance = distance;
+                                camToTagX = camToTagTranslation.getX();
+                                camToTagY = camToTagTranslation.getY();
+                                camToTagZ = camToTagTranslation.getZ();
                             }
                         }
                         this.minDistance = minDistance;
                     } else {
                         minDistance = targets.get(0).getBestCameraToTarget().getTranslation().getNorm();
+                        camToTagX = targets.get(0).getBestCameraToTarget().getTranslation().getX();
+                        camToTagY = targets.get(0).getBestCameraToTarget().getTranslation().getY();
+                        camToTagZ = targets.get(0).getBestCameraToTarget().getTranslation().getZ();
                     }
 
                 }

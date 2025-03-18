@@ -41,6 +41,10 @@ public class VisionSubsystem extends SubsystemBase {
 
     }
 
+    public BulldogCamera getCamera(int camNum) {
+        return cams[camNum];
+    }
+
     public void setReferencePose(Pose2d pose) {
         for (BulldogCamera cam : cams) {
             cam.setReferencePose(pose);

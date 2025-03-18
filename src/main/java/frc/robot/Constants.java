@@ -74,35 +74,6 @@ public final class Constants {
 
     public static final double kEstimationCoefficient = 0.025;
 
-    // public static final ModuleConfig moduleConfig = new ModuleConfig(
-    //   ModuleConstants.kWheelDiameterMeters / 2, 
-    //   3.95, 
-    //   0.85,
-    //   new DCMotor(
-    //     12, 
-    //     3.6, 
-    //     211, 
-    //     3.6, 
-    //     6784, 
-    //     1
-    //   ), 
-    //   ModuleConstants.kDrivingMotorReduction, 
-    //   40, 
-    //   1
-    // );
-
-    // public static final RobotConfig robotConfig = new RobotConfig(
-    //   Units.lbsToKilograms(132.75), 
-    //   20,
-    //   moduleConfig, 
-    //   new Translation2d[] {
-    //     new Translation2d(kWheelBase / 2, kTrackWidth / 2),
-    //     new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
-    //     new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
-    //     new Translation2d(-kWheelBase / 2, -kTrackWidth / 2)
-    //   }
-    // );
-
     public static final PPHolonomicDriveController ppDriveController = new PPHolonomicDriveController(
       new PIDConstants(10, 0.5, 0.05), 
       new PIDConstants(10, 0.05, 0.1)
@@ -115,12 +86,13 @@ public final class Constants {
       AutoConstants.kMaxAngularSpeedRadiansPerSecondSquared
     );
 
-    // ROBOT IS 6.75 INCHES BACK FROM REEF WHEN SCORING CORAL
-    // RIGHT SIDE SCORING IS 11.5 INCHES TO THE RIGHT
-    // LEFT SIDE SHOULD BE RELATIVELY CENTERED
-    // ALGAE SHOULD BE ABLE TO JUST GO AGAINST THE REEF WHEN AUTO ALIGNED
-    // ALGAE IS ALSO CENTERED ON THE REEF
-    // CORAL "PRONGS" ARE 7.5 INCHES ON EITHER SIDE OF THE CENTER OF THE REEF
+    public static final double leftReefRangeTarget = 0.0;
+    public static final double leftReefAimTarget = 0.0;
+    public static final double leftReefStrafeTarget = 0.0;
+
+    public static final double rightReefRangeTarget = 0.0;
+    public static final double rightReefAimTarget = 0.0;
+    public static final double rightReefStrafeTarget = 0.0;
   }
 
   public static final class ModuleConstants {

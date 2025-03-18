@@ -30,7 +30,7 @@ public class BulldogCamera {
 
     public double camToTagX;
     public double camToTagY;
-    public double camToTagZ;
+    public double camToTagYaw;
 
     private final int[] validTags = {6, 7, 8, 9, 10, 11, 17, 18, 19, 20, 21, 22};
 
@@ -78,7 +78,7 @@ public class BulldogCamera {
                                 minDistance = distance;
                                 camToTagX = camToTagTranslation.getX();
                                 camToTagY = camToTagTranslation.getY();
-                                camToTagZ = camToTagTranslation.getZ();
+                                camToTagYaw = target.getYaw();
                             }
                         }
                         this.minDistance = minDistance;
@@ -86,7 +86,7 @@ public class BulldogCamera {
                         minDistance = targets.get(0).getBestCameraToTarget().getTranslation().getNorm();
                         camToTagX = targets.get(0).getBestCameraToTarget().getTranslation().getX();
                         camToTagY = targets.get(0).getBestCameraToTarget().getTranslation().getY();
-                        camToTagZ = targets.get(0).getBestCameraToTarget().getTranslation().getZ();
+                        camToTagYaw = targets.get(0).getYaw();
                     }
 
                 }

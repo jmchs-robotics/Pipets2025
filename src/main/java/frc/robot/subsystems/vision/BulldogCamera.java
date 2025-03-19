@@ -103,12 +103,6 @@ public class BulldogCamera {
 
         }
 
-        SmartDashboard.putNumber("Cam To Tag X", camToTagX);
-        SmartDashboard.putNumber("Cam To Tag Y", camToTagY);
-        SmartDashboard.putNumber("Cam To Tag Yaw", camToTagYaw);
-        SmartDashboard.putNumber("Min Distance", minDistance);
-        // SmartDashboard.putString("trackedToString", trackedToString);
-
     }
 
     public String getName() {

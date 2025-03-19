@@ -15,7 +15,7 @@ public class AlignToReef extends Command {
     private final BulldogCamera m_cam;
     private boolean isLeftSide;
 
-    PIDController m_aimController = new PIDController(0.1, 0, 0);
+    PIDController m_aimController = new PIDController(0.1, 0, 0.1);
     PIDController m_rangeController = new PIDController(0.1, 0, 0);
     PIDController m_strafeController = new PIDController(0.1, 0, 0);
 
@@ -29,6 +29,8 @@ public class AlignToReef extends Command {
         addRequirements(m_drive);
 
         m_cam = cam;
+
+        m_aimController.enableContinuousInput(-180, 180);
 
     }
 
@@ -55,7 +57,7 @@ public class AlignToReef extends Command {
     public void execute() {
 
         m_drive.driveRobotRelative(
-            new ChassisSpeeds(getRangePID(), getStrafePID(), getAimPID())
+            new ChassisSpeeds(getStrafePID(), getRangePID(), getAimPID())
         );
 
     }

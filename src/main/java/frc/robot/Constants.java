@@ -88,7 +88,7 @@ public final class Constants {
 
     public static final double leftReefRangeTarget = 0.5; // meters
     public static final double leftReefStrafeTarget = 0.0; // meters
-    public static final double leftReefAimTarget = 180; // degrees
+    public static final double leftReefAimTarget = 0; // degrees
 
     public static final double rightReefRangeTarget = 0.0; // meters
     public static final double rightReefStrafeTarget = 0.0; // meters

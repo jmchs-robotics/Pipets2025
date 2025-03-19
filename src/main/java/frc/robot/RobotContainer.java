@@ -178,7 +178,7 @@ public class RobotContainer {
     );
     
     driveUpDPad.whileTrue(
-      new AlignToReef(m_robotDrive, m_vision.getCamera(0))
+      new AlignToReef(m_robotDrive, m_vision.getCamera(1))
     );
 
     driveDownDPad.and(() -> elevatorLevel == ElevatorLevel.LEVEL_4_CORAL).whileTrue(

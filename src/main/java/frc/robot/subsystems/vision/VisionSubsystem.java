@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.RobotToCamTransforms;
 
@@ -31,6 +32,10 @@ public class VisionSubsystem extends SubsystemBase {
             processCamera(i);
 
         }
+
+        SmartDashboard.putNumber("Cam To Tag X", cams[0].camToTagX);
+        SmartDashboard.putNumber("Cam To Tag Y", cams[0].camToTagY);
+        SmartDashboard.putNumber("Cam To Tag Yaw", cams[0].camToTagYaw);
 
     }
 

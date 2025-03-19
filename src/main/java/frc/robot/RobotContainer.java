@@ -177,9 +177,9 @@ public class RobotContainer {
       new ClimbUp(m_climbersSubsystem)
     );
     
-    // driveUpDPad.whileTrue(
-    //   m_robotDrive.pathFindToProcessor()
-    // );
+    driveUpDPad.whileTrue(
+      new AlignToReef(m_robotDrive, m_vision.getCamera(0))
+    );
 
     driveDownDPad.and(() -> elevatorLevel == ElevatorLevel.LEVEL_4_CORAL).whileTrue(
       new ParallelCommandGroup(

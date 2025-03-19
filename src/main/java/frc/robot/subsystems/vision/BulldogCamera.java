@@ -14,6 +14,7 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class BulldogCamera {
     
@@ -46,14 +47,14 @@ public class BulldogCamera {
 
     public void updateVision() {
 
+        // String trackedToString = "";
+
         var results = cam.getAllUnreadResults();
         if (!results.isEmpty()) {
 
             var rawResult = results.get(results.size() - 1);
             var targetsUsed = rawResult.targets;
             var filteredTargets = filterTags(targetsUsed);
-            // the getMultiTagresult might mess with the tag filtering if it includes filtered out tags
-            // the metadata might also goof with the filtered tags
             var newResult = new PhotonPipelineResult(
                 rawResult.metadata,
                 filteredTargets,
@@ -63,9 +64,7 @@ public class BulldogCamera {
     
             if (currentPose.isPresent()) {
 
-                if (newResult.hasTargets()) {
-                    targets = currentPose.get().targetsUsed;
-                }
+                targets = newResult.getTargets();
 
                 if (targets != null) {
 
@@ -87,6 +86,7 @@ public class BulldogCamera {
                         camToTagX = targets.get(0).getBestCameraToTarget().getTranslation().getX();
                         camToTagY = targets.get(0).getBestCameraToTarget().getTranslation().getY();
                         camToTagYaw = targets.get(0).getYaw();
+                        // trackedToString = targets.get(0).toString();
                     }
 
                 }
@@ -102,6 +102,12 @@ public class BulldogCamera {
             }
 
         }
+
+        SmartDashboard.putNumber("Cam To Tag X", camToTagX);
+        SmartDashboard.putNumber("Cam To Tag Y", camToTagY);
+        SmartDashboard.putNumber("Cam To Tag Yaw", camToTagYaw);
+        SmartDashboard.putNumber("Min Distance", minDistance);
+        // SmartDashboard.putString("trackedToString", trackedToString);
 
     }
 

@@ -125,24 +125,15 @@ public class RobotContainer {
     );
 
     m_driverController.x().onTrue(
-      new SequentialCommandGroup(
-        new SetCoralFlipper(m_coralFlipperSubsystem, "idle"),
-        new ZeroCoralFlipper(m_coralFlipperSubsystem)
-      )
+      RaiseCoralFlipperCommand
     );
 
     m_driverController.y().onTrue(
-      new SequentialCommandGroup(
-        new SetAlgaeFlipper(m_algaeFlipperSubsystem, "down"),
-        new ZeroAlgaeFlipper(m_algaeFlipperSubsystem)
-      )
+      LowerAlgaeFlipperCommand
     );
 
     m_driverController.rightBumper().onTrue(
-      new SequentialCommandGroup(
-        new SetElevator(m_elevatorSubsystem, ElevatorLevel.HOME),
-        new ZeroElevator(m_elevatorSubsystem)
-      )
+      LowerElevatorCommand
     );
 
     m_driverController.leftBumper().and(() -> climbModeBoolean).whileTrue(
@@ -158,104 +149,36 @@ public class RobotContainer {
     );
 
     m_driverController.povDown().and(() -> elevatorLevel == ElevatorLevel.LEVEL_4_CORAL).whileTrue(
-      new ParallelCommandGroup(
-        // m_robotDrive.pathFindToReefCoral(),
-        new ParallelCommandGroup(
-          Commands.sequence(
-            // new ZeroElevator(m_elevatorSubsystem),
-            new SetElevator(m_elevatorSubsystem, ElevatorLevel.LEVEL_4_CORAL)
-          ),
-          Commands.sequence(
-            // new ZeroCoralFlipper(m_coralFlipperSubsystem),
-            new SetCoralFlipper(m_coralFlipperSubsystem, "scoreHigh")
-          )
-        )
-      )
+      ScoreCoralL4Command
     );
 
     m_driverController.povDown().and(() -> elevatorLevel == ElevatorLevel.LEVEL_3_CORAL).whileTrue(
-      new ParallelCommandGroup(
-        // m_robotDrive.pathFindToReefCoral(),
-        new ParallelCommandGroup(
-          Commands.sequence(
-            // new ZeroElevator(m_elevatorSubsystem),
-            new SetElevator(m_elevatorSubsystem, ElevatorLevel.LEVEL_3_CORAL)
-          ),
-          Commands.sequence(
-            // new ZeroCoralFlipper(m_coralFlipperSubsystem),
-            new SetCoralFlipper(m_coralFlipperSubsystem, "scoreLow")
-          )
-        )
-      )
+      ScoreCoralL3Command
     );
 
     m_driverController.povDown().and(() -> elevatorLevel == ElevatorLevel.LEVEL_2_CORAL).whileTrue(
-      new ParallelCommandGroup(
-        // m_robotDrive.pathFindToReefCoral(),
-        new ParallelCommandGroup(
-          Commands.sequence(
-            new SetElevator(m_elevatorSubsystem, ElevatorLevel.HOME),
-            new ZeroElevator(m_elevatorSubsystem)
-          ),
-          Commands.sequence(
-            // new ZeroCoralFlipper(m_coralFlipperSubsystem),
-            new SetCoralFlipper(m_coralFlipperSubsystem, "scoreLow")
-          )
-        )
-      )
+      ScoreCoralL2Command
     );
 
     m_driverController.povDown().and(() -> elevatorLevel == ElevatorLevel.LEVEL_3_ALGAE).whileTrue(
-      new ParallelCommandGroup(
-        // m_robotDrive.pathFindToReefAlgae(),
-        new SequentialCommandGroup(
-          Commands.sequence(
-            // new ZeroElevator(m_elevatorSubsystem),
-            new SetElevator(m_elevatorSubsystem, ElevatorLevel.LEVEL_3_ALGAE)
-          ),
-          new WaitCommand(0.25),
-          Commands.sequence(
-            // new ZeroAlgaeFlipper(m_algaeFlipperSubsystem),
-            new SetAlgaeFlipper(m_algaeFlipperSubsystem, "up")
-          ),
-          new AlgaeIntake(m_algaeWheelsSubsystem)
-        )
-      )
+      IntakeAlgaeL3
     );
 
     m_driverController.povDown().and(() -> elevatorLevel == ElevatorLevel.LEVEL_2_ALGAE).whileTrue(
-      new ParallelCommandGroup(
-        // m_robotDrive.pathFindToReefAlgae(),
-        new SequentialCommandGroup(
-          Commands.sequence(
-            // new ZeroElevator(m_elevatorSubsystem),
-            new SetElevator(m_elevatorSubsystem, ElevatorLevel.LEVEL_2_ALGAE)
-          ),
-          new WaitCommand(0.25),
-          Commands.sequence(
-            // new ZeroAlgaeFlipper(m_algaeFlipperSubsystem),
-            new SetAlgaeFlipper(m_algaeFlipperSubsystem, "up")
-          ),
-          new AlgaeIntake(m_algaeWheelsSubsystem)
-        )
-      )
+      IntakeAlgaeL2
     );
 
     m_driverController.povRight().whileTrue(
       new ParallelCommandGroup(
         new SlideRight(m_robotDrive),
-        new SetElevator(m_elevatorSubsystem, ElevatorLevel.CORAL_STATION),
-        new SetCoralFlipper(m_coralFlipperSubsystem, "coralStation"),
-        new CoralIntake(m_coralWheelsSubsystem)
+        IntakeCoral
       )
     );
 
     m_driverController.povLeft().whileTrue(
       new ParallelCommandGroup(
         new SlideLeft(m_robotDrive),
-        new SetElevator(m_elevatorSubsystem, ElevatorLevel.CORAL_STATION),
-        new SetCoralFlipper(m_coralFlipperSubsystem, "coralStation"),
-        new CoralIntake(m_coralWheelsSubsystem)
+        IntakeCoral
       )
     );
 

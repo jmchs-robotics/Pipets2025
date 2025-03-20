@@ -23,12 +23,23 @@ public class AlignToReef extends Command {
     private double m_strafeTarget;
     private double m_aimTarget;
 
+    private final double rangeThreshold = 0.03; // meters
+    private final double strafeThreshold = 0.03; // meters
+    private final double aimThreshold = 0.5; //degrees
+
+    // i have no idea what im doing - ian has no clue who wrote this
+    // y'all please work on your problem solving skills - ian
+
     public AlignToReef(DriveSubsystem drive, BulldogCamera cam) {
 
         m_drive = drive;
         addRequirements(m_drive);
 
         m_cam = cam;
+
+        // private var result = m_cam.getLatestResult();
+        // private final PhotonTrackedTarget camtarget =  result.getBestTarget();
+        // i'm going to blow up whoever wrote this - ian
 
         m_aimController.enableContinuousInput(-180, 180);
 
@@ -87,6 +98,15 @@ public class AlignToReef extends Command {
 
         return strafeVal;
 
+    }
+
+    @Override
+    public boolean isFinished() {
+        return (
+            Math.abs(m_cam.camToTagY - m_strafeTarget) < strafeThreshold &&
+            Math.abs(m_cam.camToTagX - m_rangeTarget) < rangeThreshold &&
+            Math.abs(m_cam.camToTagYaw - m_aimTarget) < aimThreshold
+        );
     }
     
 }

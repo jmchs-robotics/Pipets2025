@@ -153,7 +153,7 @@ public final class Constants {
 
     // TODO: Change these numbers when we can measure the elevator on the actual robot
     public static final Angle L2_ALGAE = edu.wpi.first.units.Units.Rotations.of(1.7);
-    public static final Angle L3_ALGAE = edu.wpi.first.units.Units.Rotations.of(3.3);
+    public static final Angle L3_ALGAE = edu.wpi.first.units.Units.Rotations.of(3);
     // L1 is min pos
     public static final Angle L2_CORAL = edu.wpi.first.units.Units.Rotations.of(0);
     public static final Angle L3_CORAL = edu.wpi.first.units.Units.Rotations.of(1.5);
@@ -183,7 +183,7 @@ public final class Constants {
     public static final double kD = 0.2;
 
     public static final Angle kAngleDown = edu.wpi.first.units.Units.Rotations.of(0);
-    public static final Angle kAngleUp = edu.wpi.first.units.Units.Rotations.of(-0.249);
+    public static final Angle kAngleUp = edu.wpi.first.units.Units.Rotations.of(-0.26);
   
   }
 

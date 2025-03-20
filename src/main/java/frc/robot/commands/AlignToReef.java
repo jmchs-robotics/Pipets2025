@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -15,17 +16,17 @@ public class AlignToReef extends Command {
     private final BulldogCamera m_cam;
     private boolean isLeftSide;
 
-    PIDController m_aimController = new PIDController(0.1, 0, 0.1);
-    PIDController m_rangeController = new PIDController(0.1, 0, 0);
-    PIDController m_strafeController = new PIDController(0.1, 0, 0);
+    PIDController m_aimController = new PIDController(0.01, 0, 0);
+    PIDController m_rangeController = new PIDController(1.0, 0, 0);
+    PIDController m_strafeController = new PIDController(1.0, 0, 0);
 
     private double m_rangeTarget;
     private double m_strafeTarget;
     private double m_aimTarget;
 
-    private final double rangeThreshold = 0.03; // meters
-    private final double strafeThreshold = 0.03; // meters
-    private final double aimThreshold = 0.5; //degrees
+    private final double rangeThreshold = 0.05; // meters
+    private final double strafeThreshold = 0.05; // meters
+    private final double aimThreshold = 1.0; //degrees
 
     // i have no idea what im doing - ian has no clue who wrote this
     // y'all please work on your problem solving skills - ian
@@ -68,7 +69,7 @@ public class AlignToReef extends Command {
     public void execute() {
 
         m_drive.driveRobotRelative(
-            new ChassisSpeeds(getStrafePID(), getRangePID(), getAimPID())
+            new ChassisSpeeds(-getRangePID(), getStrafePID(), getAimPID())
         );
 
     }
@@ -76,6 +77,8 @@ public class AlignToReef extends Command {
     public double getAimPID() {
         
         double aimVal = m_aimController.calculate(m_cam.camToTagYaw, m_aimTarget);
+        aimVal = MathUtil.clamp(aimVal, -1, 1);
+
         aimVal *= DriveConstants.kMaxAngularSpeed;
 
         return aimVal;
@@ -85,7 +88,9 @@ public class AlignToReef extends Command {
     public double getRangePID() {
         
         double rangeVal = m_rangeController.calculate(m_cam.camToTagX, m_rangeTarget);
-        rangeVal *= DriveConstants.kMaxSpeedMetersPerSecond;
+        rangeVal = MathUtil.clamp(rangeVal, -1, 1);
+
+        rangeVal *= 0.25 * DriveConstants.kMaxSpeedMetersPerSecond;
 
         return rangeVal;
 
@@ -94,6 +99,8 @@ public class AlignToReef extends Command {
     public double getStrafePID() {
         
         double strafeVal = m_strafeController.calculate(m_cam.camToTagY, m_strafeTarget);
+        strafeVal = MathUtil.clamp(strafeVal, -1, 1);
+
         strafeVal *= DriveConstants.kMaxSpeedMetersPerSecond;
 
         return strafeVal;
@@ -107,6 +114,7 @@ public class AlignToReef extends Command {
             Math.abs(m_cam.camToTagX - m_rangeTarget) < rangeThreshold &&
             Math.abs(m_cam.camToTagYaw - m_aimTarget) < aimThreshold
         );
+
     }
     
 }

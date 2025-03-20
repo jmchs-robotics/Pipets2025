@@ -33,7 +33,7 @@ public class AlgaeFlipperSubsystem extends SubsystemBase {
         config.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
         config.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Rotations.of(0).in(Units.Rotations);
         config.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
-        config.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Rotations.of(-0.25).in(Units.Rotations);
+        config.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Rotations.of(-0.275).in(Units.Rotations);
 
         config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 

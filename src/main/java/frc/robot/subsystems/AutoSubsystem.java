@@ -1,20 +1,15 @@
 package frc.robot.subsystems;
 
-import static edu.wpi.first.units.Units.Degrees;
-
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.List;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.trajectory.PathPlannerTrajectory;
-import com.pathplanner.lib.trajectory.PathPlannerTrajectoryState;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTableEvent.Kind;
@@ -31,14 +26,11 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
-import frc.robot.Constants.DriveConstants;
 import frc.robot.RobotContainer.ElevatorLevel;
 import frc.robot.commands.CoralExtake;
 import frc.robot.commands.CoralIntake;
 import frc.robot.commands.SetCoralFlipper;
 import frc.robot.commands.SetElevator;
-import frc.robot.subsystems.algae.AlgaeFlipperSubsystem;
-import frc.robot.subsystems.algae.AlgaeWheelsSubsystem;
 import frc.robot.subsystems.coral.CoralFlipperSubsystem;
 import frc.robot.subsystems.coral.CoralWheelsSubsystem;
 import frc.robot.subsystems.drive.DriveSubsystem;

@@ -14,7 +14,6 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class BulldogCamera {
     
@@ -46,8 +45,6 @@ public class BulldogCamera {
     }
 
     public void updateVision() {
-
-        // String trackedToString = "";
 
         var results = cam.getAllUnreadResults();
         if (!results.isEmpty()) {
@@ -86,7 +83,6 @@ public class BulldogCamera {
                         camToTagX = targets.get(0).getBestCameraToTarget().getTranslation().getX();
                         camToTagY = targets.get(0).getBestCameraToTarget().getTranslation().getY();
                         camToTagYaw = targets.get(0).getYaw();
-                        // trackedToString = targets.get(0).toString();
                     }
 
                 }

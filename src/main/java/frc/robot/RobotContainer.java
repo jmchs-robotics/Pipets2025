@@ -104,33 +104,33 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
 
-    m_driverController.start().onTrue(
-      new InstantCommand(() -> {m_robotDrive.zeroHeading();})
-    );
+    // m_driverController.start().onTrue(
+    //   new InstantCommand(() -> {m_robotDrive.zeroHeading();})
+    // );
 
-    m_driverController.back().onTrue(
-      new InstantCommand(() -> {m_elevatorSubsystem.resetSensorPosition(ElevatorConstants.HOME);})
-    );
+    // m_driverController.back().onTrue(
+    //   new InstantCommand(() -> {m_elevatorSubsystem.resetSensorPosition(ElevatorConstants.HOME);})
+    // );
 
-    m_driverController.a().whileTrue(
-      new CoralExtake(m_coralWheelsSubsystem)
-    );
+    // m_driverController.a().whileTrue(
+    //   new CoralExtake(m_coralWheelsSubsystem)
+    // );
 
-    m_driverController.b().whileTrue(
-      new AlgaeExtake(m_algaeWheelsSubsystem)
-    );
+    // m_driverController.b().whileTrue(
+    //   new AlgaeExtake(m_algaeWheelsSubsystem)
+    // );
 
-    m_driverController.x().onTrue(
-      RaiseCoralFlipperCommand
-    );
+    // m_driverController.x().onTrue(
+    //   RaiseCoralFlipperCommand
+    // );
 
-    m_driverController.y().onTrue(
-      LowerAlgaeFlipperCommand
-    );
+    // m_driverController.y().onTrue(
+    //   LowerAlgaeFlipperCommand
+    // );
 
-    m_driverController.rightBumper().onTrue(
-      LowerElevatorCommand
-    );
+    // m_driverController.rightBumper().onTrue(
+    //   LowerElevatorCommand
+    // );
 
     m_driverController.leftBumper().and(() -> climbModeBoolean).whileTrue(
       new ClimbDown(m_climbersSubsystem)
@@ -140,43 +140,43 @@ public class RobotContainer {
       new ClimbUp(m_climbersSubsystem)
     );
     
-    m_driverController.povUp().whileTrue(
-      new AlignToReef(m_robotDrive, m_vision.getCamera(0))
-    );
+    // m_driverController.povUp().whileTrue(
+    //   new AlignToReef(m_robotDrive, m_vision.getCamera(0))
+    // );
 
-    m_driverController.povDown().and(() -> elevatorLevel == ElevatorLevel.LEVEL_4_CORAL).whileTrue(
-      ScoreCoralL4Command
-    );
+    // m_driverController.povDown().and(() -> elevatorLevel == ElevatorLevel.LEVEL_4_CORAL).whileTrue(
+    //   ScoreCoralL4Command
+    // );
 
-    m_driverController.povDown().and(() -> elevatorLevel == ElevatorLevel.LEVEL_3_CORAL).whileTrue(
-      ScoreCoralL3Command
-    );
+    // m_driverController.povDown().and(() -> elevatorLevel == ElevatorLevel.LEVEL_3_CORAL).whileTrue(
+    //   ScoreCoralL3Command
+    // );
 
-    m_driverController.povDown().and(() -> elevatorLevel == ElevatorLevel.LEVEL_2_CORAL).whileTrue(
-      ScoreCoralL2Command
-    );
+    // m_driverController.povDown().and(() -> elevatorLevel == ElevatorLevel.LEVEL_2_CORAL).whileTrue(
+    //   ScoreCoralL2Command
+    // );
 
-    m_driverController.povDown().and(() -> elevatorLevel == ElevatorLevel.LEVEL_3_ALGAE).whileTrue(
-      IntakeAlgaeL3
-    );
+    // m_driverController.povDown().and(() -> elevatorLevel == ElevatorLevel.LEVEL_3_ALGAE).whileTrue(
+    //   IntakeAlgaeL3
+    // );
 
-    m_driverController.povDown().and(() -> elevatorLevel == ElevatorLevel.LEVEL_2_ALGAE).whileTrue(
-      IntakeAlgaeL2
-    );
+    // m_driverController.povDown().and(() -> elevatorLevel == ElevatorLevel.LEVEL_2_ALGAE).whileTrue(
+    //   IntakeAlgaeL2
+    // );
 
-    m_driverController.povRight().whileTrue(
-      new ParallelCommandGroup(
-        new SlideRight(m_robotDrive),
-        IntakeCoral
-      )
-    );
+    // m_driverController.povRight().whileTrue(
+    //   new ParallelCommandGroup(
+    //     new SlideRight(m_robotDrive),
+    //     IntakeCoral
+    //   )
+    // );
 
-    m_driverController.povLeft().whileTrue(
-      new ParallelCommandGroup(
-        new SlideLeft(m_robotDrive),
-        IntakeCoral
-      )
-    );
+    // m_driverController.povLeft().whileTrue(
+    //   new ParallelCommandGroup(
+    //     new SlideLeft(m_robotDrive),
+    //     IntakeCoral
+    //   )
+    // );
 
     m_operatorController.a().whileTrue(
       new LowerCoralFlipperManual(m_coralFlipperSubsystem)

@@ -169,11 +169,11 @@ public class RobotContainer {
       )
     );
 
-    driveLB.and(() -> climbModeBoolean).whileTrue(
+    driveLB.and(() -> !climbModeBoolean).whileTrue( //the up and down commands were swapped so I swapped them correctly
       new ClimbDown(m_climbersSubsystem)
     );
 
-    driveLB.and(() -> !climbModeBoolean).whileTrue(
+    driveLB.and(() -> climbModeBoolean).whileTrue(
       new ClimbUp(m_climbersSubsystem)
     );
     

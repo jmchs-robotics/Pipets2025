@@ -93,6 +93,10 @@ public final class Constants {
     public static final double rightReefRangeTarget = 0.0; // meters
     public static final double rightReefStrafeTarget = 0.0; // meters
     public static final double rightReefAimTarget = 0.0; // degrees
+
+    public static final double centerReefRangeTarget = 0.0; // meters
+    public static final double centerReefStrafeTarget = 0.0; // meters
+    public static final double centerReefAimTarget = 0.0; // degrees
   }
 
   public static final class ModuleConstants {

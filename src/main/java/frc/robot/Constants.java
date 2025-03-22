@@ -207,7 +207,7 @@ public final class Constants {
   public static final class RobotToCamTransforms {
     public static final Transform3d kCam1Transform = new Transform3d(
       new Translation3d(Units.inchesToMeters(14.75), Units.inchesToMeters(1.25), Units.inchesToMeters(12)), 
-      new Rotation3d(0, Units.degreesToRadians(20), 0)
+      new Rotation3d(0, 0, 0)
     );
 
     public static final Transform3d kCam2Transform = new Transform3d(

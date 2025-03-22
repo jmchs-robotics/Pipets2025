@@ -19,7 +19,7 @@ public class CoralWheelsSubsystem extends SubsystemBase {
         wheelMotor = new SparkMax(CoralConstants.wheelMotorID, MotorType.kBrushless);
 
         SparkMaxConfig config = new SparkMaxConfig();
-        config.idleMode(IdleMode.kBrake).smartCurrentLimit(10);
+        config.idleMode(IdleMode.kBrake).smartCurrentLimit(20);
 
         wheelMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         
@@ -31,6 +31,10 @@ public class CoralWheelsSubsystem extends SubsystemBase {
 
     public void setWheelMotors(double speed) {
         wheelMotor.set(speed);
+    }
+
+    public void setWheelMotorVolts(double volts) {
+        wheelMotor.setVoltage(volts);
     }
     
 }

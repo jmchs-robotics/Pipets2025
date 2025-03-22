@@ -81,13 +81,13 @@ public final class Constants {
       AutoConstants.kMaxAngularSpeedRadiansPerSecondSquared
     );
 
-    public static final double leftReefRangeTarget = 0.5; // meters
-    public static final double leftReefStrafeTarget = 0.0; // meters
-    public static final double leftReefAimTarget = 0; // degrees
+    public static final double leftReefRangeTarget = 0.375; // meters
+    public static final double leftReefStrafeTarget = -0.148; // meters
+    public static final double leftReefAimTarget = 21.542; // degrees
 
-    public static final double rightReefRangeTarget = 0.0; // meters
-    public static final double rightReefStrafeTarget = 0.0; // meters
-    public static final double rightReefAimTarget = 0.0; // degrees
+    public static final double rightReefRangeTarget = 0.408; // meters
+    public static final double rightReefStrafeTarget = 0.163; // meters
+    public static final double rightReefAimTarget = -21.917; // degrees
 
     public static final double centerReefRangeTarget = 0.0; // meters
     public static final double centerReefStrafeTarget = 0.0; // meters
@@ -156,7 +156,7 @@ public final class Constants {
     // L1 is min pos
     public static final Angle L2_CORAL = edu.wpi.first.units.Units.Rotations.of(0);
     public static final Angle L3_CORAL = edu.wpi.first.units.Units.Rotations.of(1.5);
-    public static final Angle L4_CORAL = edu.wpi.first.units.Units.Rotations.of(4.05);
+    public static final Angle L4_CORAL = edu.wpi.first.units.Units.Rotations.of(4.0);
     public static final Angle CORAL_STATION = edu.wpi.first.units.Units.Rotations.of(0);
 
     public static final Angle HOME = edu.wpi.first.units.Units.Rotations.of(0);
@@ -197,8 +197,8 @@ public final class Constants {
 
     // Yes the whole import statement has to be there bc of the other units class colliding with it
     public static final Angle kIdleAngle = edu.wpi.first.units.Units.Rotations.of(0);
-    public static final Angle kScoreLow = edu.wpi.first.units.Units.Rotations.of(0.125);
-    public static final Angle kScoreHigh = edu.wpi.first.units.Units.Rotations.of(0.15);
+    public static final Angle kScoreLow = edu.wpi.first.units.Units.Rotations.of(0.19);
+    public static final Angle kScoreHigh = edu.wpi.first.units.Units.Rotations.of(0.2);
     // TODO: TAKE THESE MEASUREMENTS
     public static final Angle kCoralStation = edu.wpi.first.units.Units.Rotations.of(0);
 

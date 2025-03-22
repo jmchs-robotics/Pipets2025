@@ -90,7 +90,7 @@ public class AlignToReef extends Command {
         double rangeVal = m_rangeController.calculate(m_cam.camToTagX, m_rangeTarget);
         rangeVal = MathUtil.clamp(rangeVal, -1, 1);
 
-        rangeVal *= 0.25 * DriveConstants.kMaxSpeedMetersPerSecond;
+        rangeVal *= DriveConstants.kMaxSpeedMetersPerSecond;
 
         return rangeVal;
 

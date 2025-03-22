@@ -49,7 +49,7 @@ public class RobotContainer {
   private final ClimbersSubsystem m_climbersSubsystem = new ClimbersSubsystem();
   private final VisionSubsystem m_vision = new VisionSubsystem();
   private final DriveSubsystem m_robotDrive = new DriveSubsystem(m_vision);
-  private final AutoSubsystem m_auto = new AutoSubsystem(m_robotDrive, m_elevatorSubsystem, m_coralFlipperSubsystem, m_coralWheelsSubsystem);
+  private final AutoSubsystem m_auto = new AutoSubsystem(m_robotDrive, m_elevatorSubsystem, m_coralFlipperSubsystem, m_coralWheelsSubsystem, m_vision);
   public final LEDSubsystem m_leds = new LEDSubsystem();
 
   public static final Field2d field = new Field2d();

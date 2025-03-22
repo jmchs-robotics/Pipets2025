@@ -5,6 +5,8 @@
 package frc.robot;
 
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -150,7 +152,7 @@ public class RobotContainer {
     );
     
     m_driverController.povUp().whileTrue(
-      new AlignToReef(m_robotDrive, m_vision.getCamera(0))
+      new AlignToPose(m_robotDrive, new Pose2d(15, 6, Rotation2d.fromDegrees(90)))
     );
 
     m_driverController.povDown().and(() -> elevatorLevel == ElevatorLevel.LEVEL_4_CORAL).whileTrue(

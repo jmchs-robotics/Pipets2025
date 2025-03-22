@@ -13,13 +13,13 @@ public class AlignToPose extends Command {
     private final DriveSubsystem m_drive;
     private final Pose2d m_pose;
 
-    PIDController m_xController = new PIDController(1.0, 0, 0);
-    PIDController m_yController = new PIDController(1.0, 0, 0);
+    PIDController m_xController = new PIDController(0.5, 0, 0);
+    PIDController m_yController = new PIDController(0.5, 0, 0);
     PIDController m_yawController = new PIDController(0.01, 0, 0);
 
-    private final double xThreshold = 0.05; // meters
-    private final double yThreshold = 0.05; // meters
-    private final double yawThreshold = 1.0; // degrees
+    private final double xThreshold = 0.3; // meters
+    private final double yThreshold = 0.3; // meters
+    private final double yawThreshold = 10; // degrees
 
     public AlignToPose(DriveSubsystem drive, Pose2d pose) {
 

@@ -1,5 +1,6 @@
 package frc.robot.subsystems.climbers;
 
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -12,6 +13,9 @@ public class ClimbersSubsystem extends SubsystemBase {
     public ClimbersSubsystem() {
 
         climbMotor = new TalonFX(ClimberConstants.climbMotorID);
+
+        TalonFXConfiguration config = new TalonFXConfiguration();
+        config.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = 1;
 
     }
 

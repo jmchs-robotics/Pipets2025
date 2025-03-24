@@ -152,7 +152,7 @@ public class RobotContainer {
     );
     
     m_driverController.povUp().whileTrue(
-      new AlignToPose(m_robotDrive, new Pose2d(15, 6, Rotation2d.fromDegrees(90)))
+      new AlignToReef(m_robotDrive, m_vision.getCamera(0))
     );
 
     m_driverController.povDown().and(() -> elevatorLevel == ElevatorLevel.LEVEL_4_CORAL).whileTrue(

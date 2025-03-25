@@ -156,7 +156,7 @@ public final class Constants {
     // L1 is min pos
     public static final Angle L2_CORAL = edu.wpi.first.units.Units.Rotations.of(0);
     public static final Angle L3_CORAL = edu.wpi.first.units.Units.Rotations.of(1.5);
-    public static final Angle L4_CORAL = edu.wpi.first.units.Units.Rotations.of(4.0);
+    public static final Angle L4_CORAL = edu.wpi.first.units.Units.Rotations.of(4);
     public static final Angle CORAL_STATION = edu.wpi.first.units.Units.Rotations.of(0);
 
     public static final Angle HOME = edu.wpi.first.units.Units.Rotations.of(0);
@@ -165,7 +165,7 @@ public final class Constants {
     public static final int followerElevatorID = 1;
     public static final int limitSwitchPort = 7;
 
-    public static final double kP = 2;
+    public static final double kP = 1.8;
     public static final double kI = 0.5;
     public static final double kD = 0.2;
 
@@ -198,9 +198,9 @@ public final class Constants {
     // Yes the whole import statement has to be there bc of the other units class colliding with it
     public static final Angle kIdleAngle = edu.wpi.first.units.Units.Rotations.of(0);
     public static final Angle kScoreLow = edu.wpi.first.units.Units.Rotations.of(0.19);
-    public static final Angle kScoreHigh = edu.wpi.first.units.Units.Rotations.of(0.2);
+    public static final Angle kScoreHigh = edu.wpi.first.units.Units.Rotations.of(0.19);
     // TODO: TAKE THESE MEASUREMENTS
-    public static final Angle kCoralStation = edu.wpi.first.units.Units.Rotations.of(0);
+    public static final Angle kCoralStation = edu.wpi.first.units.Units.Rotations.of(0.1);
 
   }
 

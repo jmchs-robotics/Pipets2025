@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.*;
@@ -72,9 +73,9 @@ public class RobotContainer {
   private GenericEntry climbMode;
   private static boolean climbModeBoolean = false;
 
-  public static ElevatorLevel elevatorLevel;
-  public static ReefSide reefSide;
-  public static ReefAlignment reefAlignment;
+  public static ElevatorLevel elevatorLevel = ElevatorLevel.LEVEL_4_CORAL;
+  public static ReefSide reefSide = ReefSide.FRONT_LEFT;
+  public static ReefAlignment reefAlignment = ReefAlignment.LEFT;
   
 
   /**
@@ -152,7 +153,7 @@ public class RobotContainer {
     );
     
     m_driverController.povUp().whileTrue(
-      new AlignToReef(m_robotDrive, m_vision.getCamera(0))
+      new AlignToPose(m_robotDrive)
     );
 
     m_driverController.povDown().and(() -> elevatorLevel == ElevatorLevel.LEVEL_4_CORAL).whileTrue(

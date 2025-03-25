@@ -27,7 +27,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 import frc.robot.RobotContainer.ElevatorLevel;
-import frc.robot.commands.AlignToReefAuto;
+import frc.robot.commands.AlignToPoseAuto;
 import frc.robot.commands.CoralExtake;
 import frc.robot.commands.CoralIntake;
 import frc.robot.commands.SetCoralFlipper;
@@ -36,7 +36,6 @@ import frc.robot.subsystems.coral.CoralFlipperSubsystem;
 import frc.robot.subsystems.coral.CoralWheelsSubsystem;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
-import frc.robot.subsystems.vision.VisionSubsystem;
 
 public class AutoSubsystem extends SubsystemBase {
 
@@ -50,18 +49,15 @@ public class AutoSubsystem extends SubsystemBase {
     private ElevatorSubsystem m_elevatorSubsystem;
     private CoralFlipperSubsystem m_coralFlipper;
     private CoralWheelsSubsystem m_coralWheels;
-    private VisionSubsystem m_vision;
 
-    private char[] LEFT_REEF_SPOTS = {'A', 'C', 'E', 'G', 'I', 'K'};
-    private char[] RIGHT_REEF_SPOTS = {'B', 'D', 'F', 'H', 'J', 'L'};
+    private char[] REEF_SPOTS = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'};
     private char[] CORAL_STATION_SPOTS = {'V', 'W'};
 
     public AutoSubsystem(
         DriveSubsystem drive,
         ElevatorSubsystem elevator,
         CoralFlipperSubsystem coralFlipper,
-        CoralWheelsSubsystem coralWheels,
-        VisionSubsystem vision) {
+        CoralWheelsSubsystem coralWheels) {
 
             NetworkTable table = NetworkTableInstance.getDefault().getTable("Shuffleboard").getSubTable("Auto Tab");
             autoEntry = table.getTopic("Auto Path Sequence").getGenericEntry();
@@ -70,14 +66,8 @@ public class AutoSubsystem extends SubsystemBase {
             m_elevatorSubsystem = elevator;
             m_coralFlipper = coralFlipper;
             m_coralWheels = coralWheels;
-            m_vision = vision;
 
             setUpAutoTab();
-    }
-
-    @Override
-    public void periodic() {
-        // validateAndCreatePaths();
     }
 
     public Command getAutoCommand() {
@@ -111,17 +101,6 @@ public class AutoSubsystem extends SubsystemBase {
         return feedback;
     }
 
-    // public void drawPaths() {
-    //     clearField();
-    //     for (int i = 0; i < trajectories.size(); i++) {
-    //         PathPlannerTrajectory pathTraj = trajectories.get(i);
-    //         List<State> states = convertStatesToStates(pathTraj.getStates());
-    //         Trajectory displayTrajectory = new Trajectory(states);
-
-    //         RobotContainer.field.getObject("traj" + i).setTrajectory(displayTrajectory);
-    //     }
-    // }
-
     public void clearField() {
         for (int i = 0; i < 100; i++) {
             FieldObject2d obj = RobotContainer.field.getObject("traj" + i);
@@ -134,38 +113,10 @@ public class AutoSubsystem extends SubsystemBase {
         clearField();
     }
 
-    // public List<State> convertStatesToStates(List<PathPlannerTrajectoryState> ppStates) {
-    //     ArrayList<State> wpiStates = new ArrayList<State>();
-        
-    //     for (int i = 0; i < ppStates.size(); i++) {
-    //         PathPlannerTrajectoryState currentState = ppStates.get(i);
-    //         if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
-    //             wpiStates.add(new State(
-    //                 currentState.timeSeconds,
-    //                 currentState.linearVelocity,
-    //                 currentState.linearVelocity / currentState.timeSeconds,
-    //                 currentState.flip().pose,
-    //                 currentState.curvatureRadPerMeter
-    //             ));
-    //         } else {
-    //             wpiStates.add(new State(
-    //                 currentState.timeSeconds,
-    //                 currentState.linearVelocity,
-    //                 currentState.linearVelocity / currentState.timeSeconds,
-    //                 currentState.pose,
-    //                 currentState.curvatureRadPerMeter
-    //             ));
-    //         }
-    //     }
-
-    //     return wpiStates;
-    // }
-
     public void validateAndCreatePaths() {
         String autoString = autoEntry.getString("");
 
         buildPathSequenceOdometry(autoString);
-        // drawPaths();
     }
 
     public void buildPathSequenceOdometry(String autoString) {
@@ -179,7 +130,6 @@ public class AutoSubsystem extends SubsystemBase {
             return;
         }
 
-        // TODO: Put in the rest of the starting points
         if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
             if (autoString.charAt(0) == '1') {
                 m_driveSubsystem.resetOdometry(new Pose2d(10.38, 0.500, Rotation2d.fromDegrees(0)));
@@ -232,7 +182,7 @@ public class AutoSubsystem extends SubsystemBase {
             finalPath.addCommands(segment);
 
             // If we're at the reef, then do this whole scoring sequence
-            if (indexOfAutoChar(LEFT_REEF_SPOTS, nextPoint) != -1) {
+            if (indexOfAutoChar(REEF_SPOTS, nextPoint) != -1) {
                 finalPath.addCommands(
                     Commands.parallel(
                         Commands.sequence(
@@ -252,32 +202,7 @@ public class AutoSubsystem extends SubsystemBase {
                             ),
                             new WaitCommand(0.5)
                         ),
-                        new AlignToReefAuto(m_driveSubsystem, m_vision.getCamera(0), true)
-                    )                   
-                );
-            }
-
-            if (indexOfAutoChar(RIGHT_REEF_SPOTS, nextPoint) != -1) {
-                finalPath.addCommands(
-                    Commands.parallel(
-                        Commands.sequence(
-                            // Raise elevator to L4 and Lower Coral
-                            Commands.parallel(
-                                new SetElevator(m_elevatorSubsystem, ElevatorLevel.LEVEL_4_CORAL),
-                                new SetCoralFlipper(m_coralFlipper, "scoreHigh")
-                            ),
-                            // Give time for them to raise up b/c they technically finish instantly
-                            new WaitCommand(2),
-                            // Score the coral
-                            new CoralExtake(m_coralWheels).withTimeout(0.5),
-                            // Bring the elevator back down and store coral
-                            Commands.parallel(
-                                new SetElevator(m_elevatorSubsystem, ElevatorLevel.HOME),
-                                new SetCoralFlipper(m_coralFlipper, "idle")
-                            ),
-                            new WaitCommand(0.5)
-                        ),
-                        new AlignToReefAuto(m_driveSubsystem, m_vision.getCamera(0), false)
+                        new AlignToPoseAuto(m_driveSubsystem, nextPoint)
                     )                   
                 );
             }

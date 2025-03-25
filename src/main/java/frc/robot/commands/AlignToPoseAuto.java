@@ -7,14 +7,12 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.RobotContainer;
 import frc.robot.RobotContainer.ReefAlignment;
 import frc.robot.RobotContainer.ReefSide;
 import frc.robot.subsystems.drive.DriveSubsystem;
 
-public class AlignToPose extends Command {
+public class AlignToPoseAuto extends Command {
 
     private final DriveSubsystem m_drive;
     private Pose2d goalPose;
@@ -31,29 +29,75 @@ public class AlignToPose extends Command {
     private ReefAlignment alignment;
     private Alliance alliance;
 
-    public AlignToPose(DriveSubsystem drive) {
+    public AlignToPoseAuto(DriveSubsystem drive, char reefPoint) {
 
         m_yawController.enableContinuousInput(-180, 180);
 
         m_drive = drive;
         addRequirements(m_drive);
 
+        switch (reefPoint) {
+            case 'A':
+                side = ReefSide.BACK_MIDDLE;
+                alignment = ReefAlignment.LEFT;
+                break;
+            case 'B':
+                side = ReefSide.BACK_MIDDLE;
+                alignment = ReefAlignment.RIGHT;
+                break;
+            case 'C':
+                side = ReefSide.BACK_RIGHT;
+                alignment = ReefAlignment.LEFT;
+                break;
+            case 'D':
+                side = ReefSide.BACK_RIGHT;
+                alignment = ReefAlignment.RIGHT;
+                break;
+            case 'E':
+                side = ReefSide.FRONT_RIGHT;
+                alignment = ReefAlignment.LEFT;
+                break;
+            case 'F':
+                side = ReefSide.FRONT_RIGHT;
+                alignment = ReefAlignment.RIGHT;
+                break;
+            case 'G':
+                side = ReefSide.FRONT_MIDDLE;
+                alignment = ReefAlignment.LEFT;
+                break;
+            case 'H':
+                side = ReefSide.FRONT_MIDDLE;
+                alignment = ReefAlignment.RIGHT;
+                break;
+            case 'I':
+                side = ReefSide.FRONT_LEFT;
+                alignment = ReefAlignment.LEFT;
+                break;
+            case 'J':
+                side = ReefSide.FRONT_LEFT;
+                alignment = ReefAlignment.RIGHT;
+                break;
+            case 'K':
+                side = ReefSide.BACK_LEFT;
+                alignment = ReefAlignment.LEFT;
+                break;
+            case 'L':
+                side = ReefSide.BACK_LEFT;
+                alignment = ReefAlignment.RIGHT;
+                break;
+        }
+
     }
 
     @Override
     public void initialize() {
-        side = RobotContainer.reefSide;
-        alignment = RobotContainer.reefAlignment;
-        
+
         if (DriverStation.getAlliance().isPresent()) {
             alliance = DriverStation.getAlliance().get();
         }
 
-        SmartDashboard.putString("Reef Side Align", side.toString());
-        SmartDashboard.putString("Reef Alignment Align", alignment.toString());
-        SmartDashboard.putString("Alliance Align", alliance.toString());
-
         determinePose();
+
     }
 
     @Override

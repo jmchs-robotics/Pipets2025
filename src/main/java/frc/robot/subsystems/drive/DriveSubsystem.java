@@ -85,7 +85,7 @@ public class DriveSubsystem extends SubsystemBase {
       },
       new Pose2d(),
       VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5)),
-      VecBuilder.fill(0.5, 0.5, 5)
+      VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30))
   );
 
   // private final PIDController xController = new PIDController(10.0, 0.0, 0.0);
@@ -134,7 +134,7 @@ public class DriveSubsystem extends SubsystemBase {
         VecBuilder.fill(
           vision.getMinDistance(i) * DriveConstants.kEstimationCoefficient, 
           vision.getMinDistance(i) * DriveConstants.kEstimationCoefficient,
-          5
+          Units.degreesToRadians(30)
         )
       );
     }

@@ -184,26 +184,24 @@ public class AutoSubsystem extends SubsystemBase {
             // If we're at the reef, then do this whole scoring sequence
             if (indexOfAutoChar(REEF_SPOTS, nextPoint) != -1) {
                 finalPath.addCommands(
-                    Commands.parallel(
-                        Commands.sequence(
-                            // Raise elevator to L4 and Lower Coral
-                            Commands.parallel(
-                                new SetElevator(m_elevatorSubsystem, ElevatorLevel.LEVEL_4_CORAL),
-                                new SetCoralFlipper(m_coralFlipper, "scoreHigh")
-                            ),
-                            // Give time for them to raise up b/c they technically finish instantly
-                            new WaitCommand(2),
-                            // Score the coral
-                            new CoralExtake(m_coralWheels).withTimeout(0.5),
-                            // Bring the elevator back down and store coral
-                            Commands.parallel(
-                                new SetElevator(m_elevatorSubsystem, ElevatorLevel.HOME),
-                                new SetCoralFlipper(m_coralFlipper, "idle")
-                            ),
-                            new WaitCommand(0.5)
+                    Commands.sequence(
+                        // Raise elevator to L4 and Lower Coral
+                        Commands.parallel(
+                            new SetElevator(m_elevatorSubsystem, ElevatorLevel.LEVEL_4_CORAL),
+                            new SetCoralFlipper(m_coralFlipper, "scoreHigh")
                         ),
-                        new AlignToPoseAuto(m_driveSubsystem, nextPoint)
-                    )                   
+                        // Give time for them to raise up b/c they technically finish instantly
+                        new WaitCommand(2),
+                        new AlignToPoseAuto(m_driveSubsystem, nextPoint).withTimeout(1),
+                        // Score the coral
+                        new CoralExtake(m_coralWheels).withTimeout(0.5),
+                        // Bring the elevator back down and store coral
+                        Commands.parallel(
+                            new SetElevator(m_elevatorSubsystem, ElevatorLevel.HOME),
+                            new SetCoralFlipper(m_coralFlipper, "idle")
+                        ),
+                        new WaitCommand(0.5)
+                    )
                 );
             }
 

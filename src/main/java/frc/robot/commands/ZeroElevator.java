@@ -7,6 +7,7 @@ import frc.robot.subsystems.elevator.ElevatorSubsystem;
 public class ZeroElevator extends Command {
 
     private final ElevatorSubsystem m_elevator;
+    private boolean isFinished;
 
     public ZeroElevator(ElevatorSubsystem elevator) {
 
@@ -16,8 +17,24 @@ public class ZeroElevator extends Command {
     }
 
     @Override
+    public void initialize() {
+        isFinished = false;
+    }
+
+    @Override
+    public void execute() {
+        if (m_elevator.getCurrentPosition() < 0.1) {
+            m_elevator.setElevatorManual(-0.1);
+
+            if (m_elevator.getSupplyCurrent() > 5) {
+                isFinished = true;
+            }
+        }
+    }
+
+    @Override
     public boolean isFinished() {
-        return (m_elevator.getCurrentPosition() < 1.5 && m_elevator.getCurrentVelocity() == 0);
+        return isFinished;
     }
 
     @Override

@@ -156,11 +156,11 @@ public class RobotContainer {
     m_driverController.povDown().and(() -> elevatorLevel == ElevatorLevel.LEVEL_4_CORAL).whileTrue(
       new ParallelCommandGroup(
         Commands.sequence(
-          new ZeroElevator(m_elevatorSubsystem),
+          // new ZeroElevator(m_elevatorSubsystem),
           new SetElevator(m_elevatorSubsystem, ElevatorLevel.LEVEL_4_CORAL)
         ),
         Commands.sequence(
-          new ZeroCoralFlipper(m_coralFlipperSubsystem),
+          // new ZeroCoralFlipper(m_coralFlipperSubsystem),
           new SetCoralFlipper(m_coralFlipperSubsystem, "scoreHigh")
         )
       )
@@ -169,11 +169,11 @@ public class RobotContainer {
     m_driverController.povDown().and(() -> elevatorLevel == ElevatorLevel.LEVEL_3_CORAL).whileTrue(
       new ParallelCommandGroup(
         Commands.sequence(
-          new ZeroElevator(m_elevatorSubsystem),
+          // new ZeroElevator(m_elevatorSubsystem),
           new SetElevator(m_elevatorSubsystem, ElevatorLevel.LEVEL_3_CORAL)
         ),
         Commands.sequence(
-          new ZeroCoralFlipper(m_coralFlipperSubsystem),
+          // new ZeroCoralFlipper(m_coralFlipperSubsystem),
           new SetCoralFlipper(m_coralFlipperSubsystem, "scoreLow")
         )
       )
@@ -186,7 +186,7 @@ public class RobotContainer {
           new ZeroElevator(m_elevatorSubsystem)
         ),
         Commands.sequence(
-          new ZeroCoralFlipper(m_coralFlipperSubsystem),
+          // new ZeroCoralFlipper(m_coralFlipperSubsystem),
           new SetCoralFlipper(m_coralFlipperSubsystem, "scoreLow")
         )
       )
@@ -195,12 +195,12 @@ public class RobotContainer {
     m_driverController.povDown().and(() -> elevatorLevel == ElevatorLevel.LEVEL_3_ALGAE).whileTrue(
       new SequentialCommandGroup(
         Commands.sequence(
-          new ZeroElevator(m_elevatorSubsystem),
+          // new ZeroElevator(m_elevatorSubsystem),
           new SetElevator(m_elevatorSubsystem, ElevatorLevel.LEVEL_3_ALGAE)
         ),
         new WaitCommand(0.25),
         Commands.sequence(
-          new ZeroAlgaeFlipper(m_algaeFlipperSubsystem),
+          // new ZeroAlgaeFlipper(m_algaeFlipperSubsystem),
           new SetAlgaeFlipper(m_algaeFlipperSubsystem, "up")
         ),
         new AlgaeIntake(m_algaeWheelsSubsystem)
@@ -210,12 +210,12 @@ public class RobotContainer {
     m_driverController.povDown().and(() -> elevatorLevel == ElevatorLevel.LEVEL_2_ALGAE).whileTrue(
       new SequentialCommandGroup(
         Commands.sequence(
-          new ZeroElevator(m_elevatorSubsystem),
+          // new ZeroElevator(m_elevatorSubsystem),
           new SetElevator(m_elevatorSubsystem, ElevatorLevel.LEVEL_2_ALGAE)
         ),
         new WaitCommand(0.25),
         Commands.sequence(
-          new ZeroAlgaeFlipper(m_algaeFlipperSubsystem),
+          // new ZeroAlgaeFlipper(m_algaeFlipperSubsystem),
           new SetAlgaeFlipper(m_algaeFlipperSubsystem, "up")
         ),
         new AlgaeIntake(m_algaeWheelsSubsystem)
@@ -226,11 +226,11 @@ public class RobotContainer {
       new ParallelCommandGroup(
         new SlideRight(m_robotDrive),
         Commands.sequence(
-          new ZeroElevator(m_elevatorSubsystem),
+          // new ZeroElevator(m_elevatorSubsystem),
           new SetElevator(m_elevatorSubsystem, ElevatorLevel.CORAL_STATION)
         ),
         Commands.sequence(
-          new ZeroCoralFlipper(m_coralFlipperSubsystem),
+          // new ZeroCoralFlipper(m_coralFlipperSubsystem),
           new SetCoralFlipper(m_coralFlipperSubsystem, "coralStation")
         ),
         new CoralIntake(m_coralWheelsSubsystem)
@@ -241,11 +241,11 @@ public class RobotContainer {
       new ParallelCommandGroup(
         new SlideLeft(m_robotDrive),
         Commands.sequence(
-          new ZeroElevator(m_elevatorSubsystem),
+          // new ZeroElevator(m_elevatorSubsystem),
           new SetElevator(m_elevatorSubsystem, ElevatorLevel.CORAL_STATION)
         ),
         Commands.sequence(
-          new ZeroCoralFlipper(m_coralFlipperSubsystem),
+          // new ZeroCoralFlipper(m_coralFlipperSubsystem),
           new SetCoralFlipper(m_coralFlipperSubsystem, "coralStation")
         ),
         new CoralIntake(m_coralWheelsSubsystem)

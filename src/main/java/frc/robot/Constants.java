@@ -141,7 +141,7 @@ public final class Constants {
     // From bottom of elevator structure to bottom of second stage
     // If testing doesn't work with these numbers, subtract 4.75 from all position measurements
     public static final double minPos = 0;
-    public static final double maxPos = 4.1;
+    public static final double maxPos = 4.3;
 
     public static final double max_output = 0.7; // Must be between 0 and 1 inclusive
     public static final double rotationsPerInch = 0.745; // Number needs testing. Factors in gearbox
@@ -156,7 +156,7 @@ public final class Constants {
     // L1 is min pos
     public static final Angle L2_CORAL = edu.wpi.first.units.Units.Rotations.of(0);
     public static final Angle L3_CORAL = edu.wpi.first.units.Units.Rotations.of(1.5);
-    public static final Angle L4_CORAL = edu.wpi.first.units.Units.Rotations.of(4);
+    public static final Angle L4_CORAL = edu.wpi.first.units.Units.Rotations.of(4.25);
     public static final Angle CORAL_STATION = edu.wpi.first.units.Units.Rotations.of(0);
 
     public static final Angle HOME = edu.wpi.first.units.Units.Rotations.of(0);
@@ -165,9 +165,9 @@ public final class Constants {
     public static final int followerElevatorID = 1;
     public static final int limitSwitchPort = 7;
 
-    public static final double kP = 1.8;
-    public static final double kI = 0.5;
-    public static final double kD = 0.2;
+    public static final double kP = 3;
+    public static final double kI = 0.25;
+    public static final double kD = 0.05;
 
   }
 
@@ -198,7 +198,7 @@ public final class Constants {
     // Yes the whole import statement has to be there bc of the other units class colliding with it
     public static final Angle kIdleAngle = edu.wpi.first.units.Units.Rotations.of(0);
     public static final Angle kScoreLow = edu.wpi.first.units.Units.Rotations.of(0.19);
-    public static final Angle kScoreHigh = edu.wpi.first.units.Units.Rotations.of(0.19);
+    public static final Angle kScoreHigh = edu.wpi.first.units.Units.Rotations.of(0.22);
     // TODO: TAKE THESE MEASUREMENTS
     public static final Angle kCoralStation = edu.wpi.first.units.Units.Rotations.of(0.1);
 
@@ -212,7 +212,7 @@ public final class Constants {
 
     public static final Transform3d kCam2Transform = new Transform3d(
       new Translation3d(Units.inchesToMeters(-14.75), Units.inchesToMeters(-3), Units.inchesToMeters(12)),
-      new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(180))
+      new Rotation3d(0, 0, Units.degreesToRadians(180))
     );
   }
   

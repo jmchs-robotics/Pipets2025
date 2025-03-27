@@ -6,11 +6,13 @@ package frc.robot;
 
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.*;
@@ -28,8 +30,10 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -58,14 +62,16 @@ public class RobotContainer {
   CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
   CommandXboxController m_operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
 
-  private final GenericEntry[] elevatorLevels = new GenericEntry[4];
-  public static final boolean[] levelBooleans = new boolean[4];
+  CommandGenericHID buttonBoard = new CommandGenericHID(OIConstants.kButtonBoardPort);
+
+  private final GenericEntry[] elevatorLevels = new GenericEntry[3];
+  public static final boolean[] levelBooleans = {true, false, false};
 
   private final GenericEntry[] reefSides = new GenericEntry[6];
-  public static final boolean[] reefSidesBoolean = new boolean[6];
+  public static final boolean[] reefSidesBoolean = {true, false, false, false, false, false};
 
   private final GenericEntry[] reefAlignments = new GenericEntry[3];
-  public static final boolean[] reefAlignmentsBoolean = new boolean[3];
+  public static final boolean[] reefAlignmentsBoolean = {true, false, false};
 
   private GenericEntry climbMode;
   private static boolean climbModeBoolean = false;
@@ -291,6 +297,54 @@ public class RobotContainer {
     m_operatorController.povLeft().whileTrue(
       new AlgaeExtake(m_algaeWheelsSubsystem)
     );
+
+    buttonBoard.button(1).onTrue(
+      new InstantCommand(() -> setReefAlignment(0)).ignoringDisable(true)
+    );
+
+    buttonBoard.button(2).onTrue(
+      new InstantCommand(() -> setReefAlignment(1)).ignoringDisable(true)
+    );
+
+    buttonBoard.button(3).onTrue(
+      new InstantCommand(() -> setReefAlignment(2)).ignoringDisable(true)
+    );
+
+    buttonBoard.button(6).onTrue(
+      new InstantCommand(() -> setElevatorLevel(0)).ignoringDisable(true)
+    );
+
+    buttonBoard.button(5).onTrue(
+      new InstantCommand(() -> setElevatorLevel(1)).ignoringDisable(true)
+    );
+
+    buttonBoard.button(4).onTrue(
+      new InstantCommand(() -> setElevatorLevel(2)).ignoringDisable(true)
+    );
+
+    buttonBoard.button(7).onTrue(
+      new InstantCommand(() -> setReefSide(0)).ignoringDisable(true)
+    );
+
+    buttonBoard.button(9).onTrue(
+      new InstantCommand(() -> setReefSide(1)).ignoringDisable(true)
+    );
+
+    buttonBoard.button(11).onTrue(
+      new InstantCommand(() -> setReefSide(2)).ignoringDisable(true)
+    );
+
+    buttonBoard.button(8).onTrue(
+      new InstantCommand(() -> setReefSide(3)).ignoringDisable(true)
+    );
+
+    buttonBoard.button(10).onTrue(
+      new InstantCommand(() -> setReefSide(4)).ignoringDisable(true)
+    );
+
+    buttonBoard.button(12).onTrue(
+      new InstantCommand(() -> setReefSide(5)).ignoringDisable(true)
+    );
     
   }
 
@@ -308,79 +362,73 @@ public class RobotContainer {
         ShuffleboardTab driverTab = Shuffleboard.getTab("Driver Tab");
 
         elevatorLevels[0] = driverTab.add("L4", true)
-          .withWidget(BuiltInWidgets.kToggleButton)
+          .withWidget(BuiltInWidgets.kBooleanBox)
           .withSize(3, 1)
           .withPosition(0, 0)
           .getEntry();
 
         elevatorLevels[1] = driverTab.add("L3", false)
-          .withWidget(BuiltInWidgets.kToggleButton)
+          .withWidget(BuiltInWidgets.kBooleanBox)
           .withSize(3, 1)
           .withPosition(0, 1)
           .getEntry();
 
         elevatorLevels[2] = driverTab.add("L2", false)
-          .withWidget(BuiltInWidgets.kToggleButton)
+          .withWidget(BuiltInWidgets.kBooleanBox)
           .withSize(3, 1)
           .withPosition(0, 2)
           .getEntry();
 
-        elevatorLevels[3] = driverTab.add("L1", false)
-          .withWidget(BuiltInWidgets.kToggleButton)
-          .withSize(3, 1)
-          .withPosition(0, 3)
-          .getEntry();
-
         reefSides[0] = driverTab.add("FL", true)
-          .withWidget(BuiltInWidgets.kToggleButton)
+          .withWidget(BuiltInWidgets.kBooleanBox)
           .withSize(1, 1)
           .withPosition(3, 0)
           .getEntry();
 
         reefSides[1] = driverTab.add("FM", false)
-          .withWidget(BuiltInWidgets.kToggleButton)
+          .withWidget(BuiltInWidgets.kBooleanBox)
           .withSize(1, 1)
           .withPosition(4, 0)
           .getEntry();
 
         reefSides[2] = driverTab.add("FR", false)
-          .withWidget(BuiltInWidgets.kToggleButton)
+          .withWidget(BuiltInWidgets.kBooleanBox)
           .withSize(1, 1)
           .withPosition(5, 0)
           .getEntry();
 
         reefSides[3] = driverTab.add("BL", false)
-          .withWidget(BuiltInWidgets.kToggleButton)
+          .withWidget(BuiltInWidgets.kBooleanBox)
           .withSize(1, 1)
           .withPosition(3, 1)
           .getEntry();
 
         reefSides[4] = driverTab.add("BM", false)
-          .withWidget(BuiltInWidgets.kToggleButton)
+          .withWidget(BuiltInWidgets.kBooleanBox)
           .withSize(1, 1)
           .withPosition(4, 1)
           .getEntry();
 
         reefSides[5] = driverTab.add("BR", false)
-          .withWidget(BuiltInWidgets.kToggleButton)
+          .withWidget(BuiltInWidgets.kBooleanBox)
           .withSize(1, 1)
           .withPosition(5, 1)
           .getEntry();
 
         reefAlignments[0] = driverTab.add("Left", true)
-          .withWidget(BuiltInWidgets.kToggleButton)
+          .withWidget(BuiltInWidgets.kBooleanBox)
           .withSize(1, 1)
           .withPosition(3, 2)
           .getEntry();
 
         reefAlignments[1] = driverTab.add("Center", false)
-          .withWidget(BuiltInWidgets.kToggleButton)
+          .withWidget(BuiltInWidgets.kBooleanBox)
           .withSize(1, 1)
           .withPosition(4, 2)
           .getEntry();
 
         reefAlignments[2] = driverTab.add("Right", false)
-          .withWidget(BuiltInWidgets.kToggleButton)
+          .withWidget(BuiltInWidgets.kBooleanBox)
           .withSize(1, 1)
           .withPosition(5, 2)
           .getEntry();
@@ -395,56 +443,27 @@ public class RobotContainer {
 
   public void updateDriverTab() {
 
-    for (int i = 0; i < 4; i++) {
-      if (elevatorLevels[i].getBoolean(false) != levelBooleans[i] & elevatorLevels[i].getBoolean(false)) {
-        elevatorLevels[0].setBoolean(false);
-        levelBooleans[0] = false;
-        elevatorLevels[1].setBoolean(false);
-        levelBooleans[1] = false;
-        elevatorLevels[2].setBoolean(false);
-        levelBooleans[2] = false;
-        elevatorLevels[3].setBoolean(false);
-        levelBooleans[3] = false;
+    for (int i = 0; i < 3; i++) {
+      if (levelBooleans[i]) {
         elevatorLevels[i].setBoolean(true);
-        levelBooleans[i] = true;
-      } else if (elevatorLevels[i].getBoolean(false) != levelBooleans[i]) {
-        levelBooleans[i] = false;
+      } else {
+        elevatorLevels[i].setBoolean(false);
       }
     }
 
     for (int i = 0; i < 6; i++) {
-      if (reefSides[i].getBoolean(false) != reefSidesBoolean[i] & reefSides[i].getBoolean(false)) {
-        reefSides[0].setBoolean(false);
-        reefSidesBoolean[0] = false;
-        reefSides[1].setBoolean(false);
-        reefSidesBoolean[1] = false;
-        reefSides[2].setBoolean(false);
-        reefSidesBoolean[2] = false;
-        reefSides[3].setBoolean(false);
-        reefSidesBoolean[3] = false;
-        reefSides[4].setBoolean(false);
-        reefSidesBoolean[4] = false;
-        reefSides[5].setBoolean(false);
-        reefSidesBoolean[5] = false;
+      if (reefSidesBoolean[i]) {
         reefSides[i].setBoolean(true);
-        reefSidesBoolean[i] = true;
-      } else if (reefSides[i].getBoolean(false) != reefSidesBoolean[i]) {
-        reefSidesBoolean[i] = false;
+      } else {
+        reefSides[i].setBoolean(false);
       }
     }
 
     for (int i = 0; i < 3; i++) {
-      if (reefAlignments[i].getBoolean(false) != reefAlignmentsBoolean[i] & reefAlignments[i].getBoolean(false)) {
-        reefAlignments[0].setBoolean(false);
-        reefAlignmentsBoolean[0] = false;
-        reefAlignments[1].setBoolean(false);
-        reefAlignmentsBoolean[1] = false;
-        reefAlignments[2].setBoolean(false);
-        reefAlignmentsBoolean[2] = false;
+      if (reefAlignmentsBoolean[i]) {
         reefAlignments[i].setBoolean(true);
-        reefAlignmentsBoolean[i] = true;
-      } else if (reefAlignments[i].getBoolean(false) != reefAlignmentsBoolean[i]) {
-        reefAlignmentsBoolean[i] = false;
+      } else {
+        reefAlignments[i].setBoolean(false);
       }
     }
 
@@ -453,6 +472,9 @@ public class RobotContainer {
     } else {
       climbModeBoolean = false;
     }
+
+    SmartDashboard.putString("Elevator Level", elevatorLevel.toString());
+    SmartDashboard.putString("Reef Side", reefSide.toString());
 
   }
 
@@ -492,6 +514,30 @@ public class RobotContainer {
       }
     }
 
+  }
+
+  private void setElevatorLevel(int num) {
+    for (int i = 0; i < levelBooleans.length; i++) {
+      levelBooleans[i] = false;
+    }
+
+    levelBooleans[num] = true;
+  }
+
+  private void setReefAlignment(int num) {
+    for (int i = 0; i < reefAlignmentsBoolean.length; i++) {
+      reefAlignmentsBoolean[i] = false;
+    }
+
+    reefAlignmentsBoolean[num] = true;
+  }
+
+  private void setReefSide(int num) {
+    for (int i = 0; i < reefSidesBoolean.length; i++) {
+      reefSidesBoolean[i] = false;
+    }
+
+    reefSidesBoolean[num] = true;
   }
 
   public enum ElevatorLevel {

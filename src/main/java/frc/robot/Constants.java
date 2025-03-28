@@ -198,8 +198,8 @@ public final class Constants {
 
     // Yes the whole import statement has to be there bc of the other units class colliding with it
     public static final Angle kIdleAngle = edu.wpi.first.units.Units.Rotations.of(0);
-    public static final Angle kScoreLow = edu.wpi.first.units.Units.Rotations.of(0.19);
-    public static final Angle kScoreHigh = edu.wpi.first.units.Units.Rotations.of(0.22);
+    public static final Angle kScoreLow = edu.wpi.first.units.Units.Rotations.of(0.21);
+    public static final Angle kScoreHigh = edu.wpi.first.units.Units.Rotations.of(0.25);
     // TODO: TAKE THESE MEASUREMENTS
     public static final Angle kCoralStation = edu.wpi.first.units.Units.Rotations.of(0.1);
 
@@ -208,7 +208,7 @@ public final class Constants {
   public static final class RobotToCamTransforms {
     public static final Transform3d kCam1Transform = new Transform3d(
       new Translation3d(Units.inchesToMeters(14.75), Units.inchesToMeters(1.25), Units.inchesToMeters(12)), 
-      new Rotation3d(0, 0, 0)
+      new Rotation3d(0, Units.degreesToRadians(20), 0)
     );
 
     public static final Transform3d kCam2Transform = new Transform3d(

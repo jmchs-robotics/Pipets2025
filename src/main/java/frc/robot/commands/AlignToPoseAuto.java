@@ -104,7 +104,7 @@ public class AlignToPoseAuto extends Command {
     @Override
     public void execute() {
 
-        m_drive.drive(-getXPID(), -getYPID(), getYawPID(), true);
+        m_drive.drive(getXPID(), getYPID(), getYawPID(), true);
 
     }
 
@@ -123,6 +123,10 @@ public class AlignToPoseAuto extends Command {
         double xVal = m_xController.calculate(m_drive.getPose().getX(), goalPose.getX());
         xVal = MathUtil.clamp(xVal, -1, 1);
 
+        if (alliance == Alliance.Red) {
+            xVal *= -1;
+        }
+
         return xVal;
 
     }
@@ -131,6 +135,10 @@ public class AlignToPoseAuto extends Command {
         
         double yVal = m_yController.calculate(m_drive.getPose().getY(), goalPose.getY());
         yVal = MathUtil.clamp(yVal, -1, 1);
+
+        if (alliance == Alliance.Red) {
+            yVal *= -1;
+        }
 
         return yVal;
 

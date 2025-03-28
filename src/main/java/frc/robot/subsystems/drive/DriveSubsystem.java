@@ -128,15 +128,15 @@ public class DriveSubsystem extends SubsystemBase {
         });
     
     for (int i = 0; i < vision.getCameraPoses().size(); i++) {
-      // m_estimator.addVisionMeasurement(
-      //   vision.getCameraPoses().get(i),
-      //   vision.getCameraTimestamps().get(i),
-      //   VecBuilder.fill(
-      //     vision.getMinDistance(i) * DriveConstants.kEstimationCoefficient, 
-      //     vision.getMinDistance(i) * DriveConstants.kEstimationCoefficient,
-      //     Units.degreesToRadians(30)
-      //   )
-      // );
+      m_estimator.addVisionMeasurement(
+        vision.getCameraPoses().get(i),
+        vision.getCameraTimestamps().get(i),
+        VecBuilder.fill(
+          vision.getMinDistance(i) * DriveConstants.kEstimationCoefficient, 
+          vision.getMinDistance(i) * DriveConstants.kEstimationCoefficient,
+          Units.degreesToRadians(30)
+        )
+      );
     }
 
     SmartDashboard.putNumber("Gyro Yaw", m_gyro.getYaw());

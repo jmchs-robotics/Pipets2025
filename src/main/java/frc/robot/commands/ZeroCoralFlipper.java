@@ -7,6 +7,7 @@ import frc.robot.subsystems.coral.CoralFlipperSubsystem;
 public class ZeroCoralFlipper extends Command {
     
     private final CoralFlipperSubsystem m_coralFlipper;
+    private boolean isFinished;
 
     public ZeroCoralFlipper(CoralFlipperSubsystem coralFlipper) {
 
@@ -16,8 +17,24 @@ public class ZeroCoralFlipper extends Command {
     }
 
     @Override
+    public void initialize() {
+        isFinished = false;
+    }
+
+    @Override
+    public void execute() {
+        if (m_coralFlipper.getCurrentPosition() < 0.05) {
+            m_coralFlipper.setCoralFlipperManual(-0.1);
+
+            if (m_coralFlipper.getSupplyCurrent() > 5) {
+                isFinished = true;
+            }
+        }
+    }
+
+    @Override
     public boolean isFinished() {
-        return (m_coralFlipper.getCurrentPosition() < 0.01 && m_coralFlipper.getCurrentVelocity() == 0);
+        return isFinished;
     }
 
     @Override

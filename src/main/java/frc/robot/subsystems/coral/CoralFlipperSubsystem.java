@@ -66,6 +66,10 @@ public class CoralFlipperSubsystem extends SubsystemBase {
         return flipMotor.getVelocity().getValueAsDouble();
     }
 
+    public double getSupplyCurrent() {
+        return flipMotor.getSupplyCurrent().getValueAsDouble();
+    }
+
     public void setCoralFlipperManual(double speed) {
         flipMotor.set(speed);
     }

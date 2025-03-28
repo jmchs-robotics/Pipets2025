@@ -5,6 +5,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -23,9 +24,9 @@ public class AlignToPose extends Command {
     PIDController m_yController = new PIDController(0.75, 0, 0);
     PIDController m_yawController = new PIDController(0.01, 0, 0);
 
-    private final double xThreshold = 0.05; // meters
-    private final double yThreshold = 0.05; // meters
-    private final double yawThreshold = 5; // degrees
+    private final double xThreshold = Units.inchesToMeters(1);
+    private final double yThreshold = Units.inchesToMeters(1);
+    private final double yawThreshold = 2; // degrees
 
     private ReefSide side;
     private ReefAlignment alignment;

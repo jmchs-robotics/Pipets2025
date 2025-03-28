@@ -49,17 +49,13 @@ public class AlignToPose extends Command {
             alliance = DriverStation.getAlliance().get();
         }
 
-        SmartDashboard.putString("Reef Side Align", side.toString());
-        SmartDashboard.putString("Reef Alignment Align", alignment.toString());
-        SmartDashboard.putString("Alliance Align", alliance.toString());
-
         determinePose();
     }
 
     @Override
     public void execute() {
 
-        m_drive.drive(-getXPID(), -getYPID(), getYawPID(), true);
+        m_drive.drive(getXPID(), getYPID(), getYawPID(), true);
 
     }
 
@@ -78,6 +74,10 @@ public class AlignToPose extends Command {
         double xVal = m_xController.calculate(m_drive.getPose().getX(), goalPose.getX());
         xVal = MathUtil.clamp(xVal, -1, 1);
 
+        if (alliance == Alliance.Red) {
+            xVal *= -1;
+        }
+
         return xVal;
 
     }
@@ -86,6 +86,10 @@ public class AlignToPose extends Command {
         
         double yVal = m_yController.calculate(m_drive.getPose().getY(), goalPose.getY());
         yVal = MathUtil.clamp(yVal, -1, 1);
+
+        if (alliance == Alliance.Red) {
+            yVal *= -1;
+        }
 
         return yVal;
 

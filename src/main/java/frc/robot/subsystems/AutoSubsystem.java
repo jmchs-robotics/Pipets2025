@@ -187,8 +187,8 @@ public class AutoSubsystem extends SubsystemBase {
                     Commands.sequence(
                         // Raise elevator to L4 and Lower Coral
                         Commands.parallel(
-                            new SetElevator(m_elevatorSubsystem, ElevatorLevel.LEVEL_4_CORAL),
-                            new SetCoralFlipper(m_coralFlipper, "scoreHigh")
+                            new SetElevator(m_elevatorSubsystem, ElevatorLevel.LEVEL_2_CORAL),
+                            new SetCoralFlipper(m_coralFlipper, "scoreLow")
                         ),
                         // Give time for them to raise up b/c they technically finish instantly
                         new WaitCommand(2),

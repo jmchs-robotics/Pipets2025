@@ -210,6 +210,11 @@ public class RobotContainer {
           new SetAlgaeFlipper(m_algaeFlipperSubsystem, "up")
         ),
         new AlgaeIntake(m_algaeWheelsSubsystem)
+      ).andThen(
+        Commands.sequence(
+          Commands.run(() -> m_elevatorSubsystem.setElevatorManual(0.1), m_elevatorSubsystem).withTimeout(0.25),
+          new SetElevator(m_elevatorSubsystem, ElevatorLevel.LEVEL_3_ALGAE)
+        )
       )
     );
 
@@ -225,6 +230,11 @@ public class RobotContainer {
           new SetAlgaeFlipper(m_algaeFlipperSubsystem, "up")
         ),
         new AlgaeIntake(m_algaeWheelsSubsystem)
+      ).andThen(
+        Commands.sequence(
+          Commands.run(() -> m_elevatorSubsystem.setElevatorManual(0.1), m_elevatorSubsystem).withTimeout(0.25),
+          new SetElevator(m_elevatorSubsystem, ElevatorLevel.LEVEL_2_ALGAE)
+        )
       )
     );
 
@@ -359,87 +369,87 @@ public class RobotContainer {
 
   private void setUpDriverTab() {
 
-        ShuffleboardTab driverTab = Shuffleboard.getTab("Driver Tab");
+    ShuffleboardTab driverTab = Shuffleboard.getTab("Driver Tab");
 
-        elevatorLevels[0] = driverTab.add("L4", true)
-          .withWidget(BuiltInWidgets.kBooleanBox)
-          .withSize(3, 1)
-          .withPosition(0, 0)
-          .getEntry();
+    elevatorLevels[0] = driverTab.add("L4", true)
+      .withWidget(BuiltInWidgets.kBooleanBox)
+      .withSize(3, 1)
+      .withPosition(0, 0)
+      .getEntry();
 
-        elevatorLevels[1] = driverTab.add("L3", false)
-          .withWidget(BuiltInWidgets.kBooleanBox)
-          .withSize(3, 1)
-          .withPosition(0, 1)
-          .getEntry();
+    elevatorLevels[1] = driverTab.add("L3", false)
+      .withWidget(BuiltInWidgets.kBooleanBox)
+      .withSize(3, 1)
+      .withPosition(0, 1)
+      .getEntry();
 
-        elevatorLevels[2] = driverTab.add("L2", false)
-          .withWidget(BuiltInWidgets.kBooleanBox)
-          .withSize(3, 1)
-          .withPosition(0, 2)
-          .getEntry();
+    elevatorLevels[2] = driverTab.add("L2", false)
+      .withWidget(BuiltInWidgets.kBooleanBox)
+      .withSize(3, 1)
+      .withPosition(0, 2)
+      .getEntry();
 
-        reefSides[0] = driverTab.add("FL", true)
-          .withWidget(BuiltInWidgets.kBooleanBox)
-          .withSize(1, 1)
-          .withPosition(3, 0)
-          .getEntry();
+    reefSides[0] = driverTab.add("FL", true)
+      .withWidget(BuiltInWidgets.kBooleanBox)
+      .withSize(1, 1)
+      .withPosition(3, 0)
+      .getEntry();
 
-        reefSides[1] = driverTab.add("FM", false)
-          .withWidget(BuiltInWidgets.kBooleanBox)
-          .withSize(1, 1)
-          .withPosition(4, 0)
-          .getEntry();
+    reefSides[1] = driverTab.add("FM", false)
+      .withWidget(BuiltInWidgets.kBooleanBox)
+      .withSize(1, 1)
+      .withPosition(4, 0)
+      .getEntry();
 
-        reefSides[2] = driverTab.add("FR", false)
-          .withWidget(BuiltInWidgets.kBooleanBox)
-          .withSize(1, 1)
-          .withPosition(5, 0)
-          .getEntry();
+    reefSides[2] = driverTab.add("FR", false)
+      .withWidget(BuiltInWidgets.kBooleanBox)
+      .withSize(1, 1)
+      .withPosition(5, 0)
+      .getEntry();
 
-        reefSides[3] = driverTab.add("BL", false)
-          .withWidget(BuiltInWidgets.kBooleanBox)
-          .withSize(1, 1)
-          .withPosition(3, 1)
-          .getEntry();
+    reefSides[3] = driverTab.add("BL", false)
+      .withWidget(BuiltInWidgets.kBooleanBox)
+      .withSize(1, 1)
+      .withPosition(3, 1)
+      .getEntry();
 
-        reefSides[4] = driverTab.add("BM", false)
-          .withWidget(BuiltInWidgets.kBooleanBox)
-          .withSize(1, 1)
-          .withPosition(4, 1)
-          .getEntry();
+    reefSides[4] = driverTab.add("BM", false)
+      .withWidget(BuiltInWidgets.kBooleanBox)
+      .withSize(1, 1)
+      .withPosition(4, 1)
+      .getEntry();
 
-        reefSides[5] = driverTab.add("BR", false)
-          .withWidget(BuiltInWidgets.kBooleanBox)
-          .withSize(1, 1)
-          .withPosition(5, 1)
-          .getEntry();
+    reefSides[5] = driverTab.add("BR", false)
+      .withWidget(BuiltInWidgets.kBooleanBox)
+      .withSize(1, 1)
+      .withPosition(5, 1)
+      .getEntry();
 
-        reefAlignments[0] = driverTab.add("Left", true)
-          .withWidget(BuiltInWidgets.kBooleanBox)
-          .withSize(1, 1)
-          .withPosition(3, 2)
-          .getEntry();
+    reefAlignments[0] = driverTab.add("Left", true)
+      .withWidget(BuiltInWidgets.kBooleanBox)
+      .withSize(1, 1)
+      .withPosition(3, 2)
+      .getEntry();
 
-        reefAlignments[1] = driverTab.add("Center", false)
-          .withWidget(BuiltInWidgets.kBooleanBox)
-          .withSize(1, 1)
-          .withPosition(4, 2)
-          .getEntry();
+    reefAlignments[1] = driverTab.add("Center", false)
+      .withWidget(BuiltInWidgets.kBooleanBox)
+      .withSize(1, 1)
+      .withPosition(4, 2)
+      .getEntry();
 
-        reefAlignments[2] = driverTab.add("Right", false)
-          .withWidget(BuiltInWidgets.kBooleanBox)
-          .withSize(1, 1)
-          .withPosition(5, 2)
-          .getEntry();
+    reefAlignments[2] = driverTab.add("Right", false)
+      .withWidget(BuiltInWidgets.kBooleanBox)
+      .withSize(1, 1)
+      .withPosition(5, 2)
+      .getEntry();
 
-        climbMode = driverTab.add("Climb Mode", false)
-          .withWidget(BuiltInWidgets.kToggleButton)
-          .withSize(1, 1)
-          .withPosition(6, 0)
-          .getEntry();
+    climbMode = driverTab.add("Climb Mode", false)
+      .withWidget(BuiltInWidgets.kToggleButton)
+      .withSize(1, 1)
+      .withPosition(6, 0)
+      .getEntry();
 
-    }
+  }
 
   public void updateDriverTab() {
 

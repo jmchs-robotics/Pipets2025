@@ -14,6 +14,8 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class BulldogCamera {
     
@@ -32,7 +34,8 @@ public class BulldogCamera {
     public double camToTagY;
     public double camToTagYaw;
 
-    private final int[] validTags = {6, 7, 8, 9, 10, 11, 17, 18, 19, 20, 21, 22};
+    private final int[] redTags = {6, 7, 8, 9, 10, 11};
+    private final int[] blueTags = {17, 18, 19, 20, 21, 22};
 
     public BulldogCamera(String name, Transform3d robotToCam) {
 
@@ -128,7 +131,7 @@ public class BulldogCamera {
     }
 
     private boolean isValidTag(int tagNum) {
-        for (int tag : validTags) {
+        for (int tag : (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) ? redTags : blueTags) {
             if (tagNum == tag) {
                 return true;
             }

@@ -8,9 +8,9 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
+import frc.robot.RobotContainer.ElevatorLevel;
 import frc.robot.RobotContainer.ReefAlignment;
 import frc.robot.RobotContainer.ReefSide;
 import frc.robot.subsystems.drive.DriveSubsystem;
@@ -108,11 +108,15 @@ public class AlignToPose extends Command {
     private void determinePose() {
 
         // Default is Blue G (Front Middle Left)
-        goalPose = new Pose2d(5.91, 3.9, Rotation2d.fromDegrees(180));
+        goalPose = RobotContainer.elevatorLevel == ElevatorLevel.LEVEL_4_CORAL
+            ? new Pose2d(5.96, 3.9, Rotation2d.fromDegrees(180)) // L4 is a bit back from L2 and L3
+            : new Pose2d(5.91, 3.9, Rotation2d.fromDegrees(180));
         Translation2d blueReefCenter = new Translation2d(4.489, 4.025);
 
         if (alignment == ReefAlignment.RIGHT) {
-            goalPose = new Pose2d(5.91, 4.28, Rotation2d.fromDegrees(180));
+            goalPose = RobotContainer.elevatorLevel == ElevatorLevel.LEVEL_4_CORAL
+                ? new Pose2d(5.96, 4.28, Rotation2d.fromDegrees(180))
+                : new Pose2d(5.91, 4.28, Rotation2d.fromDegrees(180));
         }
 
         switch (side) {

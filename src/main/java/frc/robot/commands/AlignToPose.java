@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
-import frc.robot.RobotContainer.ElevatorLevel;
 import frc.robot.RobotContainer.ReefAlignment;
 import frc.robot.RobotContainer.ReefSide;
 import frc.robot.subsystems.drive.DriveSubsystem;
@@ -20,12 +19,12 @@ public class AlignToPose extends Command {
     private final DriveSubsystem m_drive;
     private Pose2d goalPose;
 
-    PIDController m_xController = new PIDController(0.75, 0, 0);
-    PIDController m_yController = new PIDController(0.75, 0, 0);
+    PIDController m_xController = new PIDController(1, 0, 0);
+    PIDController m_yController = new PIDController(1, 0, 0);
     PIDController m_yawController = new PIDController(0.01, 0, 0);
 
-    private final double xThreshold = Units.inchesToMeters(1);
-    private final double yThreshold = Units.inchesToMeters(1);
+    private final double xThreshold = Units.inchesToMeters(0.5);
+    private final double yThreshold = Units.inchesToMeters(0.5);
     private final double yawThreshold = 2; // degrees
 
     private ReefSide side;
@@ -108,15 +107,11 @@ public class AlignToPose extends Command {
     private void determinePose() {
 
         // Default is Blue G (Front Middle Left)
-        goalPose = RobotContainer.elevatorLevel == ElevatorLevel.LEVEL_4_CORAL
-            ? new Pose2d(5.96, 3.9, Rotation2d.fromDegrees(180)) // L4 is a bit back from L2 and L3
-            : new Pose2d(5.91, 3.9, Rotation2d.fromDegrees(180));
+        goalPose = new Pose2d(6.0, 3.89, Rotation2d.fromDegrees(180));
         Translation2d blueReefCenter = new Translation2d(4.489, 4.025);
 
         if (alignment == ReefAlignment.RIGHT) {
-            goalPose = RobotContainer.elevatorLevel == ElevatorLevel.LEVEL_4_CORAL
-                ? new Pose2d(5.96, 4.28, Rotation2d.fromDegrees(180))
-                : new Pose2d(5.91, 4.28, Rotation2d.fromDegrees(180));
+            goalPose = new Pose2d(6.0, 4.25, Rotation2d.fromDegrees(180));
         }
 
         switch (side) {

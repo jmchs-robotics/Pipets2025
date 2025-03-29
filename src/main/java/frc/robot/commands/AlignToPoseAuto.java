@@ -156,11 +156,11 @@ public class AlignToPoseAuto extends Command {
     private void determinePose() {
 
         // Default is Blue G (Front Middle Left)
-        goalPose = new Pose2d(5.91, 3.9, Rotation2d.fromDegrees(180));
+        goalPose = new Pose2d(6.0, 3.89, Rotation2d.fromDegrees(180));
         Translation2d blueReefCenter = new Translation2d(4.489, 4.025);
 
         if (alignment == ReefAlignment.RIGHT) {
-            goalPose = new Pose2d(5.91, 4.28, Rotation2d.fromDegrees(180));
+            goalPose = new Pose2d(6.0, 4.25, Rotation2d.fromDegrees(180));
         }
 
         switch (side) {

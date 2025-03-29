@@ -28,10 +28,8 @@ public class CoralFlipperSubsystem extends SubsystemBase {
 
         config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         config.CurrentLimits.SupplyCurrentLimit = 40; // 40 amp breaker on PDH
-        config.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-        config.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Degrees.of(135).in(Units.Rotations);
-        config.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
-        config.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Degrees.of(0).in(Units.Rotations);
+        config.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
+        config.SoftwareLimitSwitch.ReverseSoftLimitEnable = false;
 
         config.Feedback.SensorToMechanismRatio = 36; // 36:1 gear ratio
 

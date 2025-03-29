@@ -199,43 +199,11 @@ public class RobotContainer {
     );
 
     m_driverController.povDown().and(() -> elevatorLevel == ElevatorLevel.LEVEL_3_ALGAE).whileTrue(
-      new SequentialCommandGroup(
-        Commands.sequence(
-          // new ZeroElevator(m_elevatorSubsystem),
-          new SetElevator(m_elevatorSubsystem, ElevatorLevel.LEVEL_3_ALGAE)
-        ),
-        new WaitCommand(0.25),
-        Commands.sequence(
-          // new ZeroAlgaeFlipper(m_algaeFlipperSubsystem),
-          new SetAlgaeFlipper(m_algaeFlipperSubsystem, "up")
-        ),
-        new AlgaeIntake(m_algaeWheelsSubsystem)
-      ).andThen(
-        Commands.sequence(
-          Commands.run(() -> m_elevatorSubsystem.setElevatorManual(0.1), m_elevatorSubsystem).withTimeout(0.25),
-          new SetElevator(m_elevatorSubsystem, ElevatorLevel.LEVEL_3_ALGAE)
-        )
-      )
+      new AlgaeIntakeSequence(m_algaeFlipperSubsystem, m_algaeWheelsSubsystem, m_elevatorSubsystem, ElevatorLevel.LEVEL_3_ALGAE)
     );
 
     m_driverController.povDown().and(() -> elevatorLevel == ElevatorLevel.LEVEL_2_ALGAE).whileTrue(
-      new SequentialCommandGroup(
-        Commands.sequence(
-          // new ZeroElevator(m_elevatorSubsystem),
-          new SetElevator(m_elevatorSubsystem, ElevatorLevel.LEVEL_2_ALGAE)
-        ),
-        new WaitCommand(0.25),
-        Commands.sequence(
-          // new ZeroAlgaeFlipper(m_algaeFlipperSubsystem),
-          new SetAlgaeFlipper(m_algaeFlipperSubsystem, "up")
-        ),
-        new AlgaeIntake(m_algaeWheelsSubsystem)
-      ).andThen(
-        Commands.sequence(
-          Commands.run(() -> m_elevatorSubsystem.setElevatorManual(0.1), m_elevatorSubsystem).withTimeout(0.25),
-          new SetElevator(m_elevatorSubsystem, ElevatorLevel.LEVEL_2_ALGAE)
-        )
-      )
+      new AlgaeIntakeSequence(m_algaeFlipperSubsystem, m_algaeWheelsSubsystem, m_elevatorSubsystem, ElevatorLevel.LEVEL_2_ALGAE)
     );
 
     m_driverController.povRight().whileTrue(

@@ -18,7 +18,6 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -85,7 +84,7 @@ public class DriveSubsystem extends SubsystemBase {
       },
       new Pose2d(),
       VecBuilder.fill(0.1, 0.1, 0.1),
-      VecBuilder.fill(0.9, 0.9, 0.9)
+      VecBuilder.fill(0.5, 0.5, 0.9)
   );
 
   // private final PIDController xController = new PIDController(10.0, 0.0, 0.0);
@@ -134,7 +133,7 @@ public class DriveSubsystem extends SubsystemBase {
         VecBuilder.fill(
           vision.getMinDistance(i) * DriveConstants.kEstimationCoefficient, 
           vision.getMinDistance(i) * DriveConstants.kEstimationCoefficient,
-          Units.degreesToRadians(30)
+          0.5
         )
       );
     }

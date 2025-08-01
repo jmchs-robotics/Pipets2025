@@ -147,13 +147,15 @@ public class RobotContainer {
       )
     );
 
-    m_driverController.leftBumper().and(() -> climbModeBoolean).whileTrue(
-      new ClimbDown(m_climbersSubsystem)
-    );
-
-    m_driverController.leftBumper().and(() -> !climbModeBoolean).whileTrue(
-      new ClimbUp(m_climbersSubsystem)
-    );
+    /** commented out climbers as we have no climbers
+    *m_driverController.leftBumper().and(() -> climbModeBoolean).whileTrue(
+    *  new ClimbDown(m_climbersSubsystem)
+    *);
+    *
+    *m_driverController.leftBumper().and(() -> !climbModeBoolean).whileTrue(
+    *  new ClimbUp(m_climbersSubsystem)
+    *);
+    **/
     
     m_driverController.povUp().whileTrue(
       new AlignToPose(m_robotDrive)

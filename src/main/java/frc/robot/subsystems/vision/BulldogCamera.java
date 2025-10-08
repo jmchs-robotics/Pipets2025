@@ -100,6 +100,8 @@ public class BulldogCamera {
     
             }
 
+        } else {
+            DriverStation.reportWarning(name + " has no results", false);
         }
 
     }

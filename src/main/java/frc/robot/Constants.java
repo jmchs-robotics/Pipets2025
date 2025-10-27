@@ -207,12 +207,12 @@ public final class Constants {
 
   public static final class RobotToCamTransforms {
     public static final Transform3d kCam1Transform = new Transform3d(
-      new Translation3d(Units.inchesToMeters(12.223), Units.inchesToMeters(-11.624), Units.inchesToMeters(8.642)), 
+      new Translation3d(Units.inchesToMeters(12.223), Units.inchesToMeters(11.624), Units.inchesToMeters(8.642)),
       new Rotation3d(0, 0, Units.degreesToRadians(-30))
     );
 
     public static final Transform3d kCam2Transform = new Transform3d(
-      new Translation3d(Units.inchesToMeters(12.223), Units.inchesToMeters(-11.624), Units.inchesToMeters(8.642)),
+      new Translation3d(Units.inchesToMeters(12.223), Units.inchesToMeters(-11.624), Units.inchesToMeters(8.642)), 
       new Rotation3d(0, 0, Units.degreesToRadians(30))
     );
   }

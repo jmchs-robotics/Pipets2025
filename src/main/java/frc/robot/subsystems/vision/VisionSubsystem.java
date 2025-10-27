@@ -12,7 +12,7 @@ public class VisionSubsystem extends SubsystemBase {
 
     private BulldogCamera[] cams = {
         new BulldogCamera("BulldogCam1", RobotToCamTransforms.kCam1Transform),
-        new BulldogCamera("BulldogCam2", RobotToCamTransforms.kCam2Transform)
+        // new BulldogCamera("BulldogCam2", RobotToCamTransforms.kCam2Transform)
     };
 
     private List<Pose2d> camPoses = new ArrayList<Pose2d>();

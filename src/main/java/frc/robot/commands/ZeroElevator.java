@@ -39,8 +39,10 @@ public class ZeroElevator extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        m_elevator.setNeutral();
-        m_elevator.resetSensorPosition(ElevatorConstants.HOME);
+        if (!interrupted) {
+            m_elevator.setNeutral();
+            m_elevator.resetSensorPosition(ElevatorConstants.HOME);
+        }
     }
     
 }

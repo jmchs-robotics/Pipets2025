@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants.AlgaeConstants;
+import frc.robot.Constants.CoralConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.*;
@@ -172,7 +174,21 @@ public class RobotContainer {
           new SetCoralFlipper(m_coralFlipperSubsystem, "scoreHigh")
         )
       )
-    );
+      .andThen(new AlignToPose(m_robotDrive))
+      .andThen(new WaitCommand(0.5))
+      .andThen(new CoralExtake(m_coralWheelsSubsystem).withTimeout(0.5))
+      .andThen(
+        new ParallelCommandGroup(
+          Commands.sequence(
+            new SetElevator(m_elevatorSubsystem, ElevatorLevel.HOME),
+            new ZeroElevator(m_elevatorSubsystem)
+          ),
+          Commands.sequence(
+            new SetCoralFlipper(m_coralFlipperSubsystem, "idle"),
+            new ZeroCoralFlipper(m_coralFlipperSubsystem)
+        )
+      )
+    ));
 
     m_driverController.povDown().and(() -> elevatorLevel == ElevatorLevel.LEVEL_3_CORAL).whileTrue(
       new ParallelCommandGroup(
@@ -183,6 +199,20 @@ public class RobotContainer {
         Commands.sequence(
           // new ZeroCoralFlipper(m_coralFlipperSubsystem),
           new SetCoralFlipper(m_coralFlipperSubsystem, "scoreLow")
+        )
+      )
+      .andThen(new AlignToPose(m_robotDrive))
+      .andThen(new CoralExtake(m_coralWheelsSubsystem).withTimeout(0.5))
+      .andThen(
+        new ParallelCommandGroup(
+          Commands.sequence(
+            new SetElevator(m_elevatorSubsystem, ElevatorLevel.HOME),
+            new ZeroElevator(m_elevatorSubsystem)
+          ),
+          Commands.sequence(
+            new SetCoralFlipper(m_coralFlipperSubsystem, "idle"),
+            new ZeroCoralFlipper(m_coralFlipperSubsystem)
+          )
         )
       )
     );
@@ -196,6 +226,13 @@ public class RobotContainer {
         Commands.sequence(
           // new ZeroCoralFlipper(m_coralFlipperSubsystem),
           new SetCoralFlipper(m_coralFlipperSubsystem, "scoreLow")
+        )
+      ).andThen(new AlignToPose(m_robotDrive)
+      ).andThen(new CoralExtake(m_coralWheelsSubsystem).withTimeout(0.5))
+      .andThen(
+        Commands.sequence(
+          new SetCoralFlipper(m_coralFlipperSubsystem, "idle"),
+          new ZeroCoralFlipper(m_coralFlipperSubsystem)
         )
       )
     );
@@ -260,6 +297,14 @@ public class RobotContainer {
 
     m_operatorController.rightBumper().whileTrue(
       new RaiseElevatorManual(m_elevatorSubsystem)
+    );
+
+    m_operatorController.rightTrigger().onTrue(
+      new InstantCommand(() -> m_coralFlipperSubsystem.setPosition(CoralConstants.kIdleAngle), m_coralFlipperSubsystem)
+    );
+
+    m_operatorController.leftTrigger().onTrue(
+      new InstantCommand(() -> m_algaeFlipperSubsystem.setPosition(AlgaeConstants.kAngleDown), m_algaeFlipperSubsystem)
     );
 
     m_operatorController.povUp().whileTrue(

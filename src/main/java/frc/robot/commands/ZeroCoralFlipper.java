@@ -22,8 +22,10 @@ public class ZeroCoralFlipper extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        m_coralFlipper.setNeutral();
-        m_coralFlipper.setPosition(CoralConstants.kIdleAngle);
+        if (!interrupted) {
+            m_coralFlipper.setNeutral();
+            m_coralFlipper.setPosition(CoralConstants.kIdleAngle);
+        }
     }
 
 }

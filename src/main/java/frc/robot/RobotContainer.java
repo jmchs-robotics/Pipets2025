@@ -23,7 +23,6 @@ import frc.robot.subsystems.vision.*;
 import frc.robot.subsystems.drive.*;
 import frc.robot.subsystems.algae.*;
 import frc.robot.subsystems.coral.*;
-import frc.robot.subsystems.climbers.*;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.AutoSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -52,7 +51,6 @@ public class RobotContainer {
   private final AlgaeWheelsSubsystem m_algaeWheelsSubsystem = new AlgaeWheelsSubsystem();
   private final CoralWheelsSubsystem m_coralWheelsSubsystem = new CoralWheelsSubsystem();
   private final CoralFlipperSubsystem m_coralFlipperSubsystem = new CoralFlipperSubsystem();
-  private final ClimbersSubsystem m_climbersSubsystem = new ClimbersSubsystem();
   private final VisionSubsystem m_vision = new VisionSubsystem();
   private final DriveSubsystem m_robotDrive = new DriveSubsystem(m_vision);
   private final AutoSubsystem m_auto = new AutoSubsystem(m_robotDrive, m_elevatorSubsystem, m_coralFlipperSubsystem, m_coralWheelsSubsystem);
@@ -74,9 +72,6 @@ public class RobotContainer {
 
   private final GenericEntry[] reefAlignments = new GenericEntry[3];
   public static final boolean[] reefAlignmentsBoolean = {true, false, false};
-
-  private GenericEntry climbMode;
-  private static boolean climbModeBoolean = false;
 
   public static ElevatorLevel elevatorLevel = ElevatorLevel.LEVEL_4_CORAL;
   public static ReefSide reefSide = ReefSide.FRONT_LEFT;
@@ -457,13 +452,7 @@ public class RobotContainer {
       .withSize(1, 1)
       .withPosition(5, 2)
       .getEntry();
-
-    climbMode = driverTab.add("Climb Mode", false)
-      .withWidget(BuiltInWidgets.kToggleButton)
-      .withSize(1, 1)
-      .withPosition(6, 0)
-      .getEntry();
-
+      
   }
 
   public void updateDriverTab() {
@@ -490,12 +479,6 @@ public class RobotContainer {
       } else {
         reefAlignments[i].setBoolean(false);
       }
-    }
-
-    if (climbMode.getBoolean(false)) {
-      climbModeBoolean = true;
-    } else {
-      climbModeBoolean = false;
     }
 
     SmartDashboard.putString("Elevator Level", elevatorLevel.toString());

@@ -49,7 +49,7 @@ public class CommandFactory {
     public static Command scoreL3(DriveSubsystem drive, ElevatorSubsystem elevator, CoralFlipperSubsystem cFlipper, CoralWheelsSubsystem cWheels) {
             return Commands.parallel(
                 Commands.sequence(
-                    new SetElevator(elevator, ElevatorLevel.LEVEL_4_CORAL)
+                    new SetElevator(elevator, ElevatorLevel.LEVEL_3_CORAL)
                 ),
                 Commands.sequence(
                     new SetCoralFlipper(cFlipper, "scoreLow")
@@ -72,5 +72,30 @@ public class CommandFactory {
             );
     }
 
+    public static Command scoreL2(DriveSubsystem drive, ElevatorSubsystem elevator, CoralFlipperSubsystem cFlipper, CoralWheelsSubsystem cWheels) {
+        return Commands.parallel(
+            Commands.sequence(
+                new SetElevator(elevator, ElevatorLevel.LEVEL_2_CORAL)
+            ),
+            Commands.sequence(
+                new SetCoralFlipper(cFlipper, "scoreLow")
+             )
+        )
+        .andThen(new AlignToPose(drive))
+        .andThen(new WaitCommand(0.5))
+        .andThen(new CoralExtake(cWheels).withTimeout(0.5))
+        .andThen(
+            Commands.parallel(
+                Commands.sequence(
+                    new SetElevator(elevator, ElevatorLevel.HOME),
+                    new ZeroElevator(elevator)
+                ),
+                Commands.sequence(
+                    new SetCoralFlipper(cFlipper, "idle"),
+                    new ZeroCoralFlipper(cFlipper)
+                )
+            )
+        );
+}
 
 }

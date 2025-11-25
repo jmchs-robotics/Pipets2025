@@ -163,30 +163,7 @@ public class RobotContainer {
     );
 
     m_driverController.povDown().and(() -> elevatorLevel == ElevatorLevel.LEVEL_3_CORAL).whileTrue(
-      new ParallelCommandGroup(
-        Commands.sequence(
-          // new ZeroElevator(m_elevatorSubsystem),
-          new SetElevator(m_elevatorSubsystem, ElevatorLevel.LEVEL_3_CORAL)
-        ),
-        Commands.sequence(
-          // new ZeroCoralFlipper(m_coralFlipperSubsystem),
-          new SetCoralFlipper(m_coralFlipperSubsystem, "scoreLow")
-        )
-      )
-      .andThen(new AlignToPose(m_robotDrive))
-      .andThen(new CoralExtake(m_coralWheelsSubsystem).withTimeout(0.5))
-      .andThen(
-        new ParallelCommandGroup(
-          Commands.sequence(
-            new SetElevator(m_elevatorSubsystem, ElevatorLevel.HOME),
-            new ZeroElevator(m_elevatorSubsystem)
-          ),
-          Commands.sequence(
-            new SetCoralFlipper(m_coralFlipperSubsystem, "idle"),
-            new ZeroCoralFlipper(m_coralFlipperSubsystem)
-          )
-        )
-      )
+      CommandFactory.scoreL3(m_robotDrive, m_elevatorSubsystem, m_coralFlipperSubsystem, m_coralWheelsSubsystem)
     );
 
     m_driverController.povDown().and(() -> elevatorLevel == ElevatorLevel.LEVEL_2_CORAL).whileTrue(
